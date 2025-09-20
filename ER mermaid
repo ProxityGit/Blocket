@@ -1,1 +1,212 @@
+erDiagram
+  TENANT ||--|| CONFIGURACION_TENANT : "1 a 0..n"
+  TENANT ||--o{ PROCESS : "1 a n"
+  TENANT ||--o{ TOPIC : "1 a n"
+  TENANT ||--o{ SOLICITUD : "1 a n"
 
+  PROCESS ||--|| TOPIC : "1 a 1"
+  TOPIC ||--o{ BLOCK : "1 a n"
+  CATEGORY ||--o{ BLOCK : "1 a n (opcional)"
+
+  BLOCK ||--o{ BLOCK_FIELD : "1 a n"
+  BLOCK ||--o{ BLOCK_INCOMPATIBILITY : "1 a n (como A)"
+  BLOCK ||--o{ BLOCK_INCOMPATIBILITY : "1 a n (como B)"
+
+  CANAL ||--o{ SOLICITUD : "1 a n"
+  ESTADO ||--o{ SOLICITUD : "1 a n"
+ 
+  ESTADO ||--o{ TRANSICION_ESTADO : "origen"
+  ESTADO ||--o{ TRANSICION_ESTADO : "destino"
+
+  SOLICITUD ||--o{ SOLICITUD_INTEGRACION : "0..n"
+  SOLICITUD ||--o{ SOLICITUD_ADJUNTO : "0..n"
+  SOLICITUD ||--o{ SOLICITUD_LOG : "0..n"
+  SOLICITUD ||--o{ DOCUMENTO : "0..n"
+
+  DOCUMENTO ||--o{ DOCUMENTO_BLOQUE : "1 a n"
+  DOCUMENTO ||--o{ DOCUMENTO_CAMPO_VALOR : "1 a n"
+
+  TENANT {
+    bigint id PK
+    text nombre
+    boolean activo
+    timestamptz creado_en
+  }
+
+  CONFIGURACION_TENANT {
+    bigint id PK
+    bigint tenant_id FK
+    boolean requiere_integracion
+    text sistema_externo_predeterminado
+    text formato_radicado
+    text prefijo_radicado
+    jsonb politicas_canal_json
+    timestamptz creado_en
+    timestamptz actualizado_en
+  }
+
+  PROCESS {
+    bigint id PK
+    bigint tenant_id FK
+    text name
+    boolean is_active
+  }
+
+  TOPIC {
+    bigint id PK
+    bigint tenant_id FK
+    bigint process_id FK
+    text name
+    text description
+    boolean is_published
+    int sort_order
+    timestamptz created_at
+    timestamptz updated_at
+  }
+
+  CATEGORY {
+    bigint id PK
+    text name
+    text description
+    boolean is_active
+    timestamptz created_at
+  }
+
+  BLOCK {
+    bigint id PK
+    bigint topic_id FK
+    bigint category_id FK
+    text key
+    text title
+    text template_html
+    text version
+    boolean is_active
+    boolean is_published
+    timestamptz created_at
+    timestamptz updated_at
+  }
+
+  BLOCK_FIELD {
+    bigint id PK
+    bigint block_id FK
+    text name
+    text label
+    text type "text/number/date/email/..."
+    boolean required
+    int sort_order
+    text format_mask
+    jsonb options_json
+  }
+
+  BLOCK_INCOMPATIBILITY {
+    bigint block_id FK "A"
+    bigint incompatible_block_id FK "B"
+  }
+
+  CANAL {
+    bigint id PK
+    text codigo "web, email, api, whatsapp, otro"
+    text nombre
+    boolean activo
+  }
+
+  ESTADO {
+    bigint id PK
+    text codigo "RECIBIDA, PENDIENTE_DE_ENVIO, INTEGRADA, ERROR_DE_ENVIO, ..."
+    text nombre
+    boolean activo
+  }
+
+  TRANSICION_ESTADO {
+    bigint id PK
+    bigint estado_origen_id FK
+    bigint estado_destino_id FK
+    bigint tenant_id "opcional (reglas por empresa)"
+  }
+
+  SOLICITUD {
+    bigint id PK
+    bigint tenant_id FK
+    bigint canal_id FK
+    bigint estado_id FK
+    text asignado_a "usuario responsable"
+    text radicado_local
+    text nombre_cliente
+    text apellidos_cliente
+    text email
+    text direccion_fisica
+    text tipo_identificacion
+    text tipo_cliente
+    text identificacion_cliente
+    text celular
+    text telefono
+    text ciudad
+    text tipo_solicitud "queja, petición, reclamo"
+    text campo_personalizado_servicio
+    text sub_campo_personalizado_servicio
+    text mensaje "texto solicitud cliente"
+    jsonb carga_json "payload crudo del canal"
+    timestamptz creado_en
+    text creado_por
+    timestamptz actualizado_en
+    text actualizado_por
+  }
+
+  SOLICITUD_INTEGRACION {
+    bigint id PK
+    bigint solicitud_id FK
+    text sistema
+    text id_externo
+    text estado_integracion "pendiente/exitoso/fallido"
+    int intentos
+    text ultimo_error
+    timestamptz sincronizado_en
+    jsonb carga_enviada_json
+    jsonb respuesta_json
+    timestamptz creado_en
+  }
+
+  SOLICITUD_ADJUNTO {
+    bigint id PK
+    bigint solicitud_id FK
+    text nombre_archivo
+    text mime_type
+    bigint tamano
+    text url_almacenamiento
+    timestamptz creado_en
+  }
+
+  SOLICITUD_LOG {
+    bigint id PK
+    bigint solicitud_id FK
+    text tipo_evento
+    jsonb datos_json
+    timestamptz creado_en
+    text actor
+  }
+
+  DOCUMENTO {
+    bigint id PK
+    bigint solicitud_id FK
+    text titulo
+    text estado_documento "borrador/en_revision/aprobado"
+    text estado_envio "pendiente/enviado/fallido"
+    text destinatario
+    timestamptz creado_en
+    text creado_por
+    timestamptz actualizado_en
+    text actualizado_por
+  }
+
+  DOCUMENTO_BLOQUE {
+    bigint documento_id FK
+    int posicion
+    bigint block_id FK
+    text conector
+  }
+
+  DOCUMENTO_CAMPO_VALOR {
+    bigint documento_id FK
+    text nombre_campo
+    text valor
+  }
