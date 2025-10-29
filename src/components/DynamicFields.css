@@ -5,24 +5,22 @@
    ========================================================= */
 
 .panel-dinamicos {
-  flex: 0 0 30%;
   display: flex;
   flex-direction: column;
-  background: #ffffff;
-  color: #e5e7eb;
-  padding: 24px 22px 28px;
+  height: 100%;
+  background: transparent;
+  color: #1e293b;
+  padding: 20px;
   overflow-y: auto;
-  border-left: 1px solid rgba(255, 255, 255, 0.06);
   box-sizing: border-box;
-  backdrop-filter: blur(8px);
 }
 
 /* ---------- Encabezado principal ---------- */
 .panel-dinamicos h3 {
   margin: 0 0 20px 0;
-  color: #272c31;
+  color: #1e293b;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: flex;
@@ -31,22 +29,22 @@
 }
 .panel-dinamicos h3::before {
   content: "🧩";
-  font-size: 16px;
+  font-size: 18px;
 }
 
 /* ---------- Grupo de campos (acordeón) ---------- */
 .grupo-campos {
-  background: linear-gradient(180deg, rgba(17, 24, 39, 0.9), rgba(11, 17, 32, 0.95));
-  border: 1px solid rgba(148, 163, 184, 0.15);
+  background: #2d3748;
+  border: 1px solid #4a5568;
   border-radius: 12px;
   margin-bottom: 14px;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(2, 8, 23, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.25s ease;
 }
 .grupo-campos:hover {
-  border-color: rgba(96, 165, 250, 0.35);
-  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+  border-color: #60a5fa;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
 
 /* ---------- Encabezado del acordeón ---------- */
@@ -57,11 +55,11 @@
   padding: 14px 18px;
   cursor: pointer;
   user-select: none;
-  background: rgba(30, 41, 59, 0.5);
+  background: #1e293b;
   transition: background 0.25s ease;
 }
 .grupo-header:hover {
-  background: rgba(59, 130, 246, 0.12);
+  background: #334155;
 }
 
 /* ---------- Texto e iconos ---------- */
@@ -69,20 +67,26 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  flex: 1;
+  min-width: 0;
 }
 
 .grupo-header h4 {
   margin: 0;
-  color: #f3f4f6;
+  color: #f1f5f9;
   font-weight: 600;
-  font-size: 14.5px;
+  font-size: 14px;
   letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .icon-toggle {
-  font-size: 18px;
+  font-size: 16px;
   color: #93c5fd;
   transition: transform 0.3s ease;
+  flex-shrink: 0;
 }
 .icon-toggle.open {
   transform: rotate(180deg);
@@ -91,25 +95,27 @@
 /* ---------- Etiquetas de estado ---------- */
 .status-tag {
   padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 12px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: capitalize;
   transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .status-tag.completo {
-  color: #22c55e;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 .status-tag.pendiente {
-  color: #facc15;
-  background: rgba(250, 204, 21, 0.08);
-  border: 1px solid rgba(250, 204, 21, 0.25);
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
 }
 
 /* ---------- Contenido del acordeón ---------- */
-.grupo-content {
+.grupo-content {  
   max-height: 0;
   opacity: 0;
   overflow: hidden;
@@ -127,38 +133,52 @@
   margin-bottom: 14px;
 }
 .field label {
+  display: block;
   font-size: 13px;
   margin-bottom: 6px;
-  color: #c7d2fe;
+  color: #cbd5e1;
   font-weight: 600;
 }
 .field input {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #334155;
+  border: 1.5px solid #475569;
   border-radius: 8px;
   font-size: 14px;
-  color: #e5e7eb;
-  background: linear-gradient(180deg, #0f172a, #0b1324);
+  color: #f1f5f9;
+  background: #0f172a;
   transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 .field input:hover {
-  border-color: rgba(96, 165, 250, 0.5);
+  border-color: #60a5fa;
 }
 .field input:focus {
-  border: 1px solid #60a5fa;
-  background: #111a2f;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
+  outline: none;
+  border-color: #3b82f6;
+  background: #1e293b;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.texto-placeholder {
+  color: #94a3b8;
+  font-size: 14px;
+  text-align: center;
+  padding: 40px 20px;
+  font-style: italic;
 }
 
 /* ---------- Scrollbar ---------- */
 .panel-dinamicos::-webkit-scrollbar {
   width: 8px;
 }
+.panel-dinamicos::-webkit-scrollbar-track {
+  background: transparent;
+}
 .panel-dinamicos::-webkit-scrollbar-thumb {
-  background: rgba(96, 165, 250, 0.3);
+  background: #64748b;
   border-radius: 4px;
 }
 .panel-dinamicos::-webkit-scrollbar-thumb:hover {
-  background: rgba(96, 165, 250, 0.55);
+  background: #475569;
 }

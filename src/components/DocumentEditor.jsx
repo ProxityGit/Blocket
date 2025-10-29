@@ -54,6 +54,8 @@ function DocumentEditor({
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
+
+                            
                             className={`bloque-editable bloque-acordeon ${snapshot.isDragging ? "dragging" : ""} ${isOpen ? "open" : ""}`}
                           >
                             <div className="bloque-header-acordeon" onClick={() => setOpenIdx(isOpen ? null : i)}>

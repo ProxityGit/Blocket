@@ -4,8 +4,12 @@
 import { useState } from "react";
 import "./DynamicFields.css";
 
+
+// Componente principal
 function DynamicFields({ documento, camposValores, actualizarCampo }) {
-  const [openGroup, setOpenGroup] = useState(null);
+  const [openGroup, setOpenGroup] = useState(null);// Estado para controlar qué grupo está abierto
+
+  // Función para alternar la apertura/cierre de un grupo de campos
 
   const toggleGroup = (index) => {
     setOpenGroup(openGroup === index ? null : index);
@@ -16,17 +20,19 @@ function DynamicFields({ documento, camposValores, actualizarCampo }) {
     if (!campos || campos.length === 0) return false;
     return campos.every((c) => {
       const valor = camposValores[c.name];
-      return valor !== undefined && valor !== null && valor.toString().trim() !== "";
+      return valor !== undefined && valor !== null && valor.toString().trim() !== ""; // Verifica que el campo no esté vacío
     });
   };
-
+// Renderizado del componente
   return (
     <div className="panel-dinamicos">
       <h3>Campos dinámicos</h3>
 
+
       {documento.length === 0 && (
         <p className="texto-placeholder">Agrega bloques para editar sus campos.</p>
       )}
+
 
       {documento.map((b, index) => {
         const completo = isGroupComplete(b.campos);
@@ -44,6 +50,7 @@ function DynamicFields({ documento, camposValores, actualizarCampo }) {
               </div>
               <span className={`icon-toggle ${openGroup === index ? "open" : ""}`}>▼</span>
             </div>
+
 
             <div className={`grupo-content ${openGroup === index ? "open" : ""}`}>
               {b.campos.map((c) => (
@@ -65,4 +72,5 @@ function DynamicFields({ documento, camposValores, actualizarCampo }) {
   );
 }
 
+// Exporta el componente para su uso en otras partes de la aplicación
 export default DynamicFields;
