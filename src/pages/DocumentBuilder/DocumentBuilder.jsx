@@ -1,35 +1,28 @@
-//documento: DocumentBuilder.jsx
-//descripción: Página principal del constructor de documentos.
-
 import { useState, useRef, useEffect } from "react";
 import "./DocumentBuilder.css";
-
-// 📦 Imports de datos y utilidades
 import { BLOQUES } from "../../data/mockBlocks";
 import { OPCIONES_CONECTOR } from "../../data/mockConnectors";
 import { extraerPlaceholders } from "../../utils/placeholders";
 import { exportPDF } from "../../utils/pdfGenerator";
 import { TENANT_CONFIG } from "../../data/tenantConfig";
-
-// 🧩 Componentes
 import BlockList from "../../components/BlockList";
 import DocumentEditor from "../../components/DocumentEditor";
 import DynamicFields from "../../components/DynamicFields";
 import LetterHeader from "../../components/LetterHeader";
-// ToolsPanel removed from constructor layout
-
+import PreviewModal from "../../components/PreviewModal";
 import { useParams } from "react-router-dom";
 
 export default function DocumentBuilder() {
   const { idSolicitud } = useParams();
-
   const [documento, setDocumento] = useState([]);
   const [camposValores, setCamposValores] = useState({});
   const [conectoresPorBloque, setConectoresPorBloque] = useState({});
   const [alerta, setAlerta] = useState("");
+  // Siempre inicia en false y nunca se sobreescribe por localStorage ni props
+  const [showPreview, setShowPreview] = useState(false);
   const docRef = useRef(null);
 
-  // 🧠 Persistencia local
+  // Persistencia
   useEffect(() => {
     localStorage.setItem(
       "docfactory-data",
@@ -45,15 +38,10 @@ export default function DocumentBuilder() {
       setCamposValores(data.camposValores || {});
       setConectoresPorBloque(data.conectoresPorBloque || {});
     }
-  }, []);
-
-  // 🔹 Precarga de datos por solicitud (opcional)
-  useEffect(() => {
-    console.log("📄 Cargando datos para solicitud:", idSolicitud);
-    // Aquí podrías precargar valores iniciales según el ID
+    // Siempre reinicia showPreview al cambiar de solicitud
+    setShowPreview(false);
   }, [idSolicitud]);
 
-  // --- 🧩 Funciones de utilidades ---
   const placeholdersFaltantes = () => {
     const keys = new Set();
     for (const b of documento) {
@@ -69,68 +57,28 @@ export default function DocumentBuilder() {
 
   const renderParrafoConConector = (bloque) => {
     const conector = conectoresPorBloque[bloque.id] || "";
-    const tieneConector = conector.trim() !== "";
-
     let html = bloque.texto.trim();
-
-    if (tieneConector) {
-      const conectorLimpio = conector.replace(/[.,;:\s]+$/g, "").trim();
-      const conectorFormateado =
-        conectorLimpio.charAt(0).toUpperCase() +
-        conectorLimpio.slice(1).toLowerCase();
-
+    if (conector.trim()) {
+      const limpio = conector.replace(/[.,;:\s]+$/g, "").trim();
       html = html.replace(
         /<p([^>]*)>/i,
-        `<p$1><span class="conector-inline"> ${conectorFormateado}, </span>`
-      );
-
-      html = html.replace(
-        /(<p[^>]*>.*?<span class="conector-inline">.*?<\/span>\s*)(<b>|<strong>)?([A-ZÁÉÍÓÚÑ])/,
-        (_, antes, etiqueta, letra) =>
-          `${antes}${etiqueta || ""}${letra.toLowerCase()}`
+        `<p$1><span class="conector-inline">${limpio}, </span>`
       );
     }
-
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = html;
-
-    const processNode = (node) => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        const text = node.textContent;
-        const parts = text.split(/({{.*?}})/g);
-        if (parts.length > 1) {
-          const fragment = document.createDocumentFragment();
-          parts.forEach((part) => {
-            if (part.startsWith("{{") && part.endsWith("}}")) {
-              const key = part.replace(/[{}]/g, "");
-              const valor = camposValores[key];
-              const span = document.createElement("span");
-              span.className = valor
-                ? "placeholder-filled"
-                : "placeholder-pending";
-              span.textContent = valor || key;
-              fragment.appendChild(span);
-            } else if (part) {
-              fragment.appendChild(document.createTextNode(part));
-            }
-          });
-          node.parentNode.replaceChild(fragment, node);
-        }
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        Array.from(node.childNodes).forEach(processNode);
-      }
-    };
-
-    Array.from(tempDiv.childNodes).forEach(processNode);
-    return <div dangerouslySetInnerHTML={{ __html: tempDiv.innerHTML }} />;
+    // Reemplaza los placeholders por los valores actuales
+    html = html.replace(/{{(.*?)}}/g, (match, key) => {
+      const valor = camposValores[key];
+      return valor !== undefined && valor !== null && valor.toString().trim() !== ""
+        ? valor
+        : `<span class="placeholder-pending">${key}</span>`;
+    });
+    return <div dangerouslySetInnerHTML={{ __html: html }} />;
   };
 
   const agregarBloque = (bloque) => {
     if (!documento.find((d) => d.id === bloque.id)) {
       setDocumento((prev) => [...prev, bloque]);
-      if (conectoresPorBloque[bloque.id] === undefined) {
-        setConectoresPorBloque((prev) => ({ ...prev, [bloque.id]: "" }));
-      }
+      setConectoresPorBloque((prev) => ({ ...prev, [bloque.id]: "" }));
     }
   };
 
@@ -144,98 +92,85 @@ export default function DocumentBuilder() {
     });
   };
 
-  const actualizarCampo = (name, value) => {
-    setCamposValores({ ...camposValores, [name]: value });
-  };
+  const actualizarCampo = (name, value) =>
+    setCamposValores((s) => ({ ...s, [name]: value }));
 
-  const actualizarConector = (blockId, value) => {
-    setConectoresPorBloque((prev) => ({ ...prev, [blockId]: value }));
-  };
-
-  const onDragEnd = (result) => {
-    if (!result.destination) return;
-    const items = Array.from(documento);
-    const [moved] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, moved);
-    setDocumento(items);
-  };
+  const actualizarConector = (blockId, value) =>
+    setConectoresPorBloque((s) => ({ ...s, [blockId]: value }));
 
   const onExportClick = async () => {
     const faltan = placeholdersFaltantes();
     if (faltan.length > 0) {
-      setAlerta(
-        `Completa ${faltan.length} campo(s): ${faltan.join(
-          ", "
-        )} antes de exportar`
-      );
+      setAlerta(`Completa ${faltan.length} campo(s): ${faltan.join(", ")}`);
       return;
     }
     setAlerta("");
     await exportPDF(docRef);
   };
 
-  const exportDisabled =
-    placeholdersFaltantes().length > 0 || documento.length === 0;
+  const exportDisabled = placeholdersFaltantes().length > 0 || documento.length === 0;
 
-  // --- 🧩 Render principal ---
+  console.log("[DEBUG] Render DocumentBuilder, showPreview:", showPreview);
   return (
-  <div className="constructor-container">
-    {/* ===== Header Moderno ===== */}
-    <header className="constructor-header">
-      <div>
-        <h1>🧩 Constructor de Documentos</h1>
-        <p>Combina bloques inteligentes y genera tu documento final.</p>
+    <div className="constructor-container">
+      <header className="constructor-header">
+        <div>
+          <h1>🧩 Constructor de Documentos</h1>
+          <p>Combina bloques inteligentes y genera tu documento final.</p>
+        </div>
+
+        <div className="header-actions">
+          <button className="btn-light" onClick={() => { console.log('[DEBUG] Click Vista Previa'); setShowPreview(true); }}>
+            👁️ Vista Previa
+          </button>
+          <button className="btn-primary" onClick={onExportClick} disabled={exportDisabled}>
+            📄 Exportar PDF
+          </button>
+        </div>
+      </header>
+
+      <div className="constructor-layout">
+        <aside className="panel blocklist-panel">
+          <BlockList
+            bloques={BLOQUES}
+            documento={documento}
+            onAgregar={agregarBloque}
+          />
+        </aside>
+
+        <main className="panel panel-documento">
+          <DocumentEditor
+            documento={documento}
+            onQuitarBloque={quitarBloque}
+            conectoresPorBloque={conectoresPorBloque}
+            actualizarConector={actualizarConector}
+            renderParrafoConConector={renderParrafoConConector}
+            opcionesConector={OPCIONES_CONECTOR}
+            alerta={alerta}
+            docRef={docRef}
+            tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
+            camposValores={camposValores}
+          />
+        </main>
+
+        <section className="panel dynamic-panel">
+          <DynamicFields
+            documento={documento}
+            camposValores={camposValores}
+            actualizarCampo={actualizarCampo}
+          />
+        </section>
       </div>
-      <div className="header-actions">
-        <button className="btn-secondary" onClick={() => setAlerta("🧠 Analizando documento con IA...")}>
-          🤖 Analizar IA
-        </button>
-        <button
-          className="btn-primary"
-          onClick={onExportClick}
-          disabled={exportDisabled}
-        >
-          📄 Exportar PDF
-        </button>
-      </div>
-    </header>
 
-    {/* ===== Layout principal ===== */}
-    <div className="constructor-layout">
-      <aside className="panel blocklist-panel">
-        <BlockList
-          bloques={BLOQUES}
-          documento={documento}
-          onAgregar={agregarBloque}
-        />
-      </aside>
-
-      <main className="panel panel-documento">
-        <DocumentEditor
-          documento={documento}
-          onDragEnd={onDragEnd}
-          onQuitarBloque={quitarBloque}
-          conectoresPorBloque={conectoresPorBloque}
-          actualizarConector={actualizarConector}
-          renderParrafoConConector={renderParrafoConConector}
-          opcionesConector={OPCIONES_CONECTOR}
-          alerta={alerta}
-          docRef={docRef}
-          tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
-        />
-      </main>
-
-      <section className="panel dynamic-panel">
-        <DynamicFields
-          documento={documento}
-          camposValores={camposValores}
-          actualizarCampo={actualizarCampo}
-        />
-      </section>
-
-      
+      {/* 🔒 Modal controlado: solo existe si showPreview=true */}
+      <PreviewModal
+        open={showPreview}
+        onClose={() => setShowPreview(false)}
+        documento={documento}
+        renderParrafoConConector={renderParrafoConConector}
+        camposValores={camposValores}
+        tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
+      />
     </div>
-  </div>
-);
-
+  );
 }

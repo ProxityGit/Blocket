@@ -5,17 +5,18 @@ import { OPCIONES_CONECTOR } from "./data/mockConnectors";
 import { extraerPlaceholders } from "./utils/placeholders";
 import { exportPDF } from "./utils/pdfGenerator";
 import { TENANT_CONFIG } from "./data/tenantConfig";
+
 import BlockList from "./components/BlockList";
 import DocumentEditor from "./components/DocumentEditor";
 import DynamicFields from "./components/DynamicFields";
 import LetterHeader from "./components/LetterHeader";
-// ToolsPanel removed: panelTools is not used in this layout
 
 function App() {
   const [documento, setDocumento] = useState([]);
   const [camposValores, setCamposValores] = useState({});
   const [conectoresPorBloque, setConectoresPorBloque] = useState({});
   const [alerta, setAlerta] = useState("");
+  const [showPreview, setShowPreview] = useState(false);
   const docRef = useRef(null);
 
   // 🧠 Persistencia local
@@ -50,15 +51,13 @@ function App() {
     return faltan;
   };
 
-  // --- Renderizado dinámico con placeholders + conectores ---
+  // --- Render dinámico de bloques ---
   const renderParrafoConConector = (bloque) => {
     const conector = conectoresPorBloque[bloque.id] || "";
     const tieneConector = conector.trim() !== "";
 
-    // 1️⃣ Tomamos el HTML original del bloque
     let html = bloque.texto.trim();
 
-    // 2️⃣ Si hay conector, lo insertamos dentro del primer párrafo
     if (tieneConector) {
       const conectorLimpio = conector.replace(/[.,;:\s]+$/g, "").trim();
       const conectorFormateado =
@@ -69,14 +68,13 @@ function App() {
         `<p$1><span class="conector-inline"> ${conectorFormateado}, </span>`
       );
 
-      // Minúscula inicial en la palabra siguiente
       html = html.replace(
         /(<p[^>]*>.*?<span class="conector-inline">.*?<\/span>\s*)(<b>|<strong>)?([A-ZÁÉÍÓÚÑ])/,
         (_, antes, etiqueta, letra) => `${antes}${etiqueta || ""}${letra.toLowerCase()}`
       );
     }
 
-    // 3️⃣ Procesamos los placeholders dinámicos
+    // Procesa placeholders dinámicos
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = html;
 
@@ -109,7 +107,6 @@ function App() {
 
     Array.from(tempDiv.childNodes).forEach(processNode);
 
-    // 4️⃣ Render final del bloque procesado
     return <div dangerouslySetInnerHTML={{ __html: tempDiv.innerHTML }} />;
   };
 
@@ -133,13 +130,11 @@ function App() {
     });
   };
 
-  const actualizarCampo = (name, value) => {
+  const actualizarCampo = (name, value) =>
     setCamposValores({ ...camposValores, [name]: value });
-  };
 
-  const actualizarConector = (blockId, value) => {
+  const actualizarConector = (blockId, value) =>
     setConectoresPorBloque((prev) => ({ ...prev, [blockId]: value }));
-  };
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -165,42 +160,55 @@ function App() {
   // --- Render principal ---
   return (
     <div>
-      <header>📄 Blocket – Constructor de Documentos</header>
+      <header className="app-header">
+        <h1>📄 Blocket – Constructor de Documentos</h1>
+        <div className="app-actions">
+          <button className="btn-light" onClick={() => setShowPreview(true)}>
+            👁️ Vista Previa
+          </button>
+          <button
+            className="btn-primary"
+            onClick={onExportClick}
+            disabled={exportDisabled}
+          >
+            📄 Exportar PDF
+          </button>
+        </div>
+      </header>
 
-     <div className="app-container">
-  {/* 1️⃣ Panel izquierdo */}
-  <BlockList
-    bloques={BLOQUES}
-    documento={documento}
-    onAgregar={agregarBloque}
-  />
+      <div className="app-container">
+        {/* Panel izquierdo */}
+        <BlockList
+          bloques={BLOQUES}
+          documento={documento}
+          onAgregar={agregarBloque}
+        />
 
-  {/* 2️⃣ Panel central */}
-  <div className="panel-documento">
-    <DocumentEditor
-      documento={documento}
-      onDragEnd={onDragEnd}
-      onQuitarBloque={quitarBloque}
-      conectoresPorBloque={conectoresPorBloque}
-      actualizarConector={actualizarConector}
-      renderParrafoConConector={renderParrafoConConector}
-      opcionesConector={OPCIONES_CONECTOR}
-      alerta={alerta}
-      docRef={docRef}
-      tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
-    />
-  </div>
+        {/* Panel central */}
+        <div className="panel-documento">
+          <DocumentEditor
+            documento={documento}
+            onDragEnd={onDragEnd}
+            onQuitarBloque={quitarBloque}
+            conectoresPorBloque={conectoresPorBloque}
+            actualizarConector={actualizarConector}
+            renderParrafoConConector={renderParrafoConConector}
+            opcionesConector={OPCIONES_CONECTOR}
+            alerta={alerta}
+            docRef={docRef}
+            tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
+          />
+        </div>
 
-  {/* 3️⃣ Panel derecho */}
-  <DynamicFields
-    documento={documento}
-    camposValores={camposValores}
-    actualizarCampo={actualizarCampo}
-  />
+        {/* Panel derecho */}
+        <DynamicFields
+          documento={documento}
+          camposValores={camposValores}
+          actualizarCampo={actualizarCampo}
+        />
+      </div>
 
-  
-</div>
-
+     
     </div>
   );
 }

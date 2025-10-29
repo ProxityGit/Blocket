@@ -1,390 +1,264 @@
-/* ========== DOCUMENT EDITOR STYLES  DocumentEditor.css========== */
-
-/* ---------- Panel general ---------- */
-.documento-panel {
-  flex: 60%;
-  background: #f5f5f5;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  overflow-y: auto;
-}
-
-/* ---------- Área del documento ---------- */
-.documento {
-  background: #ffffff;
-  width: 100%;
-  max-width: 850px;
-  min-height: 100vh;
-  padding: 60px 80px;
-  margin: 0;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI    ", sans-serif;
-
+.bloque-justificado {
   text-align: justify;
 }
 
-
-/* ---------- Encabezado de la empresa ---------- */
-.document-header {
-  margin-bottom: 40px;
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding-bottom: 25px;
-}
-
-
-
-.header-logo {
-  max-width: 160px;
-  height: auto;
-}
-
-.empresa-nombre {
-  font-size: 22px;
-  font-weight: 700;
-  color: #0f5499;
-  margin: 5px 0;
-  letter-spacing: 0.3px;
-}
-
-.empresa-info {
+.status-tag {
+  display: inline-block;
   font-size: 13px;
-  color: #666;
-  line-height: 1.6;
-}
-
-
-.empresa-info p {
-  margin: 3px 0;
-}
-
-/* ---------- Título del documento ---------- */
-.documento h1 {
-  font-size: 20px;
   font-weight: 600;
-  color: #0f5499;
-  text-align: center;
-  margin: 30px 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  padding: 3px 12px;
+  border-radius: 8px;
+  margin-left: 18px;
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1.5px solid #e0e7ef;
+  letter-spacing: 0.2px;
+  vertical-align: middle;
+  transition: background 0.18s, color 0.18s;
 }
-
-/* ---------- Alerta ---------- */
-.alert {
-  background-color: #fff7e6;
-  color: #875a00;
-  border-left: 4px solid #ffa940;
-  border-radius: 4px;
-  padding: 14px 18px;
-  margin-bottom: 25px;
-  font-size: 14px;
-
+.status-tag.completo {
+  background: #d1fae5;
+  color: #059669;
+  border-color: #34d399;
 }
-
-/* ---------- Bloques ---------- */
-.bloque-editable {
-  background: #fafafa;
-  border: 1px solid #e8e8e8;
-  border-radius: 6px;
-  padding: 18px 22px;
-  margin-bottom: 25px;
-  transition: all 0.25s ease;
+.status-tag.pendiente {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #fbbf24;
 }
-
-.bloque-editable:hover {
-  border-color: #0078d4;
-  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.1);
+/* --- Bloques acordeón modernos --- */
+.bloque-acordeon {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(30,41,59,0.10);
+  margin-bottom: 22px;
+  border: 1.5px solid #e0e7ef;
+  transition: box-shadow 0.18s, border 0.18s;
+  overflow: hidden;
+  position: relative;
 }
-
-.bloque-editable.dragging {
-  background: #e6f4ff;
-  border-color: #0078d4;
-  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.2);
+.bloque-acordeon.open {
+  box-shadow: 0 8px 32px rgba(37,99,235,0.13);
+  border-color: #2563eb;
 }
-
-/* ---------- Encabezado del bloque ---------- */
-.bloque-header {
+.bloque-header-acordeon {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
+  padding: 18px 22px 18px 18px;
+  background: linear-gradient(90deg, #f1f5f9 80%, #e0e7ef 100%);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.08em;
+  color: #1e293b;
+  border-bottom: 1px solid #e0e7ef;
+  user-select: none;
+}
+.bloque-header-acordeon:hover {
+  background: linear-gradient(90deg, #e0e7ef 80%, #f1f5f9 100%);
+}
+.drag-handle {
+  font-size: 1.3em;
+  color: #64748b;
+  cursor: grab;
+  margin-right: 8px;
+  transition: color 0.18s;
+}
+.bloque-acordeon.open .drag-handle {
+  color: #2563eb;
+}
+.acordeon-toggle {
+  margin-left: auto;
+  font-size: 1.1em;
+  color: #64748b;
+}
+.bloque-body-acordeon {
+  padding: 18px 24px 22px 24px;
+  background: #f8fafc;
+  animation: fadeIn 0.2s;
+}
+.bloque-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
   margin-bottom: 12px;
 }
-
-/* ---------- Botones ---------- */
-.remove-btn,
-.btn-conector {
-  border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  padding: 7px 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  font-weight: 500;
+.bloque-contenido {
+  margin-top: 8px;
 }
-
-.remove-btn {
-  background: #ff4d4f;
-  color: #fff;
-}
-
-.remove-btn:hover {
-  background: #d32f2f;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(255, 77, 79, 0.3);
-}
-
-.btn-conector {
-  background: #0078d4;
-  color: white;
-}
-
-.btn-conector:hover {
-  background: #005a9e;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(0, 120, 212, 0.3);
-}
-
-/* ---------- Dropdown del conector ---------- */
+/* --- Conectores modernos --- */
 .conector-container {
   position: relative;
+  display: inline-block;
 }
-
+.btn-conector {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+}
+.btn-conector:hover {
+  background: #1e40af;
+}
 .conector-dropdown {
   display: none;
   position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 5px;
-  width: 200px;
-  background: #ffffff;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  z-index: 100;
+  left: 0;
+  top: 110%;
+  min-width: 180px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(30,41,59,0.12);
+  z-index: 10;
+  padding: 6px 0;
+  margin-top: 4px;
 }
-
 .conector-dropdown.show {
   display: block;
 }
-
 .conector-option {
-  padding: 10px 14px;
-  font-size: 13px;
+  padding: 10px 18px;
+  font-size: 14px;
+  color: #1e293b;
   cursor: pointer;
-  color: #333;
-  transition: background 0.15s;
+  transition: background 0.18s;
 }
-
 .conector-option:hover {
-  background: #e6f4ff;
-  color: #0078d4;
+  background: #e0e7ef;
+  color: #2563eb;
+}
+.preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.25s ease-out;
 }
 
-/* ---------- Texto del bloque ---------- */
-.parrafo-texto {
-  margin-top: 8px;
-  font-size: 15px;
-  color: #333;
-  line-height: 1.8;
+.preview-modal {
+  background: #f1f5f9;
+  border-radius: 18px;
+  width: 90%;
+  height: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+.preview-header {
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  color: white;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preview-header h2 {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 8px;
+  padding: 4px 10px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.preview-warning {
+  background: #fff3cd;
+  color: #92400e;
+  border-left: 5px solid #facc15;
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+/* 📄 Contenedor principal */
+.document-preview-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+/* 🧾 Simulación de hoja de papel */
+.document-page {
+  background: #ffffff;
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 3cm 2.5cm;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #1e293b;
+  line-height: 1.6;
   text-align: justify;
 }
 
-/* ---------- Conector insertado ---------- */
-.conector-inline {
-  color: #7c3aed;
-  font-weight: 600;
-  margin-right: 4px;
+/* Encabezado del documento */
+.document-header {
+  text-align: left;
+  font-size: 15px;
+  color: #334155;
+  margin-bottom: 40px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  line-height: 1.7;
+  padding-left: 2px;
 }
 
-/* ---------- Placeholders ---------- */
-.placeholder-pending {
-  background: #fff7e6;
-  color: #d46b08;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-.placeholder-filled {
-  background: #e6f4ff;
-  color: #0050b3;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-/* ---------- Placeholder de bloque vacío ---------- */
-.texto-placeholder {
+/* Pie de página */
+.document-footer {
+  margin-top: 60px;
   text-align: center;
-  font-size: 14px;
-  color: #999;
-  margin: 40px 0;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 12px;
+}
+
+/* Cada bloque de texto */
+.preview-block {
+  margin-bottom: 24px;
+}
+
+.placeholder-pending {
+  color: #9ca3af;
   font-style: italic;
 }
-
-/* ---------- Selector de conector ---------- */
-.selector-conector {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 8px 0 12px;
-}
-
-.selector-conector label {
-  font-size: 13px;
-  color: #595959;
+.placeholder-filled {
   font-weight: 500;
+  color: #1e293b;
 }
 
-.selector-conector select {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid #d9d9d9;
-  background: #ffffff;
-  font-size: 14px;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.selector-conector select:focus {
-  outline: none;
-  border-color: #0078d4;
-  box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.1);
-}
-
-/* ---------- Animaciones ---------- */
+/* Animaciones */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; } to { opacity: 1; }
 }
-
-/* ---------- Modo impresión ---------- */
-@media print {
-  .documento-panel {
-    background: white;
-    padding: 0;
-  }
-  
-  .documento {
-    box-shadow: none;
-    max-width: 100%;
-  }
-  
-  .bloque-header,
-  .remove-btn,
-  .btn-conector,
-  .conector-dropdown {
-    display: none !important;
-  }
-  
-  .bloque-editable {
-    border: none;
-    background: transparent;
-    page-break-inside: avoid;
-  }
-}
-
-.parrafo-texto table {
-  border: 1px solid #ccc;
-  border-collapse: collapse;
-  width: 100%;
-  margin: 10px 0;
-  font-size: 14px;
-}
-
-/* ---------- Texto del bloque ---------- */
-.parrafo-texto {
-  margin-top: 8px;
-  font-size: 15px;
-  color: #333;
-  line-height: 1.8;
-  text-align: justify;
-}
-
-/* Asegurar que las tablas no hereden text-align: justify */
-.parrafo-texto table {
-  border: 1px solid #ccc;
-  border-collapse: collapse;
-  width: 100%;
-  margin: 15px 0;
-  font-size: 14px;
-  text-align: left; /* 👈 Importante */
-}
-
-.parrafo-texto th,
-.parrafo-texto td {
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  text-align: left;
-}
-
-.parrafo-texto th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-}
-
-.parrafo-texto img {
-  margin: 15px 0;
-  max-width: 100%;
-  height: auto;
-  border-radius: 6px;
-  display: block;
-}
-
-/* Espaciado para listas */
-.parrafo-texto ul,
-.parrafo-texto ol {
-  margin: 10px 0;
-  padding-left: 25px;
-}
-
-.parrafo-texto li {
-  margin: 5px 0;
-  line-height: 1.6;
-}
-
-/* Párrafos dentro del bloque */
-.parrafo-texto p {
-  margin: 8px 0;
-  line-height: 1.8;
-}
-
-.parrafo-texto p:first-child {
-  margin-top: 0;
-}
-
-.parrafo-texto p:last-child {
-  margin-bottom: 0;
-}
-
-/* Saltos de línea */
-.parrafo-texto br {
-  display: block;
-  margin: 5px 0;
-  content: "";
-}
-
-/* Negrita en HTML */
-.parrafo-texto b,
-.parrafo-texto strong {
-  font-weight: 600;
-}
-
-/* Espaciado entre elementos */
-.parrafo-texto > * + * {
-  margin-top: 12px;
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

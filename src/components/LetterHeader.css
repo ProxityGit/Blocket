@@ -6,6 +6,7 @@
   line-height: 1;
   width: 100%;
   margin-bottom: 30px;
+  text-align: left !important;
 }
 
 /* --- Membrete superior --- */
@@ -49,8 +50,7 @@
 }
 
 .letter-date {
-  text-align: left;
- 
+  text-align: left !important;
   color: #444;
   margin-bottom: 10px;
 }
