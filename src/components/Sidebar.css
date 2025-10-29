@@ -1,116 +1,72 @@
 /* =========================================================
-   SIDEBAR.CSS — PANEL IZQUIERDO PROFESIONAL Y MODERNO
+   BLOQUET — PANEL DE BLOQUES (Look & Feel Microsoft)
    ========================================================= */
 
-.sidebar {
-  flex: 0 0 30%;
+.blocklist-panel {
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 20px 16px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  background: #0b1220;
-  color: #e5e7eb;
-  padding: 24px 20px;
-  overflow-y: auto;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
-  box-sizing: border-box;
-  backdrop-filter: blur(6px);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
 }
 
-.sidebar h3 {
-  margin: 0 0 18px 0;
-  color: #60a5fa;
-  font-weight: 700;
+/* ======= Título ======= */
+.blocklist-panel h3 {
   font-size: 15px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: #2563eb;
+  letter-spacing: 0.3px;
+  margin: 0 0 16px 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
-.sidebar h3::before {
-  content: "🧱";
+
+.blocklist-panel h3::before {
+  content: "📦";
   font-size: 16px;
 }
 
-/* ---------- Tarjeta de bloque ---------- */
-.bloque-card {
-  background: linear-gradient(180deg, #0f172a, #0b1324);
-  border: 1px solid rgba(148, 163, 184, 0.15);
+/* ======= Lista de bloques ======= */
+.block-item {
+  background: linear-gradient(180deg, #f9fafb, #f3f4f6);
+  color: #1e293b;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 14px 16px;
-  margin-bottom: 12px;
-  box-shadow: 0 8px 20px rgba(2, 8, 23, 0.35);
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-}
-
-.bloque-card:hover {
-  border-color: rgba(96, 165, 250, 0.45);
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
-  transform: translateY(-1px);
-}
-
-/* ---------- Cuando el bloque está deshabilitado ---------- */
-.bloque-card.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  filter: grayscale(0.5);
-  border-color: rgba(148, 163, 184, 0.15);
-  background: linear-gradient(180deg, #0a0f1c, #0a0f1c);
-  box-shadow: none;
-}
-.bloque-card.disabled:hover {
-  transform: none;
-  box-shadow: none;
-}
-
-/* ---------- Estructura interna ---------- */
-.bloque-header {
+  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
-.bloque-titulo {
-  font-weight: 600;
-  font-size: 14.5px;
-  color: #f3f4f6;
+.block-item:hover {
+  background: linear-gradient(180deg, #e0f2fe, #dbeafe);
+  border-color: #93c5fd;
+  transform: translateY(-2px);
 }
 
-.bloque-estado {
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 6px;
-  padding: 3px 8px;
-  transition: all 0.2s ease;
-}
-
-/* ---------- Estados visuales ---------- */
-.bloque-estado.disponible {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.25);
-}
-.bloque-estado.en-uso {
-  background: rgba(34, 197, 94, 0.1);
-  color: #22c55e;
-  border: 1px solid rgba(34, 197, 94, 0.25);
-}
-
-.bloque-id {
-  margin-top: 6px;
-  font-size: 12px;
+.block-item.disabled {
+  background: #f3f4f6;
   color: #9ca3af;
-  opacity: 0.85;
+  border: 1px dashed #d1d5db;
+  cursor: not-allowed;
 }
 
-/* ---------- Scrollbar ---------- */
-.sidebar::-webkit-scrollbar {
-  width: 8px;
-}
-.sidebar::-webkit-scrollbar-thumb {
-  background: rgba(96, 165, 250, 0.3);
-  border-radius: 4px;
-}
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: rgba(96, 165, 250, 0.55);
+/* ======= Número lateral ======= */
+.block-number {
+  background: #2563eb;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
 }

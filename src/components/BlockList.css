@@ -1,0 +1,90 @@
+/* =======================================
+   BLOQUET — PANEL DE BLOQUES DISPONIBLES
+   (Look & Feel moderno estilo Microsoft)
+   ======================================= */
+
+.blocklist-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.blocklist-header {
+  margin-bottom: 14px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 6px;
+}
+
+.blocklist-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e40af;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.blocklist-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ===== Tarjeta de bloque ===== */
+.block-item {
+  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05);
+}
+
+.block-item:hover {
+  background: linear-gradient(180deg, #e0f2fe, #dbeafe);
+  border-color: #60a5fa;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.15);
+}
+
+/* ===== Estado deshabilitado ===== */
+.block-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f1f5f9;
+  box-shadow: none;
+}
+
+/* ===== Texto ===== */
+.block-title {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.block-id {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ===== Scrollbar ===== */
+.blocklist-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.blocklist-container::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 4px;
+}
+
+.blocklist-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 165, 250, 0.5);
+}

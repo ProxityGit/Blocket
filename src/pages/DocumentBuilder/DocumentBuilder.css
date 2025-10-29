@@ -1,0 +1,127 @@
+/* ==========================================
+   BLOKET — CONSTRUCTOR (ESTILO HOME LIGHT)
+   ========================================== */
+
+.constructor-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(180deg, #f8fafc, #eef2f6);
+  color: #1e293b;
+  overflow: hidden;
+}
+
+/* ===== Header ===== */
+.constructor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #2563eb, #3b82f6, #60a5fa);
+  color: white;
+  padding: 24px 40px;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.25);
+}
+
+.constructor-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.constructor-header p {
+  font-size: 14px;
+  margin-top: 6px;
+  color: #dbeafe;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* ===== Botones ===== */
+.btn-primary {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+  transition: all 0.25s ease-in-out;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+  transition: all 0.25s ease-in-out;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+/* ===== Layout ===== */
+.constructor-layout {
+  display: grid;
+  grid-template-columns: 20% 50% 25% 5%;
+  height: calc(100vh - 90px);
+  overflow: hidden;
+}
+
+.panel {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.blocklist-panel {
+  border-radius: 12px 0 0 12px;
+}
+
+.panel-documento {
+  background: #f9fafb;
+  border-left: 1px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+}
+
+.dynamic-panel {
+  border-radius: 0 12px 12px 0;
+}
+
+.tools-panel {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(96, 165, 250, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 165, 250, 0.5);
+}

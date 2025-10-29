@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import "../../App.css"; // Usa tu App.css actual
+import "./DocumentBuilder.css";
 
 // 📦 Imports de datos y utilidades
 import { BLOQUES } from "../../data/mockBlocks";
@@ -176,53 +176,68 @@ export default function DocumentBuilder() {
 
   // --- 🧩 Render principal ---
   return (
-    <div>
-      <header>
-        📄 Blocket – Constructor de Documentos{" "}
-        <span style={{ marginLeft: 12, fontSize: "14px", opacity: 0.8 }}>
-          Solicitud #{idSolicitud}
-        </span>
-      </header>
+  <div className="constructor-container">
+    {/* ===== Header Moderno ===== */}
+    <header className="constructor-header">
+      <div>
+        <h1>🧩 Constructor de Documentos</h1>
+        <p>Combina bloques inteligentes y genera tu documento final.</p>
+      </div>
+      <div className="header-actions">
+        <button className="btn-secondary" onClick={() => setAlerta("🧠 Analizando documento con IA...")}>
+          🤖 Analizar IA
+        </button>
+        <button
+          className="btn-primary"
+          onClick={onExportClick}
+          disabled={exportDisabled}
+        >
+          📄 Exportar PDF
+        </button>
+      </div>
+    </header>
 
-      <div className="app-container">
-        {/* 1️⃣ Panel izquierdo */}
+    {/* ===== Layout principal ===== */}
+    <div className="constructor-layout">
+      <aside className="panel blocklist-panel">
         <BlockList
           bloques={BLOQUES}
           documento={documento}
           onAgregar={agregarBloque}
         />
+      </aside>
 
-        {/* 2️⃣ Panel central */}
-        <div className="panel-documento">
-          <DocumentEditor
-            documento={documento}
-            onDragEnd={onDragEnd}
-            onQuitarBloque={quitarBloque}
-            conectoresPorBloque={conectoresPorBloque}
-            actualizarConector={actualizarConector}
-            renderParrafoConConector={renderParrafoConConector}
-            opcionesConector={OPCIONES_CONECTOR}
-            alerta={alerta}
-            docRef={docRef}
-            tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
-          />
-        </div>
+      <main className="panel panel-documento">
+        <DocumentEditor
+          documento={documento}
+          onDragEnd={onDragEnd}
+          onQuitarBloque={quitarBloque}
+          conectoresPorBloque={conectoresPorBloque}
+          actualizarConector={actualizarConector}
+          renderParrafoConConector={renderParrafoConConector}
+          opcionesConector={OPCIONES_CONECTOR}
+          alerta={alerta}
+          docRef={docRef}
+          tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
+        />
+      </main>
 
-        {/* 3️⃣ Panel derecho */}
+      <section className="panel dynamic-panel">
         <DynamicFields
           documento={documento}
           camposValores={camposValores}
           actualizarCampo={actualizarCampo}
         />
+      </section>
 
-        {/* 4️⃣ Panel de herramientas */}
-        <ToolsPanel
-          onExportClick={onExportClick}
-          exportDisabled={exportDisabled}
-          onAnalyzeAI={() => setAlerta("🧠 Analizando documento con IA...")}
-          aiStatus={alerta}
-        />
-      </div>
+      <ToolsPanel
+        onExportClick={onExportClick}
+        exportDisabled={exportDisabled}
+        onAnalyzeAI={() => setAlerta("🧠 Analizando documento con IA...")}
+        aiStatus={alerta}
+      />
     </div>
-  );
+  </div>
+);
+
 }

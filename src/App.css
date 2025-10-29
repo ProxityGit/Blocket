@@ -1,190 +1,23 @@
 /* =========================================================
-   APP.CSS — Layout de 4 paneles (izq / centro / der / tools)
+   APP.CSS — Estilos globales mínimos (sin layout)
    ========================================================= */
-
-:root {
-  --left: 25%;
-  --center: 40%;
-  --right: 20%;
-  --tools: 15%;
-  --color-bg-main: #0f172a;
-  --color-bg-panel: #0b1220;
-  --color-bg-tools: #0a1020;
-  --color-text: #e5e7eb;
-  --color-accent: #2563eb;
-}
-
-/* ======= Base ======= */
-body, html, #root {
+html, body, #root {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   font-family: "Inter", "Segoe UI", Arial, sans-serif;
-  background: var(--color-bg-main);
-  color: var(--color-text);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
-/* ======= Header ======= */
-header {
-  padding: 14px 20px;
-  background: linear-gradient(90deg, #1d4ed8, #2563eb, #3b82f6);
-  color: #fff;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+/* Scrollbar global suave */
+::-webkit-scrollbar {
+  width: 8px;
 }
-
-/* ======= Layout Principal ======= */
-.app-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: stretch;
-  align-items: stretch;
-  width: 100vw;
-  height: calc(100vh - 54px);
-  overflow: hidden;
-}
-
-/* ======= Panel izquierdo (Bloques) ======= */
-.blocklist {
-  flex: 0 0 20%;
-  background: var(--color-bg-panel);
-  color: var(--color-text);
-  overflow-y: auto;
-  padding: 20px 16px;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
-  box-sizing: border-box;
-}
-
-/* ======= Panel central (Documento) ======= */
-.panel-documento {
-  flex: 0 0 40%;
-  background: #f9fafb;
-  padding: 24px 40px;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-/* ======= Panel derecho (Campos dinámicos) ======= */
-.panel-dinamicos {
-  flex: 0 0 20%;
-  background: var(--color-bg-panel);
-  overflow-y: auto;
-  padding: 16px;
-  box-sizing: border-box;
-  border-left: 1px solid rgba(255, 255, 255, 0.06);
-  position: relative;
-}
-
-/* 🔹 Efecto luminoso animado en borde derecho del panel dinámico */
-.panel-dinamicos::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 3px;
-  height: 100%;
-  background: linear-gradient(180deg, #3b82f6, #60a5fa, #3b82f6);
-  opacity: 0.5;
-  animation: glowLine 3s ease-in-out infinite;
-}
-
-@keyframes glowLine {
-  0%, 100% { opacity: 0.3; filter: blur(1px); }
-  50% { opacity: 1; filter: blur(3px); }
-}
-
-/* ======= Panel de herramientas (Nuevo) ======= */
-.tools-panel {
-  flex: 0 0 10%;
-  background: var(--color-bg-tools);
-  border-left: 1px solid rgba(255,255,255,0.06);
-  padding: 16px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 14px;
-  color: var(--color-text);
-}
-
-/* ======= Estilos de título ======= */
-.tools-panel h3 {
-  color: #93c5fd;
-  font-size: 14px;
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-bottom: 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  padding-bottom: 6px;
-  letter-spacing: 0.4px;
-}
-
-/* ======= Botones de acción ======= */
-.tool-button {
-  background: linear-gradient(90deg, #2563eb, #1d4ed8);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s ease-in-out;
-  text-align: center;
-  box-shadow: 0 4px 14px rgba(37,99,235,0.3);
-}
-
-.tool-button:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
-}
-
-.tool-button.secondary {
-  background: linear-gradient(90deg, #22c55e, #16a34a);
-  box-shadow: 0 4px 14px rgba(22,163,74,0.3);
-}
-
-.tool-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  filter: grayscale(0.5);
-}
-
-/* ======= Estado IA ======= */
-.ai-status {
-  margin-top: auto;
-  background: rgba(59, 130, 246, 0.08);
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 13px;
-  text-align: center;
-  color: #a5b4fc;
-  border: 1px dashed rgba(147, 197, 253, 0.3);
-}
-
-/* ======= Scrollbar ======= */
-::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(96,165,250,.3);
+  background: rgba(148, 163, 184, 0.3);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(96,165,250,.55);
-}
-
-/* ======= Print mode ======= */
-@media print {
-  header, .blocklist, .panel-dinamicos, .tools-panel {
-    display: none !important;
-  }
-  .panel-documento {
-    flex: 1;
-    padding: 0;
-    background: #fff;
-    box-shadow: none;
-  }
+  background: rgba(96, 165, 250, 0.5);
 }
