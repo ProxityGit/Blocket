@@ -1,12 +1,14 @@
 /* =========================================================
    DYNAMICFIELDS.CSS — PANEL DERECHO PREMIUM CON INDICADORES
+   dynamicfields: DynamicFields.css
+   descripción: Estilos para el panel de campos dinámicos con indicadores de estado.
    ========================================================= */
 
 .panel-dinamicos {
   flex: 0 0 30%;
   display: flex;
   flex-direction: column;
-  background: #0b1220;
+  background: #ffffff;
   color: #e5e7eb;
   padding: 24px 22px 28px;
   overflow-y: auto;
@@ -18,7 +20,7 @@
 /* ---------- Encabezado principal ---------- */
 .panel-dinamicos h3 {
   margin: 0 0 20px 0;
-  color: #60a5fa;
+  color: #272c31;
   font-weight: 700;
   font-size: 15px;
   text-transform: uppercase;

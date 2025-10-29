@@ -1,90 +1,172 @@
 /* =======================================
-   BLOQUET — PANEL DE BLOQUES DISPONIBLES
-   (Look & Feel moderno estilo Microsoft)
-   ======================================= */
+ * Estilos para BlockList (Panel de Bloques)
+ * ======================================= */
 
 .blocklist-container {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
-  padding: 16px 18px;
+  width: 100%;
+  padding: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  overflow-y: auto;
+  background-color: #ffffff; /* Fondo blanco para panel lateral */
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); /* Sombra sutil a la derecha */
 }
 
 .blocklist-header {
-  margin-bottom: 14px;
+  padding: 15px 20px;
   border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 6px;
+  background-color: #f8fafc; /* Color de fondo sutil para el encabezado */
 }
 
 .blocklist-header h3 {
   margin: 0;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 1.1em;
+  font-weight: 600;
   color: #1e40af;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
 }
 
+/* --- Estilos para la sección de Filtros --- */
+.blocklist-filters {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column; /* Apilados verticalmente */
+    gap: 8px; /* Espacio entre selectores */
+}
+
+.filter-select {
+    width: 100%;
+    padding: 8px 12px; /* Aumento el padding para un mejor aspecto */
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #ffffff;
+    font-size: 0.9em;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Sombra sutil por defecto */
+    
+    /* Eliminar la apariencia nativa del navegador para controlar el estilo */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    /* Añadir icono SVG personalizado (flecha abajo) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236B7280'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.23 8.27a.75.75 0 010-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 1.25em; 
+    padding-right: 2.5em; /* Espacio para el icono */
+}
+
+.filter-select:hover {
+    border-color: #94a3b8; /* Hover ligeramente más oscuro */
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #2563eb; /* Borde azul al enfocar */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4); /* Anillo de foco azul */
+}
+/* --- Estilos para la lista de contenido --- */
 .blocklist-content {
+  flex-grow: 1;
+  overflow-y: auto; /* Scroll dentro del contenido */
+  padding: 10px 15px;
+}
+
+.no-results {
+    text-align: center;
+    color: #64748b;
+    padding: 20px;
+    font-size: 0.9em;
+}
+
+/* Estilo para cada item de bloque */
+.block-item {
+  display: grid;
+  grid-template-columns: 1fr auto; /* Título/Detalles a la izquierda, Icono a la derecha */
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 12px 15px 12px 20px; 
+  background-color: #fefefe;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #e2e8f0; /* Barra izquierda sutil */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Efecto hover moderno */
+.block-item:not(.disabled):hover {
+  border-color: #93c5fd; 
+  border-left: 4px solid #2563eb; /* Barra azul fuerte en hover */
+  background-color: #f7f9ff;
+  transform: translateY(-1px); /* Efecto 3D sutil */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Estado Deshabilitado */
+.block-item.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  border-left: 4px solid #94a3b8; /* Barra gris para deshabilitado */
+  background-color: #f1f5f9;
+}
+
+/* Título e ID del bloque */
+.block-info {
+  grid-column: 1 / 2;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
-/* ===== Tarjeta de bloque ===== */
-.block-item {
-  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 12px 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05);
-}
-
-.block-item:hover {
-  background: linear-gradient(180deg, #e0f2fe, #dbeafe);
-  border-color: #60a5fa;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.15);
-}
-
-/* ===== Estado deshabilitado ===== */
-.block-item.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: #f1f5f9;
-  box-shadow: none;
-}
-
-/* ===== Texto ===== */
 .block-title {
   font-weight: 600;
-  color: #1e293b;
+  color: #333;
+  font-size: 1.1em;
 }
 
 .block-id {
-  font-size: 12px;
+  font-size: 0.75em;
   color: #64748b;
+  margin-top: 2px;
 }
 
-/* ===== Scrollbar ===== */
-.blocklist-container::-webkit-scrollbar {
-  width: 8px;
+/* --- Detalles de Clasificación (Proceso, Causal, Tipo) --- */
+.block-details {
+    grid-column: 1 / 2; /* Ocupa todo el ancho bajo el título */
+    display: flex;
+    flex-wrap: wrap; /* Para manejo en móviles */
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 0.75em;
+    color: #475569;
 }
 
-.blocklist-container::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.3);
-  border-radius: 4px;
+.detail-item strong {
+    font-weight: 700;
+    color: #1e293b;
+    margin-left: 4px;
 }
 
-.blocklist-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(96, 165, 250, 0.5);
+.detail-item small {
+    font-weight: 500;
+    color: #64748b;
+}
+
+.detail-type {
+    /* Destacar el tipo de PQRS */
+    color: #059669;
+}
+.detail-type strong {
+    color: #047857;
+}
+/* ------------------------------------------------------ */
+
+/* Ícono (➕ o ✅) */
+.block-icon {
+  grid-column: 2 / 3;
+  font-size: 1.2em;
+  color: #10b981;
 }

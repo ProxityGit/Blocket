@@ -9,7 +9,7 @@ import BlockList from "./components/BlockList";
 import DocumentEditor from "./components/DocumentEditor";
 import DynamicFields from "./components/DynamicFields";
 import LetterHeader from "./components/LetterHeader";
-import ToolsPanel from "./components/ToolsPanel";
+// ToolsPanel removed: panelTools is not used in this layout
 
 function App() {
   const [documento, setDocumento] = useState([]);

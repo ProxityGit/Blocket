@@ -1,3 +1,6 @@
+//documento: DocumentBuilder.jsx
+//descripción: Página principal del constructor de documentos.
+
 import { useState, useRef, useEffect } from "react";
 import "./DocumentBuilder.css";
 
@@ -13,7 +16,7 @@ import BlockList from "../../components/BlockList";
 import DocumentEditor from "../../components/DocumentEditor";
 import DynamicFields from "../../components/DynamicFields";
 import LetterHeader from "../../components/LetterHeader";
-import ToolsPanel from "../../components/ToolsPanel";
+// ToolsPanel removed from constructor layout
 
 import { useParams } from "react-router-dom";
 

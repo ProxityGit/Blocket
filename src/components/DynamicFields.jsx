@@ -1,3 +1,6 @@
+//dynamicfields: DynamicFields.jsx
+//descripción: Componente que muestra y gestiona los campos dinámicos de los bloques en el documento.
+
 import { useState } from "react";
 import "./DynamicFields.css";
 

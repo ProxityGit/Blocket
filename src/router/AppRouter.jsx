@@ -1,3 +1,6 @@
+//app-router: AppRouter.jsx
+//descripción: Configuración de rutas principales de la aplicación.
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import HomeModules from "../pages/HomeModules/HomeModules.jsx";
 import RequestSelector from "../pages/RequestSelector/RequestSelector.jsx";
