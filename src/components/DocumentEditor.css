@@ -1,0 +1,390 @@
+/* ========== DOCUMENT EDITOR STYLES  DocumentEditor.css========== */
+
+/* ---------- Panel general ---------- */
+.documento-panel {
+  flex: 60%;
+  background: #f5f5f5;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+/* ---------- Área del documento ---------- */
+.documento {
+  background: #ffffff;
+  width: 100%;
+  max-width: 850px;
+  min-height: 100vh;
+  padding: 60px 80px;
+  margin: 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI    ", sans-serif;
+
+  text-align: justify;
+}
+
+
+/* ---------- Encabezado de la empresa ---------- */
+.document-header {
+  margin-bottom: 40px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 25px;
+}
+
+
+
+.header-logo {
+  max-width: 160px;
+  height: auto;
+}
+
+.empresa-nombre {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f5499;
+  margin: 5px 0;
+  letter-spacing: 0.3px;
+}
+
+.empresa-info {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
+
+.empresa-info p {
+  margin: 3px 0;
+}
+
+/* ---------- Título del documento ---------- */
+.documento h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0f5499;
+  text-align: center;
+  margin: 30px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ---------- Alerta ---------- */
+.alert {
+  background-color: #fff7e6;
+  color: #875a00;
+  border-left: 4px solid #ffa940;
+  border-radius: 4px;
+  padding: 14px 18px;
+  margin-bottom: 25px;
+  font-size: 14px;
+
+}
+
+/* ---------- Bloques ---------- */
+.bloque-editable {
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  padding: 18px 22px;
+  margin-bottom: 25px;
+  transition: all 0.25s ease;
+}
+
+.bloque-editable:hover {
+  border-color: #0078d4;
+  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.1);
+}
+
+.bloque-editable.dragging {
+  background: #e6f4ff;
+  border-color: #0078d4;
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.2);
+}
+
+/* ---------- Encabezado del bloque ---------- */
+.bloque-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+/* ---------- Botones ---------- */
+.remove-btn,
+.btn-conector {
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.remove-btn {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+.remove-btn:hover {
+  background: #d32f2f;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(255, 77, 79, 0.3);
+}
+
+.btn-conector {
+  background: #0078d4;
+  color: white;
+}
+
+.btn-conector:hover {
+  background: #005a9e;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 120, 212, 0.3);
+}
+
+/* ---------- Dropdown del conector ---------- */
+.conector-container {
+  position: relative;
+}
+
+.conector-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 5px;
+  width: 200px;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 100;
+}
+
+.conector-dropdown.show {
+  display: block;
+}
+
+.conector-option {
+  padding: 10px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.15s;
+}
+
+.conector-option:hover {
+  background: #e6f4ff;
+  color: #0078d4;
+}
+
+/* ---------- Texto del bloque ---------- */
+.parrafo-texto {
+  margin-top: 8px;
+  font-size: 15px;
+  color: #333;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+/* ---------- Conector insertado ---------- */
+.conector-inline {
+  color: #7c3aed;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* ---------- Placeholders ---------- */
+.placeholder-pending {
+  background: #fff7e6;
+  color: #d46b08;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.placeholder-filled {
+  background: #e6f4ff;
+  color: #0050b3;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ---------- Placeholder de bloque vacío ---------- */
+.texto-placeholder {
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+  margin: 40px 0;
+  font-style: italic;
+}
+
+/* ---------- Selector de conector ---------- */
+.selector-conector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 12px;
+}
+
+.selector-conector label {
+  font-size: 13px;
+  color: #595959;
+  font-weight: 500;
+}
+
+.selector-conector select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+  background: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.selector-conector select:focus {
+  outline: none;
+  border-color: #0078d4;
+  box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.1);
+}
+
+/* ---------- Animaciones ---------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Modo impresión ---------- */
+@media print {
+  .documento-panel {
+    background: white;
+    padding: 0;
+  }
+  
+  .documento {
+    box-shadow: none;
+    max-width: 100%;
+  }
+  
+  .bloque-header,
+  .remove-btn,
+  .btn-conector,
+  .conector-dropdown {
+    display: none !important;
+  }
+  
+  .bloque-editable {
+    border: none;
+    background: transparent;
+    page-break-inside: avoid;
+  }
+}
+
+.parrafo-texto table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+/* ---------- Texto del bloque ---------- */
+.parrafo-texto {
+  margin-top: 8px;
+  font-size: 15px;
+  color: #333;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+/* Asegurar que las tablas no hereden text-align: justify */
+.parrafo-texto table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 15px 0;
+  font-size: 14px;
+  text-align: left; /* 👈 Importante */
+}
+
+.parrafo-texto th,
+.parrafo-texto td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.parrafo-texto th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.parrafo-texto img {
+  margin: 15px 0;
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+}
+
+/* Espaciado para listas */
+.parrafo-texto ul,
+.parrafo-texto ol {
+  margin: 10px 0;
+  padding-left: 25px;
+}
+
+.parrafo-texto li {
+  margin: 5px 0;
+  line-height: 1.6;
+}
+
+/* Párrafos dentro del bloque */
+.parrafo-texto p {
+  margin: 8px 0;
+  line-height: 1.8;
+}
+
+.parrafo-texto p:first-child {
+  margin-top: 0;
+}
+
+.parrafo-texto p:last-child {
+  margin-bottom: 0;
+}
+
+/* Saltos de línea */
+.parrafo-texto br {
+  display: block;
+  margin: 5px 0;
+  content: "";
+}
+
+/* Negrita en HTML */
+.parrafo-texto b,
+.parrafo-texto strong {
+  font-weight: 600;
+}
+
+/* Espaciado entre elementos */
+.parrafo-texto > * + * {
+  margin-top: 12px;
+}

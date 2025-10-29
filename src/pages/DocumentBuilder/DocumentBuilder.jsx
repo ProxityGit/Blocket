@@ -1,17 +1,25 @@
 import { useState, useRef, useEffect } from "react";
-import "./App.css";
-import { BLOQUES } from "./data/mockBlocks";
-import { OPCIONES_CONECTOR } from "./data/mockConnectors";
-import { extraerPlaceholders } from "./utils/placeholders";
-import { exportPDF } from "./utils/pdfGenerator";
-import { TENANT_CONFIG } from "./data/tenantConfig";
-import BlockList from "./components/BlockList";
-import DocumentEditor from "./components/DocumentEditor";
-import DynamicFields from "./components/DynamicFields";
-import LetterHeader from "./components/LetterHeader";
-import ToolsPanel from "./components/ToolsPanel";
+import "../../App.css"; // Usa tu App.css actual
 
-function App() {
+// 📦 Imports de datos y utilidades
+import { BLOQUES } from "../../data/mockBlocks";
+import { OPCIONES_CONECTOR } from "../../data/mockConnectors";
+import { extraerPlaceholders } from "../../utils/placeholders";
+import { exportPDF } from "../../utils/pdfGenerator";
+import { TENANT_CONFIG } from "../../data/tenantConfig";
+
+// 🧩 Componentes
+import BlockList from "../../components/BlockList";
+import DocumentEditor from "../../components/DocumentEditor";
+import DynamicFields from "../../components/DynamicFields";
+import LetterHeader from "../../components/LetterHeader";
+import ToolsPanel from "../../components/ToolsPanel";
+
+import { useParams } from "react-router-dom";
+
+export default function DocumentBuilder() {
+  const { idSolicitud } = useParams();
+
   const [documento, setDocumento] = useState([]);
   const [camposValores, setCamposValores] = useState({});
   const [conectoresPorBloque, setConectoresPorBloque] = useState({});
@@ -36,7 +44,13 @@ function App() {
     }
   }, []);
 
-  // --- Utilidades ---
+  // 🔹 Precarga de datos por solicitud (opcional)
+  useEffect(() => {
+    console.log("📄 Cargando datos para solicitud:", idSolicitud);
+    // Aquí podrías precargar valores iniciales según el ID
+  }, [idSolicitud]);
+
+  // --- 🧩 Funciones de utilidades ---
   const placeholdersFaltantes = () => {
     const keys = new Set();
     for (const b of documento) {
@@ -50,33 +64,30 @@ function App() {
     return faltan;
   };
 
-  // --- Renderizado dinámico con placeholders + conectores ---
   const renderParrafoConConector = (bloque) => {
     const conector = conectoresPorBloque[bloque.id] || "";
     const tieneConector = conector.trim() !== "";
 
-    // 1️⃣ Tomamos el HTML original del bloque
     let html = bloque.texto.trim();
 
-    // 2️⃣ Si hay conector, lo insertamos dentro del primer párrafo
     if (tieneConector) {
       const conectorLimpio = conector.replace(/[.,;:\s]+$/g, "").trim();
       const conectorFormateado =
-        conectorLimpio.charAt(0).toUpperCase() + conectorLimpio.slice(1).toLowerCase();
+        conectorLimpio.charAt(0).toUpperCase() +
+        conectorLimpio.slice(1).toLowerCase();
 
       html = html.replace(
         /<p([^>]*)>/i,
         `<p$1><span class="conector-inline"> ${conectorFormateado}, </span>`
       );
 
-      // Minúscula inicial en la palabra siguiente
       html = html.replace(
         /(<p[^>]*>.*?<span class="conector-inline">.*?<\/span>\s*)(<b>|<strong>)?([A-ZÁÉÍÓÚÑ])/,
-        (_, antes, etiqueta, letra) => `${antes}${etiqueta || ""}${letra.toLowerCase()}`
+        (_, antes, etiqueta, letra) =>
+          `${antes}${etiqueta || ""}${letra.toLowerCase()}`
       );
     }
 
-    // 3️⃣ Procesamos los placeholders dinámicos
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = html;
 
@@ -108,12 +119,9 @@ function App() {
     };
 
     Array.from(tempDiv.childNodes).forEach(processNode);
-
-    // 4️⃣ Render final del bloque procesado
     return <div dangerouslySetInnerHTML={{ __html: tempDiv.innerHTML }} />;
   };
 
-  // --- Acciones ---
   const agregarBloque = (bloque) => {
     if (!documento.find((d) => d.id === bloque.id)) {
       setDocumento((prev) => [...prev, bloque]);
@@ -152,7 +160,11 @@ function App() {
   const onExportClick = async () => {
     const faltan = placeholdersFaltantes();
     if (faltan.length > 0) {
-      setAlerta(`Completa ${faltan.length} campo(s): ${faltan.join(", ")} antes de exportar`);
+      setAlerta(
+        `Completa ${faltan.length} campo(s): ${faltan.join(
+          ", "
+        )} antes de exportar`
+      );
       return;
     }
     setAlerta("");
@@ -162,53 +174,55 @@ function App() {
   const exportDisabled =
     placeholdersFaltantes().length > 0 || documento.length === 0;
 
-  // --- Render principal ---
+  // --- 🧩 Render principal ---
   return (
     <div>
-      <header>📄 Blocket – Constructor de Documentos</header>
+      <header>
+        📄 Blocket – Constructor de Documentos{" "}
+        <span style={{ marginLeft: 12, fontSize: "14px", opacity: 0.8 }}>
+          Solicitud #{idSolicitud}
+        </span>
+      </header>
 
-     <div className="app-container">
-  {/* 1️⃣ Panel izquierdo */}
-  <BlockList
-    bloques={BLOQUES}
-    documento={documento}
-    onAgregar={agregarBloque}
-  />
+      <div className="app-container">
+        {/* 1️⃣ Panel izquierdo */}
+        <BlockList
+          bloques={BLOQUES}
+          documento={documento}
+          onAgregar={agregarBloque}
+        />
 
-  {/* 2️⃣ Panel central */}
-  <div className="panel-documento">
-    <DocumentEditor
-      documento={documento}
-      onDragEnd={onDragEnd}
-      onQuitarBloque={quitarBloque}
-      conectoresPorBloque={conectoresPorBloque}
-      actualizarConector={actualizarConector}
-      renderParrafoConConector={renderParrafoConConector}
-      opcionesConector={OPCIONES_CONECTOR}
-      alerta={alerta}
-      docRef={docRef}
-      tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
-    />
-  </div>
+        {/* 2️⃣ Panel central */}
+        <div className="panel-documento">
+          <DocumentEditor
+            documento={documento}
+            onDragEnd={onDragEnd}
+            onQuitarBloque={quitarBloque}
+            conectoresPorBloque={conectoresPorBloque}
+            actualizarConector={actualizarConector}
+            renderParrafoConConector={renderParrafoConConector}
+            opcionesConector={OPCIONES_CONECTOR}
+            alerta={alerta}
+            docRef={docRef}
+            tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
+          />
+        </div>
 
-  {/* 3️⃣ Panel derecho */}
-  <DynamicFields
-    documento={documento}
-    camposValores={camposValores}
-    actualizarCampo={actualizarCampo}
-  />
+        {/* 3️⃣ Panel derecho */}
+        <DynamicFields
+          documento={documento}
+          camposValores={camposValores}
+          actualizarCampo={actualizarCampo}
+        />
 
-  {/* 4️⃣ Nuevo panel de herramientas */}
-  <ToolsPanel
-    onExportClick={onExportClick}
-    exportDisabled={exportDisabled}
-    onAnalyzeAI={() => setAlerta("🧠 Analizando documento con IA...")}
-    aiStatus={alerta}
-  />
-</div>
-
+        {/* 4️⃣ Panel de herramientas */}
+        <ToolsPanel
+          onExportClick={onExportClick}
+          exportDisabled={exportDisabled}
+          onAnalyzeAI={() => setAlerta("🧠 Analizando documento con IA...")}
+          aiStatus={alerta}
+        />
+      </div>
     </div>
   );
 }
-
-export default App;
