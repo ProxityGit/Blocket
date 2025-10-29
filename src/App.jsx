@@ -198,13 +198,7 @@ function App() {
     actualizarCampo={actualizarCampo}
   />
 
-  {/* 4️⃣ Nuevo panel de herramientas */}
-  <ToolsPanel
-    onExportClick={onExportClick}
-    exportDisabled={exportDisabled}
-    onAnalyzeAI={() => setAlerta("🧠 Analizando documento con IA...")}
-    aiStatus={alerta}
-  />
+  
 </div>
 
     </div>

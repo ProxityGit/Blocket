@@ -230,12 +230,7 @@ export default function DocumentBuilder() {
         />
       </section>
 
-      <ToolsPanel
-        onExportClick={onExportClick}
-        exportDisabled={exportDisabled}
-        onAnalyzeAI={() => setAlerta("🧠 Analizando documento con IA...")}
-        aiStatus={alerta}
-      />
+      
     </div>
   </div>
 );

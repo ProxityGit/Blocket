@@ -107,10 +107,6 @@
   border-radius: 0 12px 12px 0;
 }
 
-.tools-panel {
-  background: #0f172a;
-  color: #e2e8f0;
-}
 
 /* ===== Scrollbar ===== */
 ::-webkit-scrollbar {
