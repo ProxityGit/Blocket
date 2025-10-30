@@ -25,49 +25,49 @@ const BlockItem = React.memo(({ bloque, yaEnDocumento, onAgregar }) => {
   const disabled = yaEnDocumento(bloque.id);
 
   return (
-    <article className={`block-item ${open ? "expanded" : ""} ${disabled ? "disabled" : ""}`}>
-      <header className="block-head" onClick={() => setOpen(v => !v)} role="button" aria-expanded={open}>
+    <article className={`block-item ${open ? "expanded" : ""} ${disabled ? "disabled" : ""}`}> 
+      <header className="block-head" onClick={() => setOpen(v => !v)} role="button" aria-expanded={open}> 
         <Chevron open={open} />
-        <div className="block-main">
-          <h4 className="block-title">{bloque.titulo}</h4>
-          {bloque.proceso && <span className="block-proceso">{bloque.proceso}</span>}
-        </div>
-        <div className="block-actions" onClick={(e) => e.stopPropagation()}>
-          <button 
-            className="btn btn-icon" 
-            disabled={disabled}
-            onClick={() => !disabled && onAgregar(bloque)}
-            title={disabled ? "Ya agregado" : "Agregar bloque"}
-          >
-            {disabled ? <CheckIcon /> : <PlusIcon />}
-          </button>
-        </div>
+        <div className="block-main"> 
+          <h4 className="block-title">{bloque.titulo}</h4> 
+          {bloque.proceso && <span className="block-proceso">{bloque.proceso}</span>} 
+        </div> 
+        <div className="block-actions" onClick={(e) => e.stopPropagation()}> 
+          <button  
+            className="btn btn-icon"  
+            disabled={disabled} 
+            onClick={() => !disabled && onAgregar(bloque)} 
+            title={disabled ? "Ya agregado" : "Agregar bloque"} 
+          > 
+            {disabled ? <CheckIcon /> : <PlusIcon />} 
+          </button> 
+        </div> 
       </header>
 
       {open && (
-        <div className="block-panel" role="region">
-          <div className="panel-grid">
-            <div className="panel-item">
-              <span className="label">ID</span>
-              <span className="value">{bloque.id || "—"}</span>
+        <div className="block-panel" role="region"> 
+          <div className="panel-grid"> 
+            <div className="panel-item"> 
+              <span className="label">ID</span> 
+              <span className="value">{bloque.id || "—"}</span> 
+            </div> 
+            <div className="panel-item"> 
+              <span className="label">Causal</span> 
+              <span className="value">{bloque.causal || "—"}</span> 
             </div>
-            <div className="panel-item">
-              <span className="label">Causal</span>
-              <span className="value">{bloque.causal || "—"}</span>
-            </div>
-            <div className="panel-item">
-              <span className="label">Tipo</span>
-              <span className="value">{bloque.tipo || "—"}</span>
-            </div>
+            <div className="panel-item"> 
+              <span className="label">Tipo</span> 
+              <span className="value">{bloque.tipo || "—"}</span> 
+            </div> 
             {bloque.descripcion && (
-              <div className="panel-item">
-                <span className="label">Descripción</span>
-                <span className="value">{bloque.descripcion}</span>
+              <div className="panel-item"> 
+                <span className="label">Descripción</span> 
+                <span className="value">{bloque.descripcion}</span> 
               </div>
-            )}
+            )} 
           </div>
         </div>
-      )}
+      )} 
     </article>
   );
 });
@@ -82,6 +82,9 @@ export default function BlockList({ bloques, documento, onAgregar }) {
   const [filtroProceso, setFiltroProceso] = useState("Todos");
   const [filtroCausal, setFiltroCausal] = useState("Todos");
   const [filtroTipo, setFiltroTipo] = useState("Todos");
+
+  // Toolbar tabs
+  const [activeTab, setActiveTab] = useState("blockets");
 
   // Debounce búsqueda
   useEffect(() => {
@@ -148,93 +151,132 @@ export default function BlockList({ bloques, documento, onAgregar }) {
 
   return (
     <aside className="blocklist-container">
-      {/* Topbar: búsqueda + ordenar */}
-      <div className="toolbar">
-        <div className="search-wrap">
-          <span className="search-ico" aria-hidden>🔎</span>
-          <input
-            className="search-input"
-            placeholder="Buscar por nombre, proceso, causal o tipo…"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            aria-label="Buscar"
-          />
-        </div>
-
-        <div className="sort-wrap">
-          <label className="sort-label">Ordenar por</label>
-          <select className="sort-select" value={orden} onChange={(e) => setOrden(e.target.value)}>
-            <option>Relevancia</option>
-            <option>Proceso</option>
-            <option>Título</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Header con contador */}
-      <div className="blocklist-header">
-        <h3>Bloques disponibles</h3>
-        <span className="count">{bloquesOrdenados.length}</span>
-      </div>
-
-      {/* Filtros */}
-      <section className="filters-wrap">
-        <button className="filters-toggle" aria-expanded={filtrosOpen} onClick={() => setFiltrosOpen(v => !v)}>
-          <Chevron open={filtrosOpen} /><span>Filtros</span>{(hayFiltros) && <span className="dot" />}
+      {/* Toolbar superior: Tabs personalizados */}
+      <div className="blocklist-toolbar">
+        <button
+          className={activeTab === "blockets" ? "active" : ""}
+          onClick={() => setActiveTab("blockets")}
+        >
+          Blockets
         </button>
-
-        {filtrosOpen && (
-          <div className="filters-panel open">
-            <div className="filters-grid">
-              <label className="filter-field">
-                <span className="filter-label">Proceso</span>
-                <select className="filter-select" value={filtroProceso} onChange={e => setFiltroProceso(e.target.value)}>
-                  {procesos.map(p => <option key={p} value={p}>{p}</option>)}
-                </select>
-              </label>
-              <label className="filter-field">
-                <span className="filter-label">Causal</span>
-                <select className="filter-select" value={filtroCausal} onChange={e => setFiltroCausal(e.target.value)}>
-                  {causales.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </label>
-              <label className="filter-field">
-                <span className="filter-label">Tipo</span>
-                <select className="filter-select" value={filtroTipo} onChange={e => setFiltroTipo(e.target.value)}>
-                  {tipos.map(t => <option key={t} value={t}>{t}</option>)}
-                </select>
-              </label>
-            </div>
-
-            <div className="filters-actions">
-              <div className="active-chips">
-                {filtroProceso !== "Todos" && <span className="chip chip-soft">Proceso: {filtroProceso}</span>}
-                {filtroCausal !== "Todos" && <span className="chip chip-soft">Causal: {filtroCausal}</span>}
-                {filtroTipo !== "Todos" && <span className="chip chip-soft">Tipo: {filtroTipo}</span>}
-                {!hayFiltros && <span className="muted">Sin filtros activos</span>}
-              </div>
-              <button className="btn btn-ghost" onClick={resetFiltros}>Reiniciar filtros</button>
-            </div>
-          </div>
-        )}
-      </section>
-
-      {/* Lista */}
-      <div className="blocklist-content">
-        {bloquesOrdenados.map(b => (
-          <BlockItem key={b.id} bloque={b} yaEnDocumento={yaEnDocumento} onAgregar={onAgregar} />
-        ))}
-
-        {bloquesOrdenados.length === 0 && (
-          <div className="empty">
-            <p>No se encontraron bloques.</p>
-            <ul>
-              <li>Amplía o limpia los filtros.</li>
-              <li>Prueba con otra palabra clave.</li>
-            </ul>
-          </div>
-        )}
+        <button
+          className={activeTab === "adjuntos" ? "active" : ""}
+          onClick={() => setActiveTab("adjuntos")}
+        >
+          Adjuntos
+        </button>
+        <button
+          className={activeTab === "notas" ? "active" : ""}
+          onClick={() => setActiveTab("notas")}
+        >
+          Notas
+        </button>
       </div>
+
+      {/* Solo muestra el resto si está en Blockets */}
+      {activeTab === "blockets" && (
+        <>
+          {/* Topbar: búsqueda + ordenar */}
+          <div className="toolbar">
+            <div className="search-wrap">
+              <span className="search-ico" aria-hidden>🔎</span>
+              <input
+                className="search-input"
+                placeholder="Buscar por nombre, proceso, causal o tipo…"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                aria-label="Buscar"
+              />
+            </div>
+
+            <div className="sort-wrap">
+              <label className="sort-label">Ordenar por</label>
+              <select className="sort-select" value={orden} onChange={(e) => setOrden(e.target.value)}>
+                <option>Relevancia</option>
+                <option>Proceso</option>
+                <option>Título</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Header con contador */}
+          <div className="blocklist-header">
+            <h3>Bloques disponibles</h3>
+            <span className="count">{bloquesOrdenados.length}</span>
+          </div>
+
+          {/* Filtros */}
+          <section className="filters-wrap">
+            <button className="filters-toggle" aria-expanded={filtrosOpen} onClick={() => setFiltrosOpen(v => !v)}>
+              <Chevron open={filtrosOpen} /><span>Filtros</span>{(hayFiltros) && <span className="dot" />}
+            </button>
+
+            {filtrosOpen && (
+              <div className="filters-panel open">
+                <div className="filters-grid">
+                  <label className="filter-field">
+                    <span className="filter-label">Proceso</span>
+                    <select className="filter-select" value={filtroProceso} onChange={e => setFiltroProceso(e.target.value)}>
+                      {procesos.map(p => <option key={p} value={p}>{p}</option>)}
+                    </select>
+                  </label>
+                  <label className="filter-field">
+                    <span className="filter-label">Causal</span>
+                    <select className="filter-select" value={filtroCausal} onChange={e => setFiltroCausal(e.target.value)}>
+                      {causales.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                  </label>
+                  <label className="filter-field">
+                    <span className="filter-label">Tipo</span>
+                    <select className="filter-select" value={filtroTipo} onChange={e => setFiltroTipo(e.target.value)}>
+                      {tipos.map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                  </label>
+                </div>
+
+                <div className="filters-actions">
+                  <div className="active-chips">
+                    {filtroProceso !== "Todos" && <span className="chip chip-soft">Proceso: {filtroProceso}</span>}
+                    {filtroCausal !== "Todos" && <span className="chip chip-soft">Causal: {filtroCausal}</span>}
+                    {filtroTipo !== "Todos" && <span className="chip chip-soft">Tipo: {filtroTipo}</span>}
+                    {!hayFiltros && <span className="muted">Sin filtros activos</span>}
+                  </div>
+                  <button className="btn btn-ghost" onClick={resetFiltros}>Reiniciar filtros</button>
+                </div>
+              </div>
+            )}
+          </section>
+
+          {/* Lista */}
+          <div className="blocklist-content">
+            {bloquesOrdenados.map(b => (
+              <BlockItem key={b.id} bloque={b} yaEnDocumento={yaEnDocumento} onAgregar={onAgregar} />
+            ))}
+
+            {bloquesOrdenados.length === 0 && (
+              <div className="empty">
+                <p>No se encontraron bloques.</p>
+                <ul>
+                  <li>Amplía o limpia los filtros.</li>
+                  <li>Prueba con otra palabra clave.</li>
+                </ul>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {activeTab === "adjuntos" && (
+        <div className="blocklist-content">
+          <p>Adjuntos (próximamente)</p>
+        </div>
+      )}
+
+      {activeTab === "notas" && (
+        <div className="blocklist-content">
+          <p>Notas (próximamente)</p>
+        </div>
+      )}
     </aside>
   );
 }
