@@ -49,14 +49,35 @@ export default function PreviewModal({
 
         <header className="preview-header">
           <h2>📄 Vista previa del documento</h2>
-          <button
-            type="button"
-            className="close-btn"
-            onClick={handleClose}
-            aria-label="Cerrar"
-          >
-            ✕
-          </button>
+          <div style={{display: 'flex', alignItems: 'center', gap: '16px'}}>
+            <button
+              type="button"
+              className="btn-ia-review"
+              style={{
+                background: 'linear-gradient(90deg, #3b82f6 0%, #10b981 100%)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '8px',
+                fontWeight: '600',
+                fontSize: '15px',
+                padding: '8px 18px',
+                boxShadow: '0 2px 8px rgba(59,130,246,0.10)',
+                cursor: 'pointer',
+                letterSpacing: '0.5px',
+                transition: 'background 0.2s',
+              }}
+            >
+              Revisión de IA
+            </button>
+            <button
+              type="button"
+              className="close-btn"
+              onClick={handleClose}
+              aria-label="Cerrar"
+            >
+              ✕
+            </button>
+          </div>
         </header>
 
         {/* Solo la banda azul es fija. El resto scrollea normalmente. */}

@@ -171,11 +171,7 @@ export default function BlockList({ bloques, documento, onAgregar }) {
         </div>
       </div>
 
-      {/* Header con contador */}
-      <div className="blocklist-header">
-        <h3>Bloques disponibles</h3>
-        <span className="count">{bloquesOrdenados.length}</span>
-      </div>
+   
 
       {/* Filtros */}
       <section className="filters-wrap">
@@ -218,6 +214,12 @@ export default function BlockList({ bloques, documento, onAgregar }) {
           </div>
         )}
       </section>
+
+       {/* Header con contador */}
+      <div className="blocklist-header">
+        <h3>Bloques disponibles</h3>
+        <span className="count">{bloquesOrdenados.length}</span>
+      </div>
 
       {/* Lista */}
       <div className="blocklist-content">

@@ -73,22 +73,30 @@
 }
 .preview-overlay {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgba(15, 23, 42, 0.45);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 9999;           /* por encima de todo */
+  padding-top: 32px;
 }
 
 
 .preview-modal {
-  width: min(900px, 96vw);
+  width: min(1100px, 98vw);
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 20px 80px rgba(2, 6, 23, 0.35);
-  overflow: hidden;
+  overflow-y: auto;
+  max-height: 90vh;
   padding-bottom: 0;
+  color: #555;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .preview-header {
@@ -97,7 +105,7 @@
   justify-content: space-between;
   padding: 14px 24px;
   background: linear-gradient(90deg, #2563eb 80%, #60a5fa 100%);
-  color: #fff;
+  color: #f8f8f8;
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
   border-bottom: none;
@@ -121,10 +129,12 @@
   border: 1.5px solid #e2e8f0;
   border-radius: 14px;
   width: 100%;
-  max-width: none;
+  max-width: 900px;
   min-width: 0;
   margin: 0 auto;
   box-shadow: 0 2px 12px rgba(30,41,59,0.07);
+  text-align: justify;
+  font-size: 16px;
 }
 .document-tenant-header {
   margin-bottom: 24px;
@@ -133,6 +143,6 @@
 .preview-block {
   margin: 18px 0 18px 0;
   text-align: justify;
-  font-size: 1.08rem;
+  font-size: 16px;
   line-height: 1.7;
 }

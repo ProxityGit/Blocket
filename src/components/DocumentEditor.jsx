@@ -25,7 +25,8 @@ function DocumentEditor({
   tenantHeader,
   camposValores,
 }) {
-  const [openIdx, setOpenIdx] = useState(null);
+  const [openIdxs, setOpenIdxs] = useState([]);
+  console.log("[DEBUG] opcionesConector:", opcionesConector);
   return (
     <div className="documento-panel">
       <div className="documento" ref={docRef}>
@@ -49,16 +50,15 @@ function DocumentEditor({
                   return (
                     <Draggable key={b.id} draggableId={String(b.id)} index={i}>
                       {(provided, snapshot) => {
-                        const isOpen = openIdx === i;
+                        const isOpen = openIdxs.includes(i);
+                        const ordenClass = `bloque-orden-${(i % 6) + 1}`;
                         return (
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-
-                            
-                            className={`bloque-editable bloque-acordeon ${snapshot.isDragging ? "dragging" : ""} ${isOpen ? "open" : ""}`}
+                            className={`bloque-editable bloque-acordeon ${ordenClass} ${snapshot.isDragging ? "dragging" : ""} ${isOpen ? "open" : ""}`}
                           >
-                            <div className="bloque-header-acordeon" onClick={() => setOpenIdx(isOpen ? null : i)}>
+                            <div className="bloque-header-acordeon" onClick={() => setOpenIdxs(isOpen ? openIdxs.filter(idx => idx !== i) : [...openIdxs, i])}>
                               <span className="drag-handle" {...provided.dragHandleProps} title="Arrastrar para mover">☰</span>
                               <span className="bloque-titulo">{b.titulo}</span>
                               <span className={`status-tag ${completo ? "completo" : "pendiente"}`}
@@ -98,7 +98,11 @@ function DocumentEditor({
                                         : "➕ Agregar conector"}
                                     </button>
                                     <div className="conector-dropdown">
-                                      {opcionesConector.map((opt, idx) => (
+                                      {/* DEBUG: Mostrar opciones de conector */}
+                                      {opcionesConector && opcionesConector.length === 0 && (
+                                        <div className="conector-option">No hay conectores disponibles</div>
+                                      )}
+                                      {opcionesConector && opcionesConector.map((opt, idx) => (
                                         <div
                                           key={idx}
                                           className="conector-option"

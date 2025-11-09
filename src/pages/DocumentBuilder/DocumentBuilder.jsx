@@ -13,6 +13,14 @@ import PreviewModal from "../../components/PreviewModal";
 import { useParams } from "react-router-dom";
 
 export default function DocumentBuilder() {
+  // Permite reordenar los bloques por drag and drop
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+    const newDocumento = Array.from(documento);
+    const [moved] = newDocumento.splice(result.source.index, 1);
+    newDocumento.splice(result.destination.index, 0, moved);
+    setDocumento(newDocumento);
+  };
   const { idSolicitud } = useParams();
   const [documento, setDocumento] = useState([]);
   const [camposValores, setCamposValores] = useState({});
@@ -60,9 +68,10 @@ export default function DocumentBuilder() {
     let html = bloque.texto.trim();
     if (conector.trim()) {
       const limpio = conector.replace(/[.,;:\s]+$/g, "").trim();
+      // Modifica la primera letra después del conector a minúscula
       html = html.replace(
-        /<p([^>]*)>/i,
-        `<p$1><span class="conector-inline">${limpio}, </span>`
+        /<p([^>]*)>(\s*)([A-ZÁÉÍÓÚÑ])/i,
+        (match, pAttrs, space, firstChar) => `<p${pAttrs}><span class="conector-inline">${limpio}, </span>${space}${firstChar.toLowerCase()}`
       );
     }
     // Reemplaza los placeholders por los valores actuales
@@ -141,6 +150,7 @@ export default function DocumentBuilder() {
         <main className="panel panel-documento">
           <DocumentEditor
             documento={documento}
+            onDragEnd={onDragEnd}
             onQuitarBloque={quitarBloque}
             conectoresPorBloque={conectoresPorBloque}
             actualizarConector={actualizarConector}

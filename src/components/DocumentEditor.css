@@ -1,3 +1,44 @@
+.print-mode .documento-panel,
+.print-mode .document-header,
+.print-mode .letter-meta,
+.print-mode .letter-saludo,
+.print-mode .bloque-body-acordeon {
+  padding-left: 64px !important;
+  padding-right: 64px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  font-size: 16px !important;
+}
+/* Estilos para exportación PDF (print-mode) */
+.print-mode .bloque-header-acordeon,
+.print-mode .bloque-toolbar,
+.print-mode .acordeon-toggle,
+.print-mode .remove-btn,
+.print-mode .btn-conector {
+  display: none !important;
+}
+.print-mode .bloque-body-acordeon {
+  padding: 0 48px 12px 48px !important;
+}
+.print-mode .documento-panel {
+  padding: 48px 48px 48px 48px !important;
+}
+.print-mode .documento-panel {
+  background: #fff !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 794px !important;
+  min-height: 1123px !important;
+  margin: 0 auto !important;
+  font-size: 16px !important;
+  color: #222 !important;
+}
+.print-mode .bloque-editable {
+  box-shadow: none !important;
+  border: none !important;
+  margin-bottom: 0 !important;
+  background: transparent !important;
+}
 .bloque-justificado {
   text-align: justify;
 }
@@ -28,25 +69,24 @@
 }
 /* --- Bloques acordeón modernos --- */
 .bloque-acordeon {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 4px 24px rgba(30,41,59,0.10);
-  margin-bottom: 22px;
-  border: 1.5px solid #e0e7ef;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(30,41,59,0.07);
+  margin-bottom: 18px;
+  border: 2.5px solid #e5e7eb;
   transition: box-shadow 0.18s, border 0.18s;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
 }
 .bloque-acordeon.open {
   box-shadow: 0 8px 32px rgba(37,99,235,0.13);
-  border-color: #2563eb;
 }
 .bloque-header-acordeon {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 18px 22px 18px 18px;
-  background: linear-gradient(90deg, #f1f5f9 80%, #e0e7ef 100%);
+  background: #ffffff;
   cursor: pointer;
   font-weight: 600;
   font-size: 1.08em;
@@ -55,7 +95,7 @@
   user-select: none;
 }
 .bloque-header-acordeon:hover {
-  background: linear-gradient(90deg, #e0e7ef 80%, #f1f5f9 100%);
+  background: #f5f7fa;
 }
 .drag-handle {
   font-size: 1.3em;
@@ -75,8 +115,16 @@
 .bloque-body-acordeon {
   padding: 18px 24px 22px 24px;
   background: #f8fafc;
+  border-radius: 0 0 10px 10px;
   animation: fadeIn 0.2s;
-}
+  /* Colores modernos para los bordes según el orden se aplican por clase adicional */
+/* Colores para los primeros 6 bloques, puedes agregar más si lo necesitas */
+.bloque-acordeon.bloque-orden-1 { border-color: #2563eb !important; border-width: 2.5px !important; }
+.bloque-acordeon.bloque-orden-2 { border-color: #10b981 !important; border-width: 2.5px !important; }
+.bloque-acordeon.bloque-orden-3 { border-color: #f59e42 !important; border-width: 2.5px !important; }
+.bloque-acordeon.bloque-orden-4 { border-color: #e11d48 !important; border-width: 2.5px !important; }
+.bloque-acordeon.bloque-orden-5 { border-color: #6366f1 !important; border-width: 2.5px !important; }
+.bloque-acordeon.bloque-orden-6 { border-color: #14b8a6 !important; border-width: 2.5px !important; }
 .bloque-toolbar {
   display: flex;
   align-items: center;

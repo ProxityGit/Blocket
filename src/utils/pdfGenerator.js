@@ -9,7 +9,7 @@ export const exportPDF = async (elementRef) => {
 
   try {
     const canvas = await html2canvas(el, {
-      scale: 2,
+      scale: 3,
       backgroundColor: "#ffffff",
       useCORS: true,
       windowWidth: el.scrollWidth,
