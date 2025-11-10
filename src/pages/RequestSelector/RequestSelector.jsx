@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./RequestSelector.css";
 
@@ -7,44 +7,34 @@ export default function RequestSelector() {
   const [search, setSearch] = useState("");
   const [filtroTipo, setFiltroTipo] = useState("Todos");
 
-  const solicitudes = [
-    {
-      id: 4587,
-      nombre: "Activación de Producto",
-      cliente: "Pepito Pérez",
-      identificacion: "123456789",
-      tipoCliente: "Residencial",
-      tipoSolicitud: "Activación",
-      fecha: "2025-10-19",
-      radicado: "RAD-2025-001",
-    },
-    {
-      id: 4588,
-      nombre: "Cambio de Información",
-      cliente: "Ana Gómez",
-      identificacion: "998877665",
-      tipoCliente: "Comercial",
-      tipoSolicitud: "Actualización de datos",
-      fecha: "2025-10-22",
-      radicado: "RAD-2025-002",
-    },
-    {
-      id: 4589,
-      nombre: "Aviso de Mora",
-      cliente: "Carlos Rojas",
-      identificacion: "112233445",
-      tipoCliente: "Residencial",
-      tipoSolicitud: "Reclamación",
-      fecha: "2025-10-24",
-      radicado: "RAD-2025-003",
-    },
-  ];
+  const [solicitudes, setSolicitudes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch("/api/requests")
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al obtener solicitudes");
+        return res.json();
+      })
+      .then((data) => {
+        setSolicitudes(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
   const filtradas = solicitudes.filter(
     (s) =>
-      (filtroTipo === "Todos" || s.tipoSolicitud === filtroTipo) &&
-      (s.cliente.toLowerCase().includes(search.toLowerCase()) ||
-        s.radicado.toLowerCase().includes(search.toLowerCase()))
+      (filtroTipo === "Todos" || (s.request_type && s.request_type === filtroTipo)) &&
+      (
+        (s.customer_name && s.customer_name.toLowerCase().includes(search.toLowerCase())) ||
+        (s.subject && s.subject.toLowerCase().includes(search.toLowerCase()))
+      )
   );
 
   return (
@@ -53,11 +43,12 @@ export default function RequestSelector() {
       <header className="requests-header-extended">
         <div className="header-left">
           <h1>📋 Solicitudes Registradas</h1>
-          
         </div>
       </header>
 
-      {/* ===== Filtros fuera del encabezado ===== */}
+      {/* Estado de carga y error */}
+      {loading && <div style={{textAlign:'center',margin:'32px'}}>Cargando solicitudes...</div>}
+      {error && <div style={{color:'red',textAlign:'center',margin:'32px'}}>Error: {error}</div>}
       <div className="filter-bar outside">
         <input
           type="text"
@@ -87,9 +78,8 @@ export default function RequestSelector() {
         <span>Fecha</span>
         <span>Cliente</span>
         <span>Identificación</span>
-        <span>Tipo Cliente</span>
         <span>Tipo Solicitud</span>
-        <span>Radicado</span>
+        <span>Asunto</span>
         <span></span>
       </div>
 
@@ -101,24 +91,23 @@ export default function RequestSelector() {
             className="request-row"
             onClick={() => navigate(`/constructor/${s.id}`)}
           >
-            <span className="fecha">{new Date(s.fecha).toLocaleDateString()}</span>
-            <span className="cliente">{s.cliente}</span>
-            <span className="identificacion">{s.identificacion}</span>
-            <span className="tipo-cliente">{s.tipoCliente}</span>
+            <span className="fecha">{s.created_at ? new Date(s.created_at).toLocaleDateString() : "—"}</span>
+            <span className="cliente">{s.customer_name || "—"}</span>
+            <span className="identificacion">{s.customer_identifier || "—"}</span>
             <span className="tipo-solicitud">
               <span
-                className={`pill ${
-                  s.tipoSolicitud.includes("Reclamación")
-                    ? "pill-red"
-                    : s.tipoSolicitud.includes("Actualización")
-                    ? "pill-blue"
-                    : "pill-green"
-                }`}
+                className={`pill ${(() => {
+                  const type = s.request_type ? s.request_type.toLowerCase() : "";
+                  if (type.includes("claim") || type.includes("reclamo") || type.includes("queja")) return "pill-red";
+                  if (type.includes("update") || type.includes("actualizacion")) return "pill-blue";
+                  if (type.includes("activation") || type.includes("solicitud")) return "pill-green";
+                  return "pill-blue"; // color por defecto
+                })()}`}
               >
-                {s.tipoSolicitud}
+                {s.request_type || "—"}
               </span>
             </span>
-            <span className="radicado">{s.radicado}</span>
+            <span className="asunto">{s.subject || "—"}</span>
             <span className="accion">➡️</span>
           </div>
         ))}

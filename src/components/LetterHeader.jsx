@@ -1,6 +1,20 @@
 import "./LetterHeader.css";
 
 function LetterHeader({ header }) {
+  // Formatear fecha si es tipo Date o string ISO
+  let fechaFormateada = header.fecha;
+  if (header.fecha) {
+    try {
+      const fechaObj = new Date(header.fecha);
+      if (!isNaN(fechaObj)) {
+        fechaFormateada = `Santiago de Cali, ${fechaObj.toLocaleDateString('es-ES', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric'
+        })}`;
+      }
+    } catch {}
+  }
   return (
     <div className="letter-header">
       {/* 🔹 Membrete superior de empresa */}
@@ -18,10 +32,14 @@ function LetterHeader({ header }) {
 
       {/* 🔹 Encabezado de la carta */}
       <div className="letter-meta">
-        <p className="letter-date">{header.fecha}</p>   <p><br></br></p>
-        <p><strong>Señor(a):</strong> {header.destinatario}</p>
-        <p><strong>Radicado:</strong> {header.radicado}</p><p><br></br></p>
-        <p><strong>Asunto:</strong> {header.asunto}</p>
+        <p  className="letter-date">{fechaFormateada}</p><br></br>
+        <p><strong>{header.destinatario}:</strong> </p>
+        {header.identificacion && (
+          <p>Identificación: {header.identificacion}</p>
+        )}
+        <p>Dirección: correo@correo.com.co</p>
+        <p>Radicado: {header.radicado}</p><br></br>
+        <p>Asunto: {header.asunto}</p>
       </div>
 
       {/* 🔹 Saludo */}

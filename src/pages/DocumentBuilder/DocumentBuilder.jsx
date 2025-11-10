@@ -13,6 +13,9 @@ import PreviewModal from "../../components/PreviewModal";
 import { useParams } from "react-router-dom";
 
 export default function DocumentBuilder() {
+  const [solicitud, setSolicitud] = useState(null);
+  const [loadingSolicitud, setLoadingSolicitud] = useState(true);
+  const [errorSolicitud, setErrorSolicitud] = useState(null);
   // Permite reordenar los bloques por drag and drop
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -48,6 +51,24 @@ export default function DocumentBuilder() {
     }
     // Siempre reinicia showPreview al cambiar de solicitud
     setShowPreview(false);
+
+    // Obtener datos de la solicitud seleccionada
+    setLoadingSolicitud(true);
+    fetch(`/api/requests/${idSolicitud}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("No se pudo obtener la solicitud");
+        return res.json();
+      })
+      .then((data) => {
+        setSolicitud(data);
+        setLoadingSolicitud(false);
+        setErrorSolicitud(null);
+      })
+      .catch((err) => {
+        setSolicitud(null);
+        setLoadingSolicitud(false);
+        setErrorSolicitud(err.message || "Error desconocido");
+      });
   }, [idSolicitud]);
 
   const placeholdersFaltantes = () => {
@@ -120,8 +141,38 @@ export default function DocumentBuilder() {
   const exportDisabled = placeholdersFaltantes().length > 0 || documento.length === 0;
 
   console.log("[DEBUG] Render DocumentBuilder, showPreview:", showPreview);
+  // Construir el header dinámico SOLO con datos de la solicitud
+  const headerData = solicitud
+    ? {
+        logo: TENANT_CONFIG.logo, // solo el logo se mantiene fijo
+        nombreEmpresa: TENANT_CONFIG.nombreEmpresa,
+        direccion: TENANT_CONFIG.direccion,
+        ciudad: TENANT_CONFIG.ciudad,
+        fecha: solicitud.created_at
+          ? `${TENANT_CONFIG.ciudad}, ${new Date(solicitud.created_at).toLocaleDateString()}`
+          : TENANT_CONFIG.ciudad,
+        destinatario: solicitud.customer_name || "—",
+        identificacion: solicitud.customer_identifier || "—",
+        radicado: solicitud.id || "—",
+        asunto: solicitud.subject || "—",
+        saludo: "Cordial saludo:",
+      }
+    : {
+        logo: TENANT_CONFIG.logo,
+        nombreEmpresa: TENANT_CONFIG.nombreEmpresa,
+        direccion: TENANT_CONFIG.direccion,
+        ciudad: TENANT_CONFIG.ciudad,
+        fecha: TENANT_CONFIG.fecha,
+        destinatario: "—",
+        identificacion: "—",
+        radicado: "—",
+        asunto: "—",
+        saludo: "Cordial saludo:",
+      };
+
   return (
     <div className="constructor-container">
+      {/* Mensaje de depuración eliminado */}
       <header className="constructor-header">
         <div>
           <h1>🧩 Constructor de Documentos</h1>
@@ -129,7 +180,7 @@ export default function DocumentBuilder() {
         </div>
 
         <div className="header-actions">
-          <button className="btn-light" onClick={() => { console.log('[DEBUG] Click Vista Previa'); setShowPreview(true); }}>
+          <button className="btn-light" onClick={() => { setShowPreview(true); }}>
             👁️ Vista Previa
           </button>
           <button className="btn-primary" onClick={onExportClick} disabled={exportDisabled}>
@@ -158,7 +209,7 @@ export default function DocumentBuilder() {
             opcionesConector={OPCIONES_CONECTOR}
             alerta={alerta}
             docRef={docRef}
-            tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
+            tenantHeader={<LetterHeader header={headerData} />}
             camposValores={camposValores}
           />
         </main>
@@ -179,7 +230,7 @@ export default function DocumentBuilder() {
         documento={documento}
         renderParrafoConConector={renderParrafoConConector}
         camposValores={camposValores}
-        tenantHeader={<LetterHeader header={TENANT_CONFIG} />}
+        tenantHeader={<LetterHeader header={headerData} />}
       />
     </div>
   );
