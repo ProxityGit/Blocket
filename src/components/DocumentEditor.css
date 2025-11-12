@@ -297,10 +297,7 @@
   color: #9ca3af;
   font-style: italic;
 }
-.placeholder-filled {
-  font-weight: 500;
-  color: #1e293b;
-}
+
 
 /* Animaciones */
 @keyframes fadeIn {
@@ -309,4 +306,3 @@
 @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
-}

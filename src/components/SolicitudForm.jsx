@@ -66,9 +66,9 @@ const SolicitudForm = ({ onSubmit }) => {
     formData.append('ciudad', form.ciudad);
     formData.append('message', form.solicitud);
     formData.append('subject', 'Solicitud desde formulario web');
-    formData.append('tenant_id', form.tenant_id);
-    formData.append('channel_id', form.channel_id);
-    formData.append('status_id', form.status_id);
+  formData.append('tenant_id', form.tenant_id ? Number(form.tenant_id) : 1);
+  formData.append('channel_id', form.channel_id ? Number(form.channel_id) : 1);
+  formData.append('status_id', form.status_id ? Number(form.status_id) : 1);
     formData.append('created_by', 'webform');
     if (form.adjunto) {
       formData.append('adjunto', form.adjunto);

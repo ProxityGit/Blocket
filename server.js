@@ -3,6 +3,7 @@ import pool from './db.js';
 import multer from 'multer';
 import path from 'path';
 
+
 const app = express();
 app.use(express.json());
 
@@ -28,18 +29,6 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
-
-
-// Endpoint para listar solicitudes
-app.get('/api/requests', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM customer_request');
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Error al consultar solicitudes' });
-  }
-});
-
 // Endpoint para obtener una solicitud por id
 app.get('/api/requests/:id', async (req, res) => {
   try {
@@ -56,7 +45,6 @@ app.get('/api/requests/:id', async (req, res) => {
     res.status(500).json({ error: 'Error al consultar la solicitud' });
   }
 });
-
 
 // Endpoint para crear una nueva solicitud con adjunto
 app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
@@ -79,6 +67,38 @@ app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
       created_by
     } = req.body;
 
+        // Convertir los campos bigint a número
+        const tenantIdNum = Number(tenant_id);
+        const channelIdNum = Number(channel_id);
+        const statusIdNum = Number(status_id);
+        if (
+          isNaN(tenantIdNum) ||
+          isNaN(channelIdNum) ||
+          isNaN(statusIdNum)
+        ) {
+          return res.status(400).json({
+            error: 'tenant_id, channel_id y status_id deben ser números válidos',
+            values: { tenant_id, channel_id, status_id }
+          });
+        }
+        // Log para depuración de valores recibidos
+        console.log({
+          tenant_id: tenantIdNum,
+          channel_id: channelIdNum,
+          status_id: statusIdNum,
+          customer_name,
+          customer_identifier,
+          tipo_identificacion,
+          email,
+          tipo_cliente,
+          request_type,
+          subject,
+          country,
+          departamento,
+          ciudad,
+          message,
+          created_by
+        });
     // Insertar la solicitud
     const result = await pool.query(
       `INSERT INTO customer_request (
@@ -91,7 +111,7 @@ app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
         $11, $12, $13, $14, $15, NOW()
       ) RETURNING *`,
       [
-        tenant_id, channel_id, status_id, customer_name, customer_identifier,
+        tenantIdNum, channelIdNum, statusIdNum, customer_name, customer_identifier,
         tipo_identificacion, email, tipo_cliente, request_type, subject,
         country, departamento, ciudad, message, created_by
       ]
@@ -112,7 +132,7 @@ app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
           req.file.mimetype,
           req.file.size,
           req.file.path,
-          created_by
+          1 // uploaded_by: valor numérico fijo
         ]
       );
     }
@@ -121,6 +141,46 @@ app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Error al crear la solicitud' });
+  }
+});
+
+// Endpoint para listar solicitudes
+app.get('/api/requests', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM customer_request');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al consultar solicitudes' });
+  }
+});
+
+// Endpoint para obtener los ids de solicitudes con adjuntos
+app.get('/api/attachments/all-ids', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT DISTINCT request_id FROM attachment');
+    const ids = result.rows.map(r => r.request_id);
+    res.json(ids);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al consultar ids de adjuntos' });
+  }
+});
+
+// Servir archivos adjuntos de la carpeta uploads
+app.use('/uploads', express.static('uploads'));
+
+// Endpoint para obtener adjuntos de una solicitud
+app.get('/api/attachments/:request_id', async (req, res) => {
+  try {
+    const requestId = Number(req.params.request_id);
+    if (isNaN(requestId)) {
+      return res.status(400).json({ error: 'request_id inválido' });
+    }
+    const result = await pool.query('SELECT * FROM attachment WHERE request_id = $1', [requestId]);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al consultar adjuntos' });
   }
 });
 

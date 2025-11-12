@@ -1,0 +1,45 @@
+.attachments-drawer-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+}
+.attachments-drawer {
+  background: #fff;
+  width: 350px;
+  height: 100%;
+  box-shadow: -2px 0 12px rgba(0,0,0,0.12);
+  padding: 24px 20px;
+  overflow-y: auto;
+  position: relative;
+}
+.attachments-drawer h2 {
+  margin-top: 0;
+  font-size: 1.3rem;
+  color: #1976d2;
+}
+.attachments-drawer ul {
+  list-style: none;
+  padding: 0;
+}
+.attachments-drawer li {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+.attachments-drawer .close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.attachments-drawer .close-btn:hover {
+  background: #1565c0;
+}
