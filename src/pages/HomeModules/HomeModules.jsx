@@ -1,10 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import "./HomeModules.css";
+// import SolicitudForm from "../../components/SolicitudForm";
 
 export default function HomeModules() {
   const navigate = useNavigate();
 
   const modulosPrincipales = [
+      {
+        id: "crear-solicitud",
+        nombre: "Crear Solicitud",
+        descripcion: "Completa el formulario para crear una nueva solicitud.",
+        color: "#f59e42",
+        icono: "📄",
+        esFormulario: true,
+      },
     {
       id: "registro",
       nombre: "Registro de Solicitud",
@@ -75,29 +84,27 @@ export default function HomeModules() {
       <section className="section-main light">
         <h2>Procesos Clave</h2>
         <div className="tile-grid light">
-          {modulosPrincipales.map((m) => (
-            <div
-              key={m.id}
-              className="tile-card light"
-              style={{
-                borderTopColor: m.color,
-                boxShadow: `0 4px 20px ${m.color}20`,
-              }}
-              onClick={() => navigate(m.ruta)}
-            >
-              <div
-                className="tile-icon light"
-                style={{ backgroundColor: `${m.color}15` }}
-              >
-                {m.icono}
-              </div>
-              <div className="tile-info">
-                <h3>{m.nombre}</h3>
-                <p>{m.descripcion}</p>
-              </div>
-            </div>
-          ))}
+            {modulosPrincipales.map((m) => (
+                <div
+                  key={m.id}
+                  className="tile-card light"
+                  style={{
+                    borderTopColor: m.color,
+                    boxShadow: `0 4px 20px ${m.color}20`,
+                  }}
+                  onClick={() => navigate(m.esFormulario ? "/crear-solicitud" : m.ruta)}
+                >
+                  <div className="tile-icon light" style={{ backgroundColor: `${m.color}15` }}>
+                    {m.icono}
+                  </div>
+                  <div className="tile-info">
+                    <h3>{m.nombre}</h3>
+                    <p>{m.descripcion}</p>
+                  </div>
+                </div>
+            ))}
         </div>
+         
       </section>
 
       {/* ===== Dock de módulos de apoyo ===== */}

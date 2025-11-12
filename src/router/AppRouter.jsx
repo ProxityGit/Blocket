@@ -5,12 +5,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import HomeModules from "../pages/HomeModules/HomeModules.jsx";
 import RequestSelector from "../pages/RequestSelector/RequestSelector.jsx";
 import DocumentBuilder from "../pages/DocumentBuilder/DocumentBuilder.jsx";
+import CrearSolicitud from "../pages/HomeModules/CrearSolicitud.jsx";
 
 export default function AppRouter() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomeModules />} />
+          <Route path="/crear-solicitud" element={<CrearSolicitud />} />
         <Route path="/registro" element={<div>Registro de Solicitud (pendiente)</div>} />
         <Route path="/asignacion" element={<div>Asignación de bloques (pendiente)</div>} />
         <Route path="/constructor/:idSolicitud" element={<DocumentBuilder />} />
