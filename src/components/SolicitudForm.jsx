@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './SolicitudForm.css';
 
 const SolicitudForm = ({ onSubmit }) => {
   const [form, setForm] = useState({
@@ -107,82 +108,176 @@ const SolicitudForm = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 500, margin: '0 auto' }}>
-      
-      <label>Nombres y apellidos *</label>
-      <input name="nombres" value={form.nombres} onChange={handleChange} required />
-
-      <label>Tipo de identificación</label>
-      <select name="tipo_identificacion" value={form.tipo_identificacion} onChange={handleChange} required>
-        <option value="">Buscar elementos</option>
-        <option value="CC">Cédula de ciudadanía</option>
-        <option value="CE">Cédula de extranjería</option>
-        <option value="NIT">NIT</option>
-        <option value="PAS">Pasaporte</option>
-      </select>
-
-      <label>Identificación del cliente *</label>
-      <input name="identificacion" value={form.identificacion} onChange={handleChange} required />
-
-      <label>Email *</label>
-      <input name="email" type="email" value={form.email} onChange={handleChange} required />
-
-      <label>Tipo de cliente *</label>
-      <select name="tipo_cliente" value={form.tipo_cliente} onChange={handleChange} required>
-        <option value="">Buscar elementos</option>
-        <option value="natural">Persona Natural</option>
-        <option value="juridica">Persona Jurídica</option>
-      </select>
-
-      <label>Tipo de solicitud *</label>
-      <select name="tipo_solicitud" value={form.tipo_solicitud} onChange={handleChange} required>
-        <option value="">Buscar elementos</option>
-        <option value="consulta">Consulta</option>
-        <option value="reclamo">Reclamo</option>
-        <option value="peticion">Petición</option>
-        <option value="otro">Otro</option>
-      </select>
-
-      <label>Country *</label>
-      <select name="pais" value={form.pais} onChange={handleChange} required>
-        <option value="">Buscar elementos</option>
-        <option value="Colombia">Colombia</option>
-        <option value="Otro">Otro</option>
-      </select>
-
-      <label>Departamento *</label>
-      <input name="departamento" value={form.departamento} onChange={handleChange} required />
-
-      <label>Ciudad *</label>
-      <input name="ciudad" value={form.ciudad} onChange={handleChange} required />
-
-      <label>Escriba su solicitud *</label>
-      <textarea name="solicitud" value={form.solicitud} onChange={handleChange} required />
-
-      <label>Archivos adjuntos (máx 5MB, JPG/PNG/PDF)</label>
-      <input name="adjunto" type="file" accept=".jpg,.png,.pdf" onChange={handleChange} />
-      {form.adjunto && <div>No hay nada adjunto.<br />{form.adjunto.name}</div>}
-
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 16 }}>
-        <button type="button" onClick={() => setForm({
-          nombres: '',
-          tipo_identificacion: '',
-          identificacion: '',
-          email: '',
-          tipo_cliente: '',
-          tipo_solicitud: '',
-          pais: '',
-          departamento: '',
-          ciudad: '',
-          solicitud: '',
-          adjunto: null,
-          tenant_id: 1,
-          channel_id: 1,
-          status_id: 1
-        })}>Cancelar</button>
-        <button type="submit">Enviar</button>
+    <div className="solicitud-form-container">
+      <div className="solicitud-form-header">
+        <h1>📝 Nueva Solicitud</h1>
+        <p>Complete el formulario para crear una nueva solicitud. Los campos marcados con * son obligatorios.</p>
       </div>
-    </form>
+
+      <div className="solicitud-form-card">
+        <form onSubmit={handleSubmit}>
+          <div className="solicitud-form-grid">
+            
+            {/* Nombres y apellidos */}
+            <div className="solicitud-form-field full-width">
+              <label>Nombres y apellidos <span className="required">*</span></label>
+              <input 
+                name="nombres" 
+                value={form.nombres} 
+                onChange={handleChange} 
+                placeholder="Ingrese nombres y apellidos completos"
+                required 
+              />
+            </div>
+
+            {/* Tipo de identificación */}
+            <div className="solicitud-form-field">
+              <label>Tipo de identificación <span className="required">*</span></label>
+              <select name="tipo_identificacion" value={form.tipo_identificacion} onChange={handleChange} required>
+                <option value="">Seleccione una opción</option>
+                <option value="CC">Cédula de ciudadanía</option>
+                <option value="CE">Cédula de extranjería</option>
+                <option value="NIT">NIT</option>
+                <option value="PAS">Pasaporte</option>
+              </select>
+            </div>
+
+            {/* Identificación del cliente */}
+            <div className="solicitud-form-field">
+              <label>Identificación del cliente <span className="required">*</span></label>
+              <input 
+                name="identificacion" 
+                value={form.identificacion} 
+                onChange={handleChange} 
+                placeholder="Número de identificación"
+                required 
+              />
+            </div>
+
+            {/* Email */}
+            <div className="solicitud-form-field">
+              <label>Email <span className="required">*</span></label>
+              <input 
+                name="email" 
+                type="email" 
+                value={form.email} 
+                onChange={handleChange} 
+                placeholder="correo@ejemplo.com"
+                required 
+              />
+            </div>
+
+            {/* Tipo de cliente */}
+            <div className="solicitud-form-field">
+              <label>Tipo de cliente <span className="required">*</span></label>
+              <select name="tipo_cliente" value={form.tipo_cliente} onChange={handleChange} required>
+                <option value="">Seleccione una opción</option>
+                <option value="natural">Persona Natural</option>
+                <option value="juridica">Persona Jurídica</option>
+              </select>
+            </div>
+
+            {/* Tipo de solicitud */}
+            <div className="solicitud-form-field">
+              <label>Tipo de solicitud <span className="required">*</span></label>
+              <select name="tipo_solicitud" value={form.tipo_solicitud} onChange={handleChange} required>
+                <option value="">Seleccione una opción</option>
+                <option value="consulta">Consulta</option>
+                <option value="reclamo">Reclamo</option>
+                <option value="peticion">Petición</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+
+            {/* País */}
+            <div className="solicitud-form-field">
+              <label>País <span className="required">*</span></label>
+              <select name="pais" value={form.pais} onChange={handleChange} required>
+                <option value="">Seleccione una opción</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+
+            {/* Departamento */}
+            <div className="solicitud-form-field">
+              <label>Departamento <span className="required">*</span></label>
+              <input 
+                name="departamento" 
+                value={form.departamento} 
+                onChange={handleChange} 
+                placeholder="Ej: Antioquia"
+                required 
+              />
+            </div>
+
+            {/* Ciudad */}
+            <div className="solicitud-form-field">
+              <label>Ciudad <span className="required">*</span></label>
+              <input 
+                name="ciudad" 
+                value={form.ciudad} 
+                onChange={handleChange} 
+                placeholder="Ej: Medellín"
+                required 
+              />
+            </div>
+
+            {/* Solicitud - textarea full width */}
+            <div className="solicitud-form-field full-width">
+              <label>Escriba su solicitud <span className="required">*</span></label>
+              <textarea 
+                name="solicitud" 
+                value={form.solicitud} 
+                onChange={handleChange} 
+                placeholder="Describa detalladamente su solicitud..."
+                required 
+              />
+            </div>
+
+            {/* Archivos adjuntos */}
+            <div className="solicitud-form-field full-width">
+              <label>Archivos adjuntos</label>
+              <input 
+                name="adjunto" 
+                type="file" 
+                accept=".jpg,.png,.pdf" 
+                onChange={handleChange} 
+              />
+              {form.adjunto && (
+                <div className="file-info">
+                  <strong>Archivo seleccionado:</strong> {form.adjunto.name}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="solicitud-form-actions">
+            <button type="button" onClick={() => setForm({
+              nombres: '',
+              tipo_identificacion: '',
+              identificacion: '',
+              email: '',
+              tipo_cliente: '',
+              tipo_solicitud: '',
+              pais: '',
+              departamento: '',
+              ciudad: '',
+              solicitud: '',
+              adjunto: null,
+              tenant_id: 1,
+              channel_id: 1,
+              status_id: 1
+            })}>
+              Cancelar
+            </button>
+            <button type="submit">
+              Enviar Solicitud
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
