@@ -23,7 +23,7 @@ export default function RequestSelector() {
   const [drawerError, setDrawerError] = useState(null);
 
   const [page, setPage] = useState(1);
-  const pageSize = 5;
+  const pageSize = 10; // Cantidad  items por página
 
   // Filtros y paginación deben declararse antes de su uso
   const filtradas = solicitudes.filter(
@@ -153,8 +153,8 @@ export default function RequestSelector() {
         <div className="requests-table-header modern">
           <span onClick={() => handleSort('id')}>ID <FaSort style={{fontSize:10}}/></span>
           <span onClick={() => handleSort('created_at')}>Fecha <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('customer_name')}>Cliente <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('customer_identifier')}>ID Cliente <FaSort style={{fontSize:10}}/></span>
+          <span onClick={() => handleSort('customer_name')}>cliente <FaSort style={{fontSize:10}}/></span>
+          <span onClick={() => handleSort('customer_identifier')}>Id cliente <FaSort style={{fontSize:10}}/></span>
           <span onClick={() => handleSort('email')}>Email <FaSort style={{fontSize:10}}/></span>
           <span onClick={() => handleSort('request_type')}>Tipo <FaSort style={{fontSize:10}}/></span>
           <span onClick={() => handleSort('status_id')}>Estado <FaSort style={{fontSize:10}}/></span>

@@ -1,5 +1,5 @@
 /* =========================================================
-   DYNAMICFIELDS.CSS — PANEL DERECHO PREMIUM CON INDICADORES
+   DYNAMICFIELDS.CSS — PANEL DERECHO CON ESTILO COPILOT SUAVE
    dynamicfields: DynamicFields.css
    descripción: Estilos para el panel de campos dinámicos con indicadores de estado.
    ========================================================= */
@@ -9,7 +9,7 @@
   flex-direction: column;
   height: 100%;
   background: transparent;
-  color: #1e293b;
+  color: #334155;
   padding: 20px;
   overflow-y: auto;
   box-sizing: border-box;
@@ -20,7 +20,7 @@
   margin: 0 0 20px 0;
   color: #1e293b;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: flex;
@@ -34,17 +34,17 @@
 
 /* ---------- Grupo de campos (acordeón) ---------- */
 .grupo-campos {
-  background: #2d3748;
-  border: 1px solid #4a5568;
+  background: #475569;
+  border: 1px solid #64748b;
   border-radius: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.25s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 .grupo-campos:hover {
-  border-color: #60a5fa;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
 }
 
 /* ---------- Encabezado del acordeón ---------- */
@@ -55,11 +55,11 @@
   padding: 14px 18px;
   cursor: pointer;
   user-select: none;
-  background: #1e293b;
-  transition: background 0.25s ease;
+  background: #334155;
+  transition: background 0.2s ease;
 }
 .grupo-header:hover {
-  background: #334155;
+  background: #3f4a5c;
 }
 
 /* ---------- Texto e iconos ---------- */
@@ -73,7 +73,7 @@
 
 .grupo-header h4 {
   margin: 0;
-  color: #f1f5f9;
+  color: #f8fafc;
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.3px;
@@ -84,8 +84,8 @@
 
 .icon-toggle {
   font-size: 16px;
-  color: #93c5fd;
-  transition: transform 0.3s ease;
+  color: #94a3b8;
+  transition: transform 0.25s ease;
   flex-shrink: 0;
 }
 .icon-toggle.open {
@@ -95,23 +95,23 @@
 /* ---------- Etiquetas de estado ---------- */
 .status-tag {
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 11px;
   font-weight: 600;
   text-transform: capitalize;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   white-space: nowrap;
   flex-shrink: 0;
 }
 .status-tag.completo {
   color: #10b981;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.4);
 }
 .status-tag.pendiente {
   color: #fbbf24;
-  background: rgba(251, 191, 36, 0.15);
-  border: 1px solid rgba(251, 191, 36, 0.3);
+  background: rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(251, 191, 36, 0.4);
 }
 
 /* ---------- Contenido del acordeón ---------- */
@@ -120,7 +120,7 @@
   opacity: 0;
   overflow: hidden;
   padding: 0 18px;
-  transition: all 0.35s ease;
+  transition: all 0.3s ease;
 }
 .grupo-content.open {
   max-height: 800px;
@@ -136,28 +136,29 @@
   display: block;
   font-size: 13px;
   margin-bottom: 6px;
-  color: #cbd5e1;
+  color: #e2e8f0;
   font-weight: 600;
 }
 .field input {
   width: 100%;
-  padding: 10px 12px;
-  border: 1.5px solid #475569;
+  padding: 11px 14px;
+  border: 1px solid #64748b;
   border-radius: 8px;
   font-size: 14px;
-  color: #f1f5f9;
-  background: #0f172a;
-  transition: all 0.25s ease;
+  color: #f8fafc;
+  background: #1e293b;
+  transition: all 0.2s ease;
   box-sizing: border-box;
 }
 .field input:hover {
-  border-color: #60a5fa;
+  border-color: #667eea;
+  background: #27374d;
 }
 .field input:focus {
   outline: none;
-  border-color: #3b82f6;
-  background: #1e293b;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  border-color: #667eea;
+  background: #27374d;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
 }
 
 .texto-placeholder {
@@ -177,8 +178,8 @@
 }
 .panel-dinamicos::-webkit-scrollbar-thumb {
   background: #64748b;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 .panel-dinamicos::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #667eea;
 }

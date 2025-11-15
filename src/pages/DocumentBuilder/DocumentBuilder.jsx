@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import "./DocumentBuilder.css";
-import { BLOQUES } from "../../data/mockBlocks";
 import { OPCIONES_CONECTOR } from "../../data/mockConnectors";
 import { extraerPlaceholders } from "../../utils/placeholders";
 import { exportPDF } from "../../utils/pdfGenerator";
@@ -16,6 +15,9 @@ export default function DocumentBuilder() {
   const [solicitud, setSolicitud] = useState(null);
   const [loadingSolicitud, setLoadingSolicitud] = useState(true);
   const [errorSolicitud, setErrorSolicitud] = useState(null);
+  const [bloques, setBloques] = useState([]);
+  const [loadingBloques, setLoadingBloques] = useState(true);
+  const [errorBloques, setErrorBloques] = useState(null);
   // Permite reordenar los bloques por drag and drop
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -70,6 +72,26 @@ export default function DocumentBuilder() {
         setErrorSolicitud(err.message || "Error desconocido");
       });
   }, [idSolicitud]);
+
+  // Cargar bloques desde la API
+  useEffect(() => {
+    setLoadingBloques(true);
+    fetch('/api/blocks')
+      .then((res) => {
+        if (!res.ok) throw new Error("No se pudieron obtener los bloques");
+        return res.json();
+      })
+      .then((data) => {
+        setBloques(data);
+        setLoadingBloques(false);
+        setErrorBloques(null);
+      })
+      .catch((err) => {
+        setBloques([]);
+        setLoadingBloques(false);
+        setErrorBloques(err.message || "Error al cargar bloques");
+      });
+  }, []);
 
   const placeholdersFaltantes = () => {
     const keys = new Set();
@@ -191,11 +213,21 @@ export default function DocumentBuilder() {
 
       <div className="constructor-layout">
         <aside className="panel blocklist-panel">
-          <BlockList
-            bloques={BLOQUES}
-            documento={documento}
-            onAgregar={agregarBloque}
-          />
+          {loadingBloques ? (
+            <div style={{ padding: '20px', textAlign: 'center', color: '#64748b' }}>
+              Cargando bloques...
+            </div>
+          ) : errorBloques ? (
+            <div style={{ padding: '20px', textAlign: 'center', color: '#ef4444' }}>
+              Error: {errorBloques}
+            </div>
+          ) : (
+            <BlockList
+              bloques={bloques}
+              documento={documento}
+              onAgregar={agregarBloque}
+            />
+          )}
         </aside>
 
         <main className="panel panel-documento">

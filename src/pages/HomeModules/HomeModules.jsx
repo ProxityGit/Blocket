@@ -42,9 +42,9 @@ export default function HomeModules() {
 
   const modulosApoyo = [
     {
-      id: "parametrizacion",
-      nombre: "Parametrización",
-      ruta: "/parametrizacion",
+      id: "configuracion-bloques",
+      nombre: "Configuración",
+      ruta: "/configuracion",
       icono: "⚙️",
     },
     {
