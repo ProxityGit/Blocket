@@ -606,8 +606,12 @@ app.delete('/api/processes/:id', async (req, res) => {
 app.use(express.static(path.join(process.cwd(), 'dist')));
 
 // Catch-all para SPA: redirigir todas las rutas no-API al index.html
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+app.use((req, res, next) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+  } else {
+    next();
+  }
 });
 
 // Puerto donde se ejecuta el servidor
