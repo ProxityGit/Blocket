@@ -117,7 +117,8 @@
   background: #f8fafc;
   border-radius: 0 0 10px 10px;
   animation: fadeIn 0.2s;
-  /* Colores modernos para los bordes según el orden se aplican por clase adicional */
+}
+/* Colores modernos para los bordes según el orden se aplican por clase adicional */
 /* Colores para los primeros 6 bloques, puedes agregar más si lo necesitas */
 .bloque-acordeon.bloque-orden-1 { border-color: #2563eb !important; border-width: 2.5px !important; }
 .bloque-acordeon.bloque-orden-2 { border-color: #10b981 !important; border-width: 2.5px !important; }
