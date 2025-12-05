@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./BlockConfig.css";
+import { apiUrl } from "../../config/api";
 
 export default function BlockConfig() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function BlockConfig() {
   const cargarBloques = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/blocks');
+      const res = await fetch(apiUrl('/api/blocks'));
       if (!res.ok) throw new Error("Error al cargar bloques");
       const data = await res.json();
       setBloques(data);
@@ -66,7 +67,7 @@ export default function BlockConfig() {
     if (!confirm("¿Estás seguro de eliminar este bloque?")) return;
     
     try {
-      const res = await fetch(`/api/blocks/${id}`, { method: 'DELETE' });
+      const res = await fetch(apiUrl(`/api/blocks/${id}`), { method: 'DELETE' });
       if (!res.ok) throw new Error("Error al eliminar bloque");
       cargarBloques();
     } catch (err) {

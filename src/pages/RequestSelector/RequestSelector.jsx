@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./RequestSelector.css";
 import AttachmentsDrawer from "../../components/AttachmentsDrawer";
 import { FaPaperclip, FaSort } from "react-icons/fa";
+import { apiUrl } from "../../config/api";
 
 export default function RequestSelector() {
   const navigate = useNavigate();
@@ -62,11 +63,11 @@ export default function RequestSelector() {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      fetch("/api/requests").then(res => {
+      fetch(apiUrl("/api/requests")).then(res => {
         if (!res.ok) throw new Error("Error al obtener solicitudes");
         return res.json();
       }),
-      fetch("/api/attachments/all-ids").then(res => {
+      fetch(apiUrl("/api/attachments/all-ids")).then(res => {
         if (!res.ok) return [];
         return res.json().catch(() => []);
       })
@@ -88,7 +89,7 @@ export default function RequestSelector() {
     setDrawerLoading(true);
     setDrawerError(null);
     try {
-      const res = await fetch(`/api/attachments/${requestId}`);
+      const res = await fetch(apiUrl(`/api/attachments/${requestId}`));
       if (!res.ok) throw new Error("Error al obtener adjuntos");
       const data = await res.json();
       setDrawerAttachments(data);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './SolicitudForm.css';
+import { apiUrl } from '../config/api';
 
 const SolicitudForm = ({ onSubmit }) => {
   const [form, setForm] = useState({
@@ -76,7 +77,7 @@ const SolicitudForm = ({ onSubmit }) => {
     }
 
     try {
-      const response = await fetch('/api/requests', {
+      const response = await fetch(apiUrl('/api/requests'), {
         method: 'POST',
         body: formData
       });

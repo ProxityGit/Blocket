@@ -10,6 +10,7 @@ import DynamicFields from "../../components/DynamicFields";
 import LetterHeader from "../../components/LetterHeader";
 import PreviewModal from "../../components/PreviewModal";
 import { useParams } from "react-router-dom";
+import { apiUrl } from "../../config/api";
 
 export default function DocumentBuilder() {
   const [solicitud, setSolicitud] = useState(null);
@@ -56,7 +57,7 @@ export default function DocumentBuilder() {
 
     // Obtener datos de la solicitud seleccionada
     setLoadingSolicitud(true);
-    fetch(`/api/requests/${idSolicitud}`)
+    fetch(apiUrl(`/api/requests/${idSolicitud}`))
       .then((res) => {
         if (!res.ok) throw new Error("No se pudo obtener la solicitud");
         return res.json();
@@ -76,7 +77,7 @@ export default function DocumentBuilder() {
   // Cargar bloques desde la API
   useEffect(() => {
     setLoadingBloques(true);
-    fetch('/api/blocks')
+    fetch(apiUrl('/api/blocks'))
       .then((res) => {
         if (!res.ok) throw new Error("No se pudieron obtener los bloques");
         return res.json();
