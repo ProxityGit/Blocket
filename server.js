@@ -4,6 +4,7 @@ import multer from 'multer';
 import path from 'path';
 import cors from 'cors';
 import fs from 'fs';
+import { uploadToCloudinary } from './cloudinary-config.js';
 
 const app = express();
 
@@ -142,23 +143,36 @@ app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
     );
     const solicitud = result.rows[0];
 
-    // Si hay archivo adjunto, guardarlo en la tabla attachment
+    // Si hay archivo adjunto, subirlo a Cloudinary
     if (req.file) {
-      await pool.query(
-        `INSERT INTO attachment (
-          request_id, file_name, mime_type, file_size, storage_url, uploaded_at, uploaded_by
-        ) VALUES (
-          $1, $2, $3, $4, $5, NOW(), $6
-        )`,
-        [
-          solicitud.id,
-          req.file.filename,
-          req.file.mimetype,
-          req.file.size,
-          req.file.path,
-          1 // uploaded_by: valor numérico fijo
-        ]
-      );
+      console.log('📤 Subiendo archivo a Cloudinary:', req.file.filename);
+      
+      const cloudinaryResult = await uploadToCloudinary(req.file.path);
+      
+      if (cloudinaryResult.success) {
+        // Guardar referencia en la base de datos
+        await pool.query(
+          `INSERT INTO attachment (
+            request_id, file_name, file_path, file_type, file_size, uploaded_by
+          ) VALUES (
+            $1, $2, $3, $4, $5, $6
+          )`,
+          [
+            solicitud.id,
+            req.file.originalname,
+            cloudinaryResult.url, // URL de Cloudinary
+            req.file.mimetype,
+            cloudinaryResult.size,
+            created_by || 'system'
+          ]
+        );
+        
+        // Eliminar archivo local temporal
+        fs.unlinkSync(req.file.path);
+        console.log('✅ Archivo subido a Cloudinary y eliminado localmente');
+      } else {
+        console.error('❌ Error subiendo a Cloudinary:', cloudinaryResult.error);
+      }
     }
 
     res.status(201).json(solicitud);
