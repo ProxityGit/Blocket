@@ -3,8 +3,16 @@ import pool from './db.js';
 import multer from 'multer';
 import path from 'path';
 import cors from 'cors';
+import fs from 'fs';
 
 const app = express();
+
+// Crear carpeta uploads si no existe
+const uploadsDir = 'uploads';
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('📁 Carpeta uploads creada');
+}
 
 // CORS configuración
 const corsOptions = {
