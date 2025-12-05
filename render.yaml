@@ -1,0 +1,59 @@
+services:
+  # Base de datos PostgreSQL
+  - type: pserv
+    name: blocket-db
+    env: docker
+    plan: free
+    databases:
+      - name: blocket
+        user: blocket_user
+
+  # Backend API (Node.js + Express)
+  - type: web
+    name: blocket-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PGHOST
+        fromDatabase:
+          name: blocket-db
+          property: host
+      - key: PGPORT
+        fromDatabase:
+          name: blocket-db
+          property: port
+      - key: PGDATABASE
+        fromDatabase:
+          name: blocket-db
+          property: database
+      - key: PGUSER
+        fromDatabase:
+          name: blocket-db
+          property: user
+      - key: PGPASSWORD
+        fromDatabase:
+          name: blocket-db
+          property: password
+    healthCheckPath: /api/health
+
+  # Frontend (React + Vite)
+  - type: web
+    name: blocket-frontend
+    env: static
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: blocket-api
+          envVarKey: RENDER_EXTERNAL_URL
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

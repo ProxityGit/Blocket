@@ -5,7 +5,16 @@ import path from 'path';
 import cors from 'cors';
 
 const app = express();
-app.use(cors());
+
+// CORS configuración
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.FRONTEND_URL || '*'
+    : '*',
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Configuración de Multer para guardar archivos en /uploads
@@ -30,6 +39,12 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
+
+// Health check endpoint para Render
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Endpoint para obtener una solicitud por id
 app.get('/api/requests/:id', async (req, res) => {
   try {

@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "node server.js"
+    "start": "node server.js",
+    "start:prod": "NODE_ENV=production node server.js",
+    "db:init": "node scripts/init-db.js"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",

@@ -46,8 +46,18 @@ export default function RequestSelector() {
     );
   });
 
-  const totalPages = Math.ceil(filteredSolicitudes.length / pageSize);
-  const paginatedSolicitudes = filteredSolicitudes.slice((page-1)*pageSize, page*pageSize);
+  // Aplicar sorting antes de paginar
+  const sortedSolicitudes = [...filteredSolicitudes].sort((a, b) => {
+    if (!sort) return 0;
+    const aVal = a[sort] || '';
+    const bVal = b[sort] || '';
+    if (aVal < bVal) return sortAsc ? -1 : 1;
+    if (aVal > bVal) return sortAsc ? 1 : -1;
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sortedSolicitudes.length / pageSize);
+  const paginatedSolicitudes = sortedSolicitudes.slice((page-1)*pageSize, page*pageSize);
 
   useEffect(() => {
     setLoading(true);
@@ -166,12 +176,7 @@ export default function RequestSelector() {
 
         {/* ===== Listado ===== */}
         <div className="requests-list modern">
-          {paginatedSolicitudes.sort((a, b) => {
-          if (!sort) return 0;
-          if (a[sort] < b[sort]) return sortAsc ? -1 : 1;
-          if (a[sort] > b[sort]) return sortAsc ? 1 : -1;
-          return 0;
-        }).map((s) => (
+          {!loading && paginatedSolicitudes.map((s) => (
           <div
             key={s.id}
             className="request-row modern"
@@ -206,7 +211,7 @@ export default function RequestSelector() {
           </div>
         ))}
 
-  {filteredSolicitudes.length === 0 && (
+  {!loading && filteredSolicitudes.length === 0 && (
           <div className="empty-state">
             <p>⚪ No hay solicitudes que coincidan con los filtros actuales.</p>
           </div>
