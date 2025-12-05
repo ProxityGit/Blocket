@@ -10,8 +10,8 @@ import ConfigLayout from "../layouts/ConfigLayout.jsx";
 import Configuration from "../pages/Configuration/Configuration.jsx";
 import BlockConfig from "../pages/BlockConfig/BlockConfig.jsx";
 import BlockForm from "../pages/BlockConfig/BlockForm.jsx";
-import ProcessConfig from "../pages/ProcessConfig/ProcessConfig.jsx";
-import ProcessForm from "../pages/ProcessConfig/ProcessForm.jsx";
+import ProcessConfigNew from "../pages/ProcessConfig/ProcessConfigNew.jsx";
+import ProcessFormNew from "../pages/ProcessConfig/ProcessFormNew.jsx";
 
 export default function AppRouter() {
   return (
@@ -28,9 +28,9 @@ export default function AppRouter() {
         <Route path="/configuracion" element={<ConfigLayout />}>
           <Route index element={<Configuration />} />
           <Route path="usuarios" element={<div style={{padding: '20px'}}>Usuarios (pendiente)</div>} />
-          <Route path="procesos" element={<ProcessConfig />} />
-          <Route path="procesos/nuevo" element={<ProcessForm />} />
-          <Route path="procesos/:id" element={<ProcessForm />} />
+          <Route path="procesos" element={<ProcessConfigNew />} />
+          <Route path="procesos/nuevo" element={<ProcessFormNew />} />
+          <Route path="procesos/:id" element={<ProcessFormNew />} />
           <Route path="categorias" element={<div style={{padding: '20px'}}>Categorías (pendiente)</div>} />
           <Route path="bandejas" element={<div style={{padding: '20px'}}>Bandejas (pendiente)</div>} />
           <Route path="tipos-solicitud" element={<div style={{padding: '20px'}}>Tipos de Solicitud (pendiente)</div>} />
