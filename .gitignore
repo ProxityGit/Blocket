@@ -21,6 +21,12 @@ dist-ssr
 uploads/*
 !uploads/.gitkeep
 
+# Test and temporary files
+check-data.js
+check-database.js
+test-requests.js
+blocket_backup.sql
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
