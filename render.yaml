@@ -1,12 +1,10 @@
-services:
-  # Base de datos PostgreSQL
-  - type: pserv
-    name: blocket-db
-    env: docker
+databases:
+  - name: blocket-db
+    databaseName: blocket
+    user: blocket_user
     plan: free
-    databases:
-      - name: blocket
-        user: blocket_user
+
+services:
 
   # Backend API (Node.js + Express)
   - type: web
@@ -18,26 +16,10 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PGHOST
+      - key: DATABASE_URL
         fromDatabase:
           name: blocket-db
-          property: host
-      - key: PGPORT
-        fromDatabase:
-          name: blocket-db
-          property: port
-      - key: PGDATABASE
-        fromDatabase:
-          name: blocket-db
-          property: database
-      - key: PGUSER
-        fromDatabase:
-          name: blocket-db
-          property: user
-      - key: PGPASSWORD
-        fromDatabase:
-          name: blocket-db
-          property: password
+          property: connectionString
     healthCheckPath: /api/health
 
   # Frontend (React + Vite)
