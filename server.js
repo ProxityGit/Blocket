@@ -9,6 +9,7 @@ import { uploadToCloudinary } from './cloudinary-config.js';
 const app = express();
 
 // Crear carpeta uploads si no existe
+// Cambio menor para forzar redeploy en Render
 const uploadsDir = 'uploads';
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
