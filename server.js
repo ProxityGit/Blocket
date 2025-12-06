@@ -769,6 +769,28 @@ app.get('/api/db-tables', async (req, res) => {
   }
 });
 
+// Endpoint temporal para insertar un bloque de prueba
+app.post('/api/test-insert-block', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `INSERT INTO blocket (titulo, tipo, texto, is_active, is_published, process_id, category_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      [
+        'Bloque de prueba',
+        'test_block',
+        '<p>Este es un bloque de prueba insertado desde el endpoint temporal.</p>',
+        true,
+        false,
+        1,
+        1
+      ]
+    );
+    res.json({ inserted: result.rows[0] });
+  } catch (err) {
+    console.error('[TEST-INSERT-BLOCK] Error:', err);
+    res.status(500).json({ error: 'Error al insertar bloque', details: err.message });
+  }
+});
+
 // Puerto donde se ejecuta el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
