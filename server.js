@@ -15,31 +15,15 @@ if (!fs.existsSync(uploadsDir)) {
   console.log('📁 Carpeta uploads creada');
 }
 
-// CORS configuración
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://blocket-frontend.onrender.com',
-  process.env.FRONTEND_URL
-].filter(Boolean);
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Permitir requests sin origin (como mobile apps o curl)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
-      callback(null, true);
-    } else {
-      callback(new Error('No permitido por CORS'));
-    }
-  },
+// CORS configuración - Permitir todos los orígenes en producción por ahora
+app.use(cors({
+  origin: true, // Refleja el origin del request
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
-
-app.use(cors(corsOptions));
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+}));
 app.use(express.json());
 
 // Configuración de Multer para guardar archivos en /uploads
