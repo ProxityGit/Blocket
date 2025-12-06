@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Card, SimpleGrid } from "@mantine/core";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import {
   IconUser,
   IconFolder,
@@ -8,6 +9,7 @@ import {
   IconBuildingStore,
   IconSettings,
   IconChevronRight,
+  IconFileText,
 } from "@tabler/icons-react";
 
 export default function Configuration() {
@@ -62,11 +64,28 @@ export default function Configuration() {
       path: "/configuracion/procesos",
       gradient: "from-teal-500 to-cyan-500",
     },
+    {
+      id: 7,
+      name: "Encabezado",
+      description: "Configuración de encabezado de documentos",
+      icon: IconFileText,
+      path: "/configuracion/encabezado",
+      gradient: "from-yellow-500 to-orange-500",
+    },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-8">
       <div className="max-w-7xl mx-auto">
+        {/* Breadcrumbs */}
+        <div className="mb-4">
+          <Breadcrumbs 
+            items={[
+              { label: "Configuración" }
+            ]}
+          />
+        </div>
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">

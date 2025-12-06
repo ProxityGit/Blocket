@@ -1,17 +1,42 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./RequestSelector.css";
-import AttachmentsDrawer from "../../components/AttachmentsDrawer";
-import { FaPaperclip, FaSort } from "react-icons/fa";
+import {
+  Card,
+  Button,
+  TextInput,
+  Select,
+  Table,
+  Badge,
+  Group,
+  Stack,
+  Text,
+  Loader,
+  Pagination,
+  ActionIcon,
+  Tooltip,
+} from "@mantine/core";
+import { 
+  Search, 
+  Filter, 
+  FileText, 
+  Paperclip, 
+  Eye,
+  Calendar,
+  Mail,
+  User,
+  MapPin,
+  ArrowUpDown
+} from "lucide-react";
 import { apiUrl } from "../../config/api";
+import Breadcrumbs from "../../components/Breadcrumbs";
+import AttachmentsDrawer from "../../components/AttachmentsDrawer";
 
 export default function RequestSelector() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const [filtroTipo, setFiltroTipo] = useState("Todos");
+  const [filtroTipo, setFiltroTipo] = useState(null);
   const [sort, setSort] = useState('id');
-  const [sortAsc, setSortAsc] = useState(true);
-  const [filterText, setFilterText] = useState("");
+  const [sortAsc, setSortAsc] = useState(false);
 
   const [solicitudes, setSolicitudes] = useState([]);
   const [solicitudesConAdjunto, setSolicitudesConAdjunto] = useState([]);
@@ -24,31 +49,24 @@ export default function RequestSelector() {
   const [drawerError, setDrawerError] = useState(null);
 
   const [page, setPage] = useState(1);
-  const pageSize = 10; // Cantidad  items por página
+  const pageSize = 10;
 
-  // Filtros y paginación deben declararse antes de su uso
+  // Filtros y paginación
   const filtradas = solicitudes.filter(
     (s) =>
-      (filtroTipo === "Todos" || (s.request_type && s.request_type === filtroTipo)) &&
+      (!filtroTipo || (s.request_type && s.request_type === filtroTipo)) &&
       (
+        !search ||
         (s.customer_name && s.customer_name.toLowerCase().includes(search.toLowerCase())) ||
-        (s.subject && s.subject.toLowerCase().includes(search.toLowerCase()))
+        (s.email && s.email.toLowerCase().includes(search.toLowerCase())) ||
+        (s.subject && s.subject.toLowerCase().includes(search.toLowerCase())) ||
+        (s.ciudad && s.ciudad.toLowerCase().includes(search.toLowerCase())) ||
+        (s.departamento && s.departamento.toLowerCase().includes(search.toLowerCase()))
       )
   );
 
-  const filteredSolicitudes = filtradas.filter(s => {
-    if (!filterText) return true;
-    return (
-      (s.customer_name && s.customer_name.toLowerCase().includes(filterText.toLowerCase())) ||
-      (s.email && s.email.toLowerCase().includes(filterText.toLowerCase())) ||
-      (s.subject && s.subject.toLowerCase().includes(filterText.toLowerCase())) ||
-      (s.ciudad && s.ciudad.toLowerCase().includes(filterText.toLowerCase())) ||
-      (s.departamento && s.departamento.toLowerCase().includes(filterText.toLowerCase()))
-    );
-  });
-
-  // Aplicar sorting antes de paginar
-  const sortedSolicitudes = [...filteredSolicitudes].sort((a, b) => {
+  // Aplicar sorting
+  const sortedSolicitudes = [...filtradas].sort((a, b) => {
     if (!sort) return 0;
     const aVal = a[sort] || '';
     const bVal = b[sort] || '';
@@ -100,7 +118,6 @@ export default function RequestSelector() {
     setDrawerLoading(false);
   };
 
-  // ...existing code...
   const handleSort = (field) => {
     if (sort === field) {
       setSortAsc(!sortAsc);
@@ -110,133 +127,256 @@ export default function RequestSelector() {
     }
   };
 
-  // ...existing code...
+  const getStatusBadge = (statusId) => {
+    const statusMap = {
+      1: { label: 'Recibida', color: 'blue' },
+      2: { label: 'Pendiente', color: 'yellow' },
+      3: { label: 'Integrada', color: 'green' },
+      4: { label: 'Error', color: 'red' },
+      5: { label: 'Enviada', color: 'teal' }
+    };
+    const status = statusMap[statusId] || { label: 'Desconocido', color: 'gray' };
+    return <Badge color={status.color} size="sm">{status.label}</Badge>;
+  };
 
   return (
-    <div className="requests-container-extended">
-      {/* ===== Encabezado ===== */}
-      <header className="requests-header-extended">
-        <div className="header-left">
-          <h1>📋 Solicitudes Registradas</h1>
-        </div>
-      </header>
-
-      {/* Estado de carga y error */}
-      {loading && <div style={{textAlign:'center',margin:'32px'}}>Cargando solicitudes...</div>}
-      {error && <div style={{color:'red',textAlign:'center',margin:'32px'}}>Error: {error}</div>}
-      
-      {/* ===== Sección de Filtros Unificada ===== */}
-      <div className="filter-bar unified">
-        <input
-          type="text"
-          placeholder="🔍 Buscar por cliente o asunto..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="filter-input"
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Breadcrumbs */}
+        <Breadcrumbs 
+          items={[
+            { label: "Consulta de Solicitudes" }
+          ]}
         />
-        <select
-          value={filtroTipo}
-          onChange={(e) => setFiltroTipo(e.target.value)}
-          className="filter-select"
-        >
-          <option value="Todos">Todos los tipos</option>
-          <option value="Activación">Activación</option>
-          <option value="Actualización de datos">Actualización de datos</option>
-          <option value="Reclamación">Reclamación</option>
-        </select>
-        <input
-          type="text"
-          placeholder="🔎 Filtrar por email, ciudad, depto..."
-          value={filterText}
-          onChange={e => setFilterText(e.target.value)}
-          className="filter-input"
-        />
-        <button className="btn-new">➕ Nueva solicitud</button>
-      </div>
 
-      <p style={{color:'#6b7280', fontSize:14, marginBottom:24, textAlign:'center'}}>
-        Selecciona una solicitud para abrir el constructor de documentos y gestionar la información asociada.
-      </p>
-
-      {/* ===== Contenedor de Tabla ===== */}
-      <div className="requests-table-container">
-        {/* ===== Cabecera de tabla ===== */}
-        <div className="requests-table-header modern">
-          <span onClick={() => handleSort('id')}>ID <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('created_at')}>Fecha <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('customer_name')}>cliente <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('customer_identifier')}>Id cliente <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('email')}>Email <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('request_type')}>Tipo <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('status_id')}>Estado <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('subject')}>Asunto <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('ciudad')}>Ciudad <FaSort style={{fontSize:10}}/></span>
-          <span onClick={() => handleSort('departamento')}>Depto <FaSort style={{fontSize:10}}/></span>
-          <span>Adjuntos</span>
+        {/* Header - sin contenedor */}
+        <div className="mb-6">
+          <Group gap="sm" mb="xs">
+            <FileText size={32} className="text-blue-600" />
+            <Text size="xl" fw={700} c="blue">Solicitudes Pendientes de Construcción</Text>
+          </Group>
+          <Text size="sm" c="dimmed" ml={44}>
+            Selecciona una solicitud para abrir el constructor de documentos
+          </Text>
         </div>
 
-        {/* ===== Listado ===== */}
-        <div className="requests-list modern">
-          {!loading && paginatedSolicitudes.map((s) => (
-          <div
-            key={s.id}
-            className="request-row modern"
-            onClick={() => navigate(`/constructor/${s.id}`)}
-            style={{ boxShadow: "0 2px 8px #0001", borderRadius: 8, background: "#fff", marginBottom: 2, padding: 6, display: "grid", gridTemplateColumns: "60px 120px 1fr 120px 180px 120px 120px 1fr 120px 120px 120px", alignItems: "center", gap: 0, cursor: "pointer" }}
-          >
-            <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.id}</span>
-            <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.created_at ? new Date(s.created_at).toLocaleDateString() : "—"}</span>
-            <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.customer_name || "—"}</span>
-            <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.customer_identifier || "—"}</span>
-            <span style={{fontSize:13,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.email || "—"}</span>
-            <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.request_type || "—"}</span>
-            <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.status_id || "—"}</span>
-            <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.subject || "—"}</span>
-            <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.ciudad || "—"}</span>
-            <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.departamento || "—"}</span>
-            <span style={{justifySelf:'end'}}>
-              {solicitudesConAdjunto.includes(s.id) ? (
-                <button 
-                  className="btn-attach" 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleShowAttachments(s.id);
-                  }}
-                >
-                  <FaPaperclip style={{ marginRight: 6 }} /> Ver adjuntos
-                </button>
-              ) : (
-                <span style={{ color: "#bbb", fontSize: 13 }}>—</span>
+        {/* Filtros */}
+        <Card shadow="sm" padding="lg" radius="lg" withBorder>
+          <Group gap="md">
+            <TextInput
+              placeholder="🔍 Buscar por cliente, email, asunto, ciudad..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              leftSection={<Search size={16} />}
+              style={{ flex: 1 }}
+            />
+            <Select
+              placeholder="Todos los tipos"
+              value={filtroTipo}
+              onChange={(value) => setFiltroTipo(value)}
+              data={[
+                { value: 'consulta', label: 'Consulta' },
+                { value: 'reclamo', label: 'Reclamo' },
+                { value: 'peticion', label: 'Petición' },
+                { value: 'otro', label: 'Otro' }
+              ]}
+              leftSection={<Filter size={16} />}
+              style={{ minWidth: 200 }}
+              clearable
+            />
+          </Group>
+        </Card>
+
+        {/* Loading state */}
+        {loading && (
+          <Card shadow="sm" padding="xl" radius="lg" withBorder>
+            <Group justify="center">
+              <Loader size="lg" />
+              <Text>Cargando solicitudes...</Text>
+            </Group>
+          </Card>
+        )}
+
+        {/* Error state */}
+        {error && (
+          <Card shadow="sm" padding="xl" radius="lg" withBorder style={{ borderColor: 'red' }}>
+            <Text c="red" ta="center">Error: {error}</Text>
+          </Card>
+        )}
+
+        {/* Tabla de solicitudes */}
+        {!loading && !error && (
+          <Card shadow="sm" padding="lg" radius="lg" withBorder>
+            <Stack gap="md">
+              <Group justify="space-between">
+                <Text size="sm" c="dimmed">
+                  Mostrando {paginatedSolicitudes.length} de {sortedSolicitudes.length} solicitudes
+                </Text>
+              </Group>
+
+              <Table.ScrollContainer minWidth={1200}>
+                <Table striped highlightOnHover>
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th style={{ cursor: 'pointer' }} onClick={() => handleSort('id')}>
+                        <Group gap="xs">
+                          ID <ArrowUpDown size={14} />
+                        </Group>
+                      </Table.Th>
+                      <Table.Th style={{ cursor: 'pointer' }} onClick={() => handleSort('created_at')}>
+                        <Group gap="xs">
+                          Fecha <ArrowUpDown size={14} />
+                        </Group>
+                      </Table.Th>
+                      <Table.Th style={{ cursor: 'pointer' }} onClick={() => handleSort('customer_name')}>
+                        <Group gap="xs">
+                          Cliente <ArrowUpDown size={14} />
+                        </Group>
+                      </Table.Th>
+                      <Table.Th>Email</Table.Th>
+                      <Table.Th style={{ cursor: 'pointer' }} onClick={() => handleSort('request_type')}>
+                        <Group gap="xs">
+                          Tipo <ArrowUpDown size={14} />
+                        </Group>
+                      </Table.Th>
+                      <Table.Th>Estado</Table.Th>
+                      <Table.Th>Ubicación</Table.Th>
+                      <Table.Th>Asunto</Table.Th>
+                      <Table.Th ta="center">Adjuntos</Table.Th>
+                      <Table.Th ta="center">Acciones</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {paginatedSolicitudes.map((s) => (
+                      <Table.Tr 
+                        key={s.id}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => navigate(`/constructor/${s.id}`)}
+                      >
+                        <Table.Td>
+                          <Badge variant="light" color="gray">#{s.id}</Badge>
+                        </Table.Td>
+                        <Table.Td>
+                          <Group gap="xs">
+                            <Calendar size={14} />
+                            <Text size="sm">
+                              {s.created_at ? new Date(s.created_at).toLocaleDateString() : "—"}
+                            </Text>
+                          </Group>
+                        </Table.Td>
+                        <Table.Td>
+                          <Group gap="xs">
+                            <User size={14} />
+                            <Text size="sm">{s.customer_name || "—"}</Text>
+                          </Group>
+                        </Table.Td>
+                        <Table.Td>
+                          <Group gap="xs">
+                            <Mail size={14} />
+                            <Text size="xs" c="dimmed">{s.email || "—"}</Text>
+                          </Group>
+                        </Table.Td>
+                        <Table.Td>
+                          <Badge variant="light">{s.request_type || "—"}</Badge>
+                        </Table.Td>
+                        <Table.Td>{getStatusBadge(s.status_id)}</Table.Td>
+                        <Table.Td>
+                          <Group gap="xs">
+                            <MapPin size={14} />
+                            <Text size="xs" c="dimmed">
+                              {s.ciudad && s.departamento ? `${s.ciudad}, ${s.departamento}` : "—"}
+                            </Text>
+                          </Group>
+                        </Table.Td>
+                        <Table.Td>
+                          <Text size="xs" lineClamp={2}>{s.subject || "—"}</Text>
+                        </Table.Td>
+                        <Table.Td ta="center">
+                          {solicitudesConAdjunto.includes(s.id) ? (
+                            <Tooltip label="Ver adjuntos">
+                              <ActionIcon
+                                variant="light"
+                                color="blue"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleShowAttachments(s.id);
+                                }}
+                              >
+                                <Paperclip size={16} />
+                              </ActionIcon>
+                            </Tooltip>
+                          ) : (
+                            <Text size="xs" c="dimmed">—</Text>
+                          )}
+                        </Table.Td>
+                        <Table.Td ta="center">
+                          <Tooltip label="Ver detalles">
+                            <ActionIcon
+                              variant="light"
+                              color="blue"
+                              onClick={() => navigate(`/constructor/${s.id}`)}
+                            >
+                              <Eye size={16} />
+                            </ActionIcon>
+                          </Tooltip>
+                        </Table.Td>
+                      </Table.Tr>
+                    ))}
+                  </Table.Tbody>
+                </Table>
+              </Table.ScrollContainer>
+
+              {/* Empty state */}
+              {paginatedSolicitudes.length === 0 && (
+                <Card shadow="xs" padding="xl" radius="md" withBorder style={{ textAlign: 'center' }}>
+                  <Text c="dimmed">⚪ No hay solicitudes que coincidan con los filtros actuales</Text>
+                </Card>
               )}
-            </span>
-          </div>
-        ))}
 
-  {!loading && filteredSolicitudes.length === 0 && (
-          <div className="empty-state">
-            <p>⚪ No hay solicitudes que coincidan con los filtros actuales.</p>
-          </div>
+              {/* Paginación */}
+              {totalPages > 1 && (
+                <Group justify="center" mt="md">
+                  <Pagination 
+                    total={totalPages} 
+                    value={page} 
+                    onChange={setPage}
+                    color="blue"
+                  />
+                </Group>
+              )}
+            </Stack>
+          </Card>
         )}
       </div>
 
-      {/* ===== Paginación ===== */}
-      <div className="pagination-bar">
-        <button disabled={page === 1} onClick={() => setPage(page-1)} style={{marginRight:8}}>Anterior</button>
-        <span>Página {page} de {totalPages}</span>
-        <button disabled={page === totalPages} onClick={() => setPage(page+1)} style={{marginLeft:8}}>Siguiente</button>
-      </div>
-      </div> {/* Cierre de requests-table-container */}
-
+      {/* Drawer de adjuntos */}
       <AttachmentsDrawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         attachments={drawerAttachments}
       />
       {drawerLoading && drawerOpen && (
-        <div style={{position:'fixed',right:370,top:40,background:'#fff',padding:8,borderRadius:4,boxShadow:'0 2px 8px #0002',zIndex:1100}}>Cargando adjuntos...</div>
+        <Card 
+          shadow="md" 
+          padding="md" 
+          radius="md" 
+          style={{ position: 'fixed', right: 370, top: 40, zIndex: 1100 }}
+        >
+          <Group gap="xs">
+            <Loader size="sm" />
+            <Text size="sm">Cargando adjuntos...</Text>
+          </Group>
+        </Card>
       )}
       {drawerError && drawerOpen && (
-        <div style={{position:'fixed',right:370,top:80,background:'#fff',padding:8,borderRadius:4,boxShadow:'0 2px 8px #0002',zIndex:1100,color:'red'}}>Error: {drawerError}</div>
+        <Card 
+          shadow="md" 
+          padding="md" 
+          radius="md" 
+          style={{ position: 'fixed', right: 370, top: 80, zIndex: 1100, borderColor: 'red' }}
+        >
+          <Text size="sm" c="red">Error: {drawerError}</Text>
+        </Card>
       )}
     </div>
   );

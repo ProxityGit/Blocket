@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { FileText, ClipboardList, Package, FileCode, Settings, Search, BarChart3, Rocket, ChevronRight } from "lucide-react";
+import { FileText, ClipboardList, Package, FileCode, Settings, Search, BarChart3, Rocket, ChevronRight, Bell } from "lucide-react";
 
 export default function HomeModules() {
   const navigate = useNavigate();
@@ -57,6 +57,17 @@ export default function HomeModules() {
       Icon: FileCode,
       ruta: "/consulta",
     },
+    {
+      id: "notificacion",
+      nombre: "Notificación",
+      descripcion: "Despacho automático de la solicitud al cliente.",
+      color: "from-purple-600 to-violet-500",
+      bgColor: "bg-purple-50",
+      borderColor: "border-purple-200",
+      hoverColor: "hover:border-purple-400",
+      Icon: Bell,
+      ruta: "/notificacion",
+    },
   ];
 
   const modulosApoyo = [
@@ -102,14 +113,14 @@ export default function HomeModules() {
       </section>
 
       {/* Main Modules */}
-      <section className="flex-1 max-w-7xl mx-auto px-8 py-8 w-full overflow-y-auto">
-        <div className="flex items-center gap-4 mb-8">
+      <section className="flex-1 mx-auto px-8 py-8 w-full overflow-y-auto">
+        <div className="flex items-center gap-4 mb-8 max-w-[1600px] mx-auto">
           <h2 className="text-2xl font-bold text-gray-800">Procesos</h2>
           <div className="flex-1 h-px bg-gradient-to-r from-gray-300 to-transparent"></div>
         </div>
         
         {/* Conveyor Belt Container */}
-        <div className="relative">
+        <div className="relative max-w-[1600px] mx-auto">
           {/* Conveyor Belt Line */}
           <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-3 bg-gray-200">
             <div className="absolute inset-0"
@@ -120,11 +131,11 @@ export default function HomeModules() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+          <div className="flex justify-center gap-6 relative z-10">
             {modulosPrincipales.map((m, index) => {
               const IconComponent = m.Icon;
               return (
-                <div key={m.id} className="relative">
+                <div key={m.id} className="relative w-[280px]">
                   {/* Number Badge */}
                   <div className="flex justify-center mb-3">
                     <div className="w-10 h-10 rounded-full bg-white border-2 border-gray-300
@@ -136,7 +147,7 @@ export default function HomeModules() {
                   {/* Card */}
                   <div
                     className="group relative bg-white rounded-2xl p-5 cursor-pointer
-                      shadow-lg border border-gray-100 h-full flex flex-col
+                      shadow-lg border border-gray-100 h-[280px] flex flex-col
                       transition-all duration-300 ease-out
                       hover:shadow-2xl hover:-translate-y-1"
                     onClick={() => navigate(m.ruta)}

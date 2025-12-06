@@ -12,6 +12,7 @@ import BlockConfig from "../pages/BlockConfig/BlockConfig.jsx";
 import BlockForm from "../pages/BlockConfig/BlockForm.jsx";
 import ProcessConfig from "../pages/ProcessConfig/ProcessConfig.jsx";
 import ProcessForm from "../pages/ProcessConfig/ProcessForm.jsx";
+import HeaderConfig from "../pages/HeaderConfig/HeaderConfig.jsx";
 
 export default function AppRouter() {
   return (
@@ -37,6 +38,7 @@ export default function AppRouter() {
           <Route path="bloques" element={<BlockConfig />} />
           <Route path="bloques/nuevo" element={<BlockForm />} />
           <Route path="bloques/:id" element={<BlockForm />} />
+          <Route path="encabezado" element={<HeaderConfig />} />
         </Route>
 
         <Route path="/parametrizacion" element={<div>Parametrización (pendiente)</div>} />

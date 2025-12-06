@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import "./ProcessConfig.css";
 
 export default function ProcessConfig() {
@@ -65,6 +66,12 @@ export default function ProcessConfig() {
 
   return (
     <div className="process-config-container">
+      <Breadcrumbs 
+        items={[
+          { label: "Configuración", path: "/configuracion" },
+          { label: "Procesos" }
+        ]}
+      />
       <header className="process-header">
         <div>
           <h1>Gestión de Procesos</h1>

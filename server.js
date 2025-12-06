@@ -648,6 +648,97 @@ app.delete('/api/processes/:id', async (req, res) => {
   }
 });
 
+// ==================== HEADER CONFIG ENDPOINTS ====================
+// GET: Obtener configuración del encabezado
+app.get('/api/header-config', async (req, res) => {
+  try {
+    const tenantId = req.query.tenant_id || 1;
+    
+    const result = await pool.query(
+      'SELECT * FROM header_config WHERE tenant_id = $1',
+      [tenantId]
+    );
+    
+    if (result.rows.length === 0) {
+      // Si no existe, retornar valores por defecto
+      return res.json({
+        logo_url: '',
+        company_name: '',
+        address: '',
+        city: '',
+        greeting: 'Cordial saludo',
+        radicado_label: 'Radicado',
+        identificador_label: 'Identificador',
+        cargo_label: 'Cargo',
+        show_radicado: true,
+        show_identificador: true,
+        show_cargo: false
+      });
+    }
+    
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error al obtener configuración del encabezado:', err);
+    res.status(500).json({ error: 'Error al obtener configuración del encabezado: ' + err.message });
+  }
+});
+
+// POST: Guardar configuración del encabezado
+app.post('/api/header-config', async (req, res) => {
+  try {
+    const tenantId = req.body.tenant_id || 1;
+    const {
+      logo_url,
+      company_name,
+      address,
+      city,
+      greeting,
+      radicado_label,
+      identificador_label,
+      cargo_label,
+      show_radicado,
+      show_identificador,
+      show_cargo
+    } = req.body;
+    
+    const result = await pool.query(
+      `INSERT INTO header_config (
+        tenant_id, logo_url, company_name, address, city, greeting,
+        radicado_label, identificador_label, cargo_label,
+        show_radicado, show_identificador, show_cargo,
+        updated_at
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW())
+      ON CONFLICT (tenant_id) 
+      DO UPDATE SET
+        logo_url = EXCLUDED.logo_url,
+        company_name = EXCLUDED.company_name,
+        address = EXCLUDED.address,
+        city = EXCLUDED.city,
+        greeting = EXCLUDED.greeting,
+        radicado_label = EXCLUDED.radicado_label,
+        identificador_label = EXCLUDED.identificador_label,
+        cargo_label = EXCLUDED.cargo_label,
+        show_radicado = EXCLUDED.show_radicado,
+        show_identificador = EXCLUDED.show_identificador,
+        show_cargo = EXCLUDED.show_cargo,
+        updated_at = NOW()
+      RETURNING *`,
+      [tenantId, logo_url, company_name, address, city, greeting,
+       radicado_label, identificador_label, cargo_label,
+       show_radicado, show_identificador, show_cargo]
+    );
+    
+    res.json({ 
+      message: 'Configuración guardada exitosamente',
+      config: result.rows[0]
+    });
+  } catch (err) {
+    console.error('Error al guardar configuración del encabezado:', err);
+    res.status(500).json({ error: 'Error al guardar configuración del encabezado: ' + err.message });
+  }
+});
+
 // Servir archivos estáticos del frontend construido
 app.use(express.static(path.join(process.cwd(), 'dist')));
 

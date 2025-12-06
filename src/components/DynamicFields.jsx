@@ -45,7 +45,7 @@ function DynamicFields({ documento, camposValores, actualizarCampo }) {
                   className={`status-tag ${completo ? "completo" : "pendiente"}`}
                   title={completo ? "Todos los campos diligenciados" : "Faltan campos por completar"}
                 >
-                  {completo ? "✔ Completo" : "⏳ Pendiente"}
+                  {completo ? "✔ Completo" : "○ Pendiente"}
                 </span>
               </div>
               <span className={`icon-toggle ${openGroup === index ? "open" : ""}`}>▼</span>
