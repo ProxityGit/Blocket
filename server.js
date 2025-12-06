@@ -739,18 +739,6 @@ app.post('/api/header-config', async (req, res) => {
   }
 });
 
-// Servir archivos estáticos del frontend construido
-app.use(express.static(path.join(process.cwd(), 'dist')));
-
-// Catch-all para SPA: redirigir todas las rutas no-API al index.html
-app.use((req, res, next) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
-  } else {
-    next();
-  }
-});
-
 // Puerto donde se ejecuta el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
