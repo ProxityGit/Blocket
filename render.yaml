@@ -38,7 +38,7 @@ services:
     staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
-        value: https://blocket-api.onrender.com
+        value: https://blocket-api-7ku5.onrender.com
     routes:
       - type: rewrite
         source: /*
