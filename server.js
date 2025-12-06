@@ -49,9 +49,25 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
 
-// Health check endpoint para Render
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+// Health check endpoint para Render con diagnóstico de BD
+app.get('/api/health', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    res.status(200).json({ 
+      status: 'ok', 
+      timestamp: new Date().toISOString(),
+      database: 'connected',
+      dbTime: result.rows[0].now
+    });
+  } catch (error) {
+    console.error('[Health Check] Error:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      timestamp: new Date().toISOString(),
+      database: 'disconnected',
+      error: error.message 
+    });
+  }
 });
 
 // Endpoint para obtener una solicitud por id
@@ -185,10 +201,13 @@ app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
 // Endpoint para listar solicitudes
 app.get('/api/requests', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM customer_request');
+    console.log('[GET /api/requests] Consultando solicitudes...');
+    const result = await pool.query('SELECT * FROM customer_request ORDER BY id DESC');
+    console.log(`[GET /api/requests] Encontradas ${result.rows.length} solicitudes`);
     res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: 'Error al consultar solicitudes' });
+    console.error('[GET /api/requests] Error:', err);
+    res.status(500).json({ error: 'Error al consultar solicitudes', details: err.message });
   }
 });
 
