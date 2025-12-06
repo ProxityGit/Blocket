@@ -15,11 +15,11 @@ import {
   ActionIcon,
   Tooltip,
 } from "@mantine/core";
-import { 
-  Search, 
-  Filter, 
-  FileText, 
-  Paperclip, 
+import {
+  Search,
+  Filter,
+  FileText,
+  Paperclip,
   Eye,
   Calendar,
   Mail,
@@ -76,28 +76,33 @@ export default function RequestSelector() {
   });
 
   const totalPages = Math.ceil(sortedSolicitudes.length / pageSize);
-  const paginatedSolicitudes = sortedSolicitudes.slice((page-1)*pageSize, page*pageSize);
+  const paginatedSolicitudes = sortedSolicitudes.slice((page - 1) * pageSize, page * pageSize);
 
   useEffect(() => {
+    // 1. Cargar solicitudes inmediatamente
     setLoading(true);
-    Promise.all([
-      fetch(apiUrl("/api/requests")).then(res => {
+    fetch(apiUrl("/api/requests"))
+      .then(res => {
         if (!res.ok) throw new Error("Error al obtener solicitudes");
         return res.json();
-      }),
-      fetch(apiUrl("/api/attachments/all-ids")).then(res => {
+      })
+      .then(data => {
+        setSolicitudes(data);
+        setLoading(false); // Mostrar tabla lo antes posible
+
+        // 2. Cargar info de adjuntos en segundo plano (no bloqueante)
+        return fetch(apiUrl("/api/attachments/all-ids"));
+      })
+      .then(res => {
         if (!res.ok) return [];
         return res.json().catch(() => []);
       })
-    ])
-      .then(([sols, adjuntos]) => {
-        setSolicitudes(sols);
-        setSolicitudesConAdjunto(adjuntos);
-        setLoading(false);
+      .then(adjuntosIds => {
+        setSolicitudesConAdjunto(adjuntosIds);
       })
       .catch((err) => {
+        console.error("Error cargando datos:", err);
         setError(err.message);
-        setSolicitudesConAdjunto([]);
         setLoading(false);
       });
   }, []);
@@ -143,7 +148,7 @@ export default function RequestSelector() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Breadcrumbs */}
-        <Breadcrumbs 
+        <Breadcrumbs
           items={[
             { label: "Consulta de Solicitudes" }
           ]}
@@ -248,7 +253,7 @@ export default function RequestSelector() {
                   </Table.Thead>
                   <Table.Tbody>
                     {paginatedSolicitudes.map((s) => (
-                      <Table.Tr 
+                      <Table.Tr
                         key={s.id}
                         style={{ cursor: 'pointer' }}
                         onClick={() => navigate(`/constructor/${s.id}`)}
@@ -336,9 +341,9 @@ export default function RequestSelector() {
               {/* Paginación */}
               {totalPages > 1 && (
                 <Group justify="center" mt="md">
-                  <Pagination 
-                    total={totalPages} 
-                    value={page} 
+                  <Pagination
+                    total={totalPages}
+                    value={page}
                     onChange={setPage}
                     color="blue"
                   />
@@ -356,10 +361,10 @@ export default function RequestSelector() {
         attachments={drawerAttachments}
       />
       {drawerLoading && drawerOpen && (
-        <Card 
-          shadow="md" 
-          padding="md" 
-          radius="md" 
+        <Card
+          shadow="md"
+          padding="md"
+          radius="md"
           style={{ position: 'fixed', right: 370, top: 40, zIndex: 1100 }}
         >
           <Group gap="xs">
@@ -369,10 +374,10 @@ export default function RequestSelector() {
         </Card>
       )}
       {drawerError && drawerOpen && (
-        <Card 
-          shadow="md" 
-          padding="md" 
-          radius="md" 
+        <Card
+          shadow="md"
+          padding="md"
+          radius="md"
           style={{ position: 'fixed', right: 370, top: 80, zIndex: 1100, borderColor: 'red' }}
         >
           <Text size="sm" c="red">Error: {drawerError}</Text>
