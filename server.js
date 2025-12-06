@@ -391,7 +391,7 @@ app.post('/api/blocks', async (req, res) => {
       key,
       title,
       template_html,
-      'v1',
+      1, // version (integer)
       is_active !== undefined ? is_active : true,
       is_published !== undefined ? is_published : false,
       0 // sort_order
