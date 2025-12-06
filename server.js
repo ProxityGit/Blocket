@@ -54,19 +54,19 @@ const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024
 app.get('/api/health', async (req, res) => {
   try {
     const result = await pool.query('SELECT NOW()');
-    res.status(200).json({ 
-      status: 'ok', 
+    res.status(200).json({
+      status: 'ok',
       timestamp: new Date().toISOString(),
       database: 'connected',
       dbTime: result.rows[0].now
     });
   } catch (error) {
     console.error('[Health Check] Error:', error);
-    res.status(500).json({ 
-      status: 'error', 
+    res.status(500).json({
+      status: 'error',
       timestamp: new Date().toISOString(),
       database: 'disconnected',
-      error: error.message 
+      error: error.message
     });
   }
 });
@@ -109,38 +109,38 @@ app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
       created_by
     } = req.body;
 
-        // Convertir los campos bigint a número
-        const tenantIdNum = Number(tenant_id);
-        const channelIdNum = Number(channel_id);
-        const statusIdNum = Number(status_id);
-        if (
-          isNaN(tenantIdNum) ||
-          isNaN(channelIdNum) ||
-          isNaN(statusIdNum)
-        ) {
-          return res.status(400).json({
-            error: 'tenant_id, channel_id y status_id deben ser números válidos',
-            values: { tenant_id, channel_id, status_id }
-          });
-        }
-        // Log para depuración de valores recibidos
-        console.log({
-          tenant_id: tenantIdNum,
-          channel_id: channelIdNum,
-          status_id: statusIdNum,
-          customer_name,
-          customer_identifier,
-          tipo_identificacion,
-          email,
-          tipo_cliente,
-          request_type,
-          subject,
-          country,
-          departamento,
-          ciudad,
-          message,
-          created_by
-        });
+    // Convertir los campos bigint a número
+    const tenantIdNum = Number(tenant_id);
+    const channelIdNum = Number(channel_id);
+    const statusIdNum = Number(status_id);
+    if (
+      isNaN(tenantIdNum) ||
+      isNaN(channelIdNum) ||
+      isNaN(statusIdNum)
+    ) {
+      return res.status(400).json({
+        error: 'tenant_id, channel_id y status_id deben ser números válidos',
+        values: { tenant_id, channel_id, status_id }
+      });
+    }
+    // Log para depuración de valores recibidos
+    console.log({
+      tenant_id: tenantIdNum,
+      channel_id: channelIdNum,
+      status_id: statusIdNum,
+      customer_name,
+      customer_identifier,
+      tipo_identificacion,
+      email,
+      tipo_cliente,
+      request_type,
+      subject,
+      country,
+      departamento,
+      ciudad,
+      message,
+      created_by
+    });
     // Insertar la solicitud
     const result = await pool.query(
       `INSERT INTO customer_request (
@@ -163,9 +163,9 @@ app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
     // Si hay archivo adjunto, subirlo a Cloudinary
     if (req.file) {
       console.log('📤 Subiendo archivo a Cloudinary:', req.file.filename);
-      
+
       const cloudinaryResult = await uploadToCloudinary(req.file.path);
-      
+
       if (cloudinaryResult.success) {
         // Guardar referencia en la base de datos
         await pool.query(
@@ -183,7 +183,7 @@ app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
             created_by || 'system'
           ]
         );
-        
+
         // Eliminar archivo local temporal
         fs.unlinkSync(req.file.path);
         console.log('✅ Archivo subido a Cloudinary y eliminado localmente');
@@ -248,7 +248,7 @@ app.get('/api/attachments/:request_id', async (req, res) => {
 app.get('/api/blocks', async (req, res) => {
   try {
     const { tenant_id = 1, is_active = true } = req.query;
-    
+
     // Obtener bloques
     const blocksQuery = `
       SELECT b.*, p.name as process_name, c.name as category_name
@@ -259,7 +259,7 @@ app.get('/api/blocks', async (req, res) => {
       ORDER BY b.sort_order, b.title
     `;
     const blocksResult = await pool.query(blocksQuery, [tenant_id, is_active]);
-    
+
     // Obtener campos dinámicos de todos los bloques
     const fieldsQuery = `
       SELECT * FROM blocket_dynamic_field 
@@ -267,10 +267,10 @@ app.get('/api/blocks', async (req, res) => {
       ORDER BY blocket_id, sort_order
     `;
     const blockIds = blocksResult.rows.map(b => b.id);
-    const fieldsResult = blockIds.length > 0 
+    const fieldsResult = blockIds.length > 0
       ? await pool.query(fieldsQuery, [blockIds])
       : { rows: [] };
-    
+
     // Mapear campos a sus bloques
     const blocks = blocksResult.rows.map(block => {
       const campos = fieldsResult.rows
@@ -282,7 +282,7 @@ app.get('/api/blocks', async (req, res) => {
           required: f.required,
           options: f.options_json
         }));
-      
+
       return {
         id: block.id,
         name: block.title,
@@ -303,7 +303,7 @@ app.get('/api/blocks', async (req, res) => {
         texto: block.template_html
       };
     });
-    
+
     res.json(blocks);
   } catch (err) {
     console.error('Error al obtener bloques:', err);
@@ -318,7 +318,7 @@ app.get('/api/blocks/:id', async (req, res) => {
     if (isNaN(blockId)) {
       return res.status(400).json({ error: 'ID inválido' });
     }
-    
+
     // Obtener bloque
     const blockQuery = `
       SELECT b.*, p.name as process_name, c.name as category_name
@@ -328,11 +328,11 @@ app.get('/api/blocks/:id', async (req, res) => {
       WHERE b.id = $1
     `;
     const blockResult = await pool.query(blockQuery, [blockId]);
-    
+
     if (blockResult.rows.length === 0) {
       return res.status(404).json({ error: 'Bloque no encontrado' });
     }
-    
+
     // Obtener campos dinámicos
     const fieldsQuery = `
       SELECT * FROM blocket_dynamic_field 
@@ -340,7 +340,7 @@ app.get('/api/blocks/:id', async (req, res) => {
       ORDER BY sort_order
     `;
     const fieldsResult = await pool.query(fieldsQuery, [blockId]);
-    
+
     const block = blockResult.rows[0];
     const campos = fieldsResult.rows.map(f => ({
       id: f.id,
@@ -351,7 +351,7 @@ app.get('/api/blocks/:id', async (req, res) => {
       sortOrder: f.sort_order,
       options: f.options_json
     }));
-    
+
     res.json({
       id: block.id,
       titulo: block.title,
@@ -375,9 +375,9 @@ app.post('/api/blocks', async (req, res) => {
   const client = await pool.connect();
   try {
     const { title, key, template_html, is_active, is_published, process_id, category_id, campos } = req.body;
-    
+
     await client.query('BEGIN');
-    
+
     // Insertar bloque
     const blockQuery = `
       INSERT INTO blocket (tenant_id, process_id, category_id, key, title, template_html, version, is_active, is_published, sort_order)
@@ -396,9 +396,9 @@ app.post('/api/blocks', async (req, res) => {
       is_published !== undefined ? is_published : false,
       0 // sort_order
     ]);
-    
+
     const blockId = blockResult.rows[0].id;
-    
+
     // Insertar campos dinámicos
     if (campos && campos.length > 0) {
       for (let i = 0; i < campos.length; i++) {
@@ -418,10 +418,10 @@ app.post('/api/blocks', async (req, res) => {
         ]);
       }
     }
-    
+
     await client.query('COMMIT');
     res.status(201).json({ id: blockId, message: 'Bloque creado exitosamente' });
-    
+
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('Error al crear bloque:', err);
@@ -437,9 +437,9 @@ app.put('/api/blocks/:id', async (req, res) => {
   try {
     const blockId = Number(req.params.id);
     const { title, key, template_html, is_active, is_published, process_id, category_id, campos } = req.body;
-    
+
     await client.query('BEGIN');
-    
+
     // Actualizar bloque
     const blockQuery = `
       UPDATE blocket
@@ -457,10 +457,10 @@ app.put('/api/blocks/:id', async (req, res) => {
       category_id || 1,
       blockId
     ]);
-    
+
     // Eliminar campos existentes
     await client.query('DELETE FROM blocket_dynamic_field WHERE blocket_id = $1', [blockId]);
-    
+
     // Insertar nuevos campos
     if (campos && campos.length > 0) {
       for (let i = 0; i < campos.length; i++) {
@@ -480,10 +480,10 @@ app.put('/api/blocks/:id', async (req, res) => {
         ]);
       }
     }
-    
+
     await client.query('COMMIT');
     res.json({ message: 'Bloque actualizado exitosamente' });
-    
+
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('Error al actualizar bloque:', err);
@@ -498,18 +498,18 @@ app.delete('/api/blocks/:id', async (req, res) => {
   const client = await pool.connect();
   try {
     const blockId = Number(req.params.id);
-    
+
     await client.query('BEGIN');
-    
+
     // Eliminar campos dinámicos
     await client.query('DELETE FROM blocket_dynamic_field WHERE blocket_id = $1', [blockId]);
-    
+
     // Eliminar bloque
     await client.query('DELETE FROM blocket WHERE id = $1', [blockId]);
-    
+
     await client.query('COMMIT');
     res.json({ message: 'Bloque eliminado exitosamente' });
-    
+
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('Error al eliminar bloque:', err);
@@ -541,11 +541,11 @@ app.get('/api/processes/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query('SELECT * FROM process WHERE id = $1', [id]);
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Proceso no encontrado' });
     }
-    
+
     res.json(result.rows[0]);
   } catch (err) {
     console.error('Error al obtener proceso:', err);
@@ -556,26 +556,26 @@ app.get('/api/processes/:id', async (req, res) => {
 // POST /api/processes - Crear un nuevo proceso
 app.post('/api/processes', async (req, res) => {
   const client = await pool.connect();
-  
+
   try {
     const { name, is_active } = req.body;
-    
+
     if (!name || !name.trim()) {
       return res.status(400).json({ error: 'El nombre del proceso es obligatorio' });
     }
-    
+
     await client.query('BEGIN');
-    
+
     const result = await client.query(
-      `INSERT INTO process (name, is_active, created_at, updated_at)
-       VALUES ($1, $2, NOW(), NOW())
+      `INSERT INTO process (tenant_id, name, is_active, created_at, updated_at)
+       VALUES ($1, $2, $3, NOW(), NOW())
        RETURNING *`,
-      [name.trim(), is_active ?? true]
+      [1, name.trim(), is_active ?? true]
     );
-    
+
     await client.query('COMMIT');
     res.status(201).json(result.rows[0]);
-    
+
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('Error al crear proceso:', err);
@@ -588,17 +588,17 @@ app.post('/api/processes', async (req, res) => {
 // PUT /api/processes/:id - Actualizar un proceso existente
 app.put('/api/processes/:id', async (req, res) => {
   const client = await pool.connect();
-  
+
   try {
     const { id } = req.params;
     const { name, is_active } = req.body;
-    
+
     if (!name || !name.trim()) {
       return res.status(400).json({ error: 'El nombre del proceso es obligatorio' });
     }
-    
+
     await client.query('BEGIN');
-    
+
     const result = await client.query(
       `UPDATE process 
        SET name = $1, is_active = $2, updated_at = NOW()
@@ -606,15 +606,15 @@ app.put('/api/processes/:id', async (req, res) => {
        RETURNING *`,
       [name.trim(), is_active ?? true, id]
     );
-    
+
     if (result.rows.length === 0) {
       await client.query('ROLLBACK');
       return res.status(404).json({ error: 'Proceso no encontrado' });
     }
-    
+
     await client.query('COMMIT');
     res.json(result.rows[0]);
-    
+
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('Error al actualizar proceso:', err);
@@ -627,38 +627,38 @@ app.put('/api/processes/:id', async (req, res) => {
 // DELETE /api/processes/:id - Eliminar un proceso
 app.delete('/api/processes/:id', async (req, res) => {
   const client = await pool.connect();
-  
+
   try {
     const { id } = req.params;
-    
+
     await client.query('BEGIN');
-    
+
     // Verificar si el proceso está siendo usado por algún bloque
     const blocksUsing = await client.query(
       'SELECT COUNT(*) as count FROM blocket WHERE process_id = $1',
       [id]
     );
-    
+
     if (parseInt(blocksUsing.rows[0].count) > 0) {
       await client.query('ROLLBACK');
-      return res.status(400).json({ 
-        error: 'No se puede eliminar el proceso porque está siendo usado por bloques existentes' 
+      return res.status(400).json({
+        error: 'No se puede eliminar el proceso porque está siendo usado por bloques existentes'
       });
     }
-    
+
     const result = await client.query(
       'DELETE FROM process WHERE id = $1 RETURNING *',
       [id]
     );
-    
+
     if (result.rows.length === 0) {
       await client.query('ROLLBACK');
       return res.status(404).json({ error: 'Proceso no encontrado' });
     }
-    
+
     await client.query('COMMIT');
     res.json({ message: 'Proceso eliminado exitosamente', process: result.rows[0] });
-    
+
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('Error al eliminar proceso:', err);
@@ -673,12 +673,12 @@ app.delete('/api/processes/:id', async (req, res) => {
 app.get('/api/header-config', async (req, res) => {
   try {
     const tenantId = req.query.tenant_id || 1;
-    
+
     const result = await pool.query(
       'SELECT * FROM header_config WHERE tenant_id = $1',
       [tenantId]
     );
-    
+
     if (result.rows.length === 0) {
       // Si no existe, retornar valores por defecto
       return res.json({
@@ -695,7 +695,7 @@ app.get('/api/header-config', async (req, res) => {
         show_cargo: false
       });
     }
-    
+
     res.json(result.rows[0]);
   } catch (err) {
     console.error('Error al obtener configuración del encabezado:', err);
@@ -720,7 +720,7 @@ app.post('/api/header-config', async (req, res) => {
       show_identificador,
       show_cargo
     } = req.body;
-    
+
     const result = await pool.query(
       `INSERT INTO header_config (
         tenant_id, logo_url, company_name, address, city, greeting,
@@ -745,11 +745,11 @@ app.post('/api/header-config', async (req, res) => {
         updated_at = NOW()
       RETURNING *`,
       [tenantId, logo_url, company_name, address, city, greeting,
-       radicado_label, identificador_label, cargo_label,
-       show_radicado, show_identificador, show_cargo]
+        radicado_label, identificador_label, cargo_label,
+        show_radicado, show_identificador, show_cargo]
     );
-    
-    res.json({ 
+
+    res.json({
       message: 'Configuración guardada exitosamente',
       config: result.rows[0]
     });
