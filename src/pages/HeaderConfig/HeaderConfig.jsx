@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Save } from 'lucide-react';
 import Breadcrumbs from '../../components/Breadcrumbs';
+import { apiUrl } from '../../config/api';
 import './HeaderConfig.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 const LOCAL_STORAGE_KEY = 'blocket_header_config';
 
 export default function HeaderConfig() {
@@ -38,7 +38,7 @@ export default function HeaderConfig() {
       setLoadingData(true);
       
       // Intentar cargar desde la API primero
-      const response = await fetch(`${API_URL}/header-config?tenant_id=1`);
+      const response = await fetch(apiUrl('/api/header-config?tenant_id=1'));
       
       if (response.ok) {
         const data = await response.json();
@@ -128,7 +128,7 @@ export default function HeaderConfig() {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(config));
       
       // Intentar guardar en la API
-      const response = await fetch(`${API_URL}/header-config`, {
+      const response = await fetch(apiUrl('/api/header-config'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
