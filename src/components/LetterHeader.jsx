@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
+import { apiUrl } from '../config/api';
 import "./LetterHeader.css";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 const LOCAL_STORAGE_KEY = 'blocket_header_config';
 
 function LetterHeader({ header }) {
@@ -37,7 +37,7 @@ function LetterHeader({ header }) {
       }
 
       // Luego cargar desde la API y actualizar si hay cambios
-      const response = await fetch(`${API_URL}/header-config?tenant_id=1`);
+      const response = await fetch(apiUrl('/api/header-config?tenant_id=1'));
       if (response.ok) {
         const data = await response.json();
         console.log('[LetterHeader] Configuración desde API:', data);

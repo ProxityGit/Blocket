@@ -29,7 +29,6 @@ import LetterHeader from "../../components/LetterHeader";
 import { apiUrl } from "../../config/api";
 import Breadcrumbs from "../../components/Breadcrumbs";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 const LOCAL_STORAGE_KEY = 'blocket_header_config';
 
 export default function DocumentBuilder() {
@@ -83,7 +82,7 @@ export default function DocumentBuilder() {
         }
 
         // Luego desde API (actualización)
-        const response = await fetch(`${API_URL}/header-config?tenant_id=1`);
+        const response = await fetch(apiUrl('/api/header-config?tenant_id=1'));
         if (response.ok) {
           const data = await response.json();
           console.log('[DocumentBuilder] Config desde API:', data);

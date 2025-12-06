@@ -22,6 +22,12 @@ services:
         fromDatabase:
           name: blocket-db
           property: connectionString
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
     healthCheckPath: /api/health
 
   # Frontend (React + Vite)
