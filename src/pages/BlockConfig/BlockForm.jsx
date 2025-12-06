@@ -10,6 +10,7 @@ import HardBreak from '@tiptap/extension-hard-break';
 import Breadcrumbs from "../../components/Breadcrumbs";
 import Button from "../../components/Button";
 import { Save, X, Plus } from 'lucide-react';
+import { apiUrl } from "../../config/api";
 import "./BlockForm.css";
 
 export default function BlockForm() {
@@ -74,7 +75,7 @@ export default function BlockForm() {
 
   const cargarProcesos = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/processes");
+      const response = await fetch(apiUrl("/api/processes"));
       const data = await response.json();
       // Filtrar solo procesos activos
       const procesosActivos = data.filter(p => p.is_active);
@@ -112,7 +113,7 @@ export default function BlockForm() {
 
   const cargarBloque = async () => {
     try {
-      const res = await fetch(`/api/blocks/${id}`);
+      const res = await fetch(apiUrl(`/api/blocks/${id}`));
       if (!res.ok) throw new Error("Error al cargar bloque");
       const data = await res.json();
       
@@ -318,7 +319,7 @@ export default function BlockForm() {
     setGuardando(true);
 
     try {
-      const url = esEdicion ? `/api/blocks/${id}` : '/api/blocks';
+      const url = apiUrl(esEdicion ? `/api/blocks/${id}` : '/api/blocks');
       const method = esEdicion ? 'PUT' : 'POST';
       
       const payload = {

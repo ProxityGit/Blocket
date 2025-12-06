@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import { apiUrl } from "../../config/api";
 import "./ProcessConfig.css";
 
 export default function ProcessConfig() {
@@ -16,7 +17,7 @@ export default function ProcessConfig() {
 
   const cargarProcesos = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/processes");
+      const response = await fetch(apiUrl("/api/processes"));
       const data = await response.json();
       setProcesses(data);
     } catch (error) {
@@ -30,7 +31,7 @@ export default function ProcessConfig() {
     if (!confirm("¿Estás seguro de eliminar este proceso?")) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/api/processes/${id}`, {
+      const response = await fetch(apiUrl(`/api/processes/${id}`), {
         method: "DELETE",
       });
 

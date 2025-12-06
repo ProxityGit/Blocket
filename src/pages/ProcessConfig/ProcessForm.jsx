@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiUrl } from "../../config/api";
 import "./ProcessConfig.css";
 
 export default function ProcessForm() {
@@ -24,7 +25,7 @@ export default function ProcessForm() {
   const cargarProceso = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/api/processes/${id}`);
+      const response = await fetch(apiUrl(`/api/processes/${id}`));
       if (response.ok) {
         const data = await response.json();
         setFormData({
@@ -55,9 +56,9 @@ export default function ProcessForm() {
     setGuardando(true);
 
     try {
-      const url = esEdicion
-        ? `http://localhost:3000/api/processes/${id}`
-        : "http://localhost:3000/api/processes";
+      const url = apiUrl(esEdicion
+        ? `/api/processes/${id}`
+        : "/api/processes");
       const method = esEdicion ? "PUT" : "POST";
 
       const response = await fetch(url, {
