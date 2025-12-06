@@ -5,44 +5,15 @@
 }
 
 .block-form-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 32px 48px;
-  color: white;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
-}
-
-.btn-back {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-bottom: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  backdrop-filter: blur(10px);
-}
-
-.btn-back:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateX(-4px);
+  padding: 24px 48px 16px 48px;
+  background: transparent;
 }
 
 .block-form-header h1 {
-  margin: 0 0 8px 0;
-  font-size: 1.75rem;
-  font-weight: 700;
-}
-
-.block-form-header p {
   margin: 0;
-  opacity: 0.95;
-  font-size: 0.95rem;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1e293b;
 }
 
 .loading-container {
@@ -53,9 +24,6 @@
 }
 
 .block-form {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 32px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -324,18 +292,19 @@
 .btn-add-field {
   width: 100%;
   padding: 10px;
-  background: #667eea;
-  color: white;
+  background: #667eea !important;
+  color: white !important;
   border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 12px;
+  display: block;
 }
 
 .btn-add-field:hover {
-  background: #5568d3;
+  background: #5568d3 !important;
   transform: translateY(-1px);
 }
 
@@ -466,6 +435,24 @@
   color: #64748b;
   font-size: 0.85rem;
   margin-top: 4px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important;
+  color: white !important;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .btn-secondary {
@@ -606,8 +593,8 @@
 }
 
 .btn-cancel {
-  background: #f1f5f9;
-  color: #475569;
+  background: #f1f5f9 !important;
+  color: #475569 !important;
 }
 
 .btn-cancel:hover {
@@ -615,8 +602,8 @@
 }
 
 .btn-save {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-  color: white;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important;
+  color: white !important;
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
   font-weight: 700;
 }

@@ -265,13 +265,22 @@ app.get('/api/blocks', async (req, res) => {
       
       return {
         id: block.id,
+        name: block.title,
+        process_id: block.process_id,
+        process_name: block.process_name || 'Sin proceso',
+        category_name: block.category_name || 'Sin categoría',
+        order: block.sort_order,
+        is_active: block.is_active,
+        key: block.key,
+        template_html: block.template_html,
+        version: block.version,
+        campos,
+        // Mantener compatibilidad con código anterior
         titulo: block.title,
         proceso: block.process_name || 'Sin proceso',
         causal: block.category_name || 'Sin categoría',
         tipo: block.key,
-        texto: block.template_html,
-        version: block.version,
-        campos
+        texto: block.template_html
       };
     });
     

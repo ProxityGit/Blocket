@@ -1,98 +1,126 @@
 import { useNavigate } from "react-router-dom";
-import "./Configuration.css";
+import { Card, SimpleGrid } from "@mantine/core";
+import {
+  IconUser,
+  IconFolder,
+  IconInbox,
+  IconClipboardList,
+  IconBuildingStore,
+  IconSettings,
+  IconChevronRight,
+} from "@tabler/icons-react";
 
 export default function Configuration() {
   const navigate = useNavigate();
 
-  const configModules = [
+  const modules = [
     {
-      id: 'usuarios',
-      title: 'Usuarios',
-      description: 'Gestión de usuarios del sistema, permisos y roles',
-      icon: '👥',
-      route: '/configuracion/usuarios',
-      color: '#667eea'
+      id: 1,
+      name: "Usuarios",
+      description: "Gestión de usuarios del sistema",
+      icon: IconUser,
+      path: "/configuracion/usuarios",
+      gradient: "from-blue-500 to-cyan-500",
     },
     {
-      id: 'bloques',
-      title: 'Bloques de Texto',
-      description: 'Configuración de bloques de contenido y campos dinámicos',
-      icon: '📝',
-      route: '/config/bloques',
-      color: '#764ba2'
+      id: 2,
+      name: "Categorías",
+      description: "Configuración de categorías",
+      icon: IconFolder,
+      path: "/configuracion/categorias",
+      gradient: "from-purple-500 to-pink-500",
     },
     {
-      id: 'procesos',
-      title: 'Procesos',
-      description: 'Definición de procesos de la compañía',
-      icon: '⚙️',
-      route: '/configuracion/procesos',
-      color: '#f093fb'
+      id: 3,
+      name: "Bandejas",
+      description: "Gestión de bandejas",
+      icon: IconInbox,
+      path: "/configuracion/bandejas",
+      gradient: "from-green-500 to-emerald-500",
     },
     {
-      id: 'categorias',
-      title: 'Categorías de Servicio',
-      description: 'Gestión de categorías y claves de bloques',
-      icon: '🏷️',
-      route: '/configuracion/categorias',
-      color: '#4facfe'
+      id: 4,
+      name: "Tipos de Solicitud",
+      description: "Configuración de tipos",
+      icon: IconClipboardList,
+      path: "/configuracion/tipos-solicitud",
+      gradient: "from-orange-500 to-red-500",
     },
     {
-      id: 'bandejas',
-      title: 'Bandejas',
-      description: 'Agrupación de tipos de solicitudes por equipos de trabajo',
-      icon: '📥',
-      route: '/configuracion/bandejas',
-      color: '#43e97b'
+      id: 5,
+      name: "Bloques",
+      description: "Gestión de bloques",
+      icon: IconBuildingStore,
+      path: "/configuracion/bloques",
+      gradient: "from-indigo-500 to-blue-500",
     },
     {
-      id: 'tipos-solicitud',
-      title: 'Tipos de Solicitud',
-      description: 'Configuración de tipos: Quejas, Reclamos, Peticiones, Tutelas',
-      icon: '📋',
-      route: '/configuracion/tipos-solicitud',
-      color: '#fa709a'
-    }
+      id: 6,
+      name: "Procesos",
+      description: "Configuración de procesos",
+      icon: IconSettings,
+      path: "/configuracion/procesos",
+      gradient: "from-teal-500 to-cyan-500",
+    },
   ];
 
   return (
-    <div className="configuration-page">
-      <header className="configuration-header">
-        <h1>Centro de Configuración</h1>
-        <p>Gestiona todos los parámetros y configuraciones del sistema</p>
-      </header>
-
-      <div className="config-modules-grid">
-        {configModules.map((module) => (
-          <div
-            key={module.id}
-            className="config-module-card"
-            onClick={() => navigate(module.route)}
-            style={{ '--module-color': module.color }}
-          >
-            <div className="module-icon">{module.icon}</div>
-            <div className="module-info">
-              <h3>{module.title}</h3>
-              <p>{module.description}</p>
-            </div>
-            <div className="module-arrow">→</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="config-info-panel">
-        <div className="info-card">
-          <h4>💡 Acerca de la configuración</h4>
-          <ul>
-            <li><strong>Usuarios:</strong> Administra quiénes tienen acceso al sistema y sus permisos</li>
-            <li><strong>Bloques:</strong> Define plantillas de texto reutilizables con campos dinámicos</li>
-            <li><strong>Procesos:</strong> Organiza los diferentes flujos de trabajo de la compañía</li>
-            <li><strong>Categorías:</strong> Clasifica los bloques según el tipo de servicio</li>
-            <li><strong>Bandejas:</strong> Agrupa tipos de solicitudes para asignarlas a equipos específicos</li>
-            <li><strong>Tipos de Solicitud:</strong> Define las categorías principales (Quejas, Reclamos, etc.)</li>
-          </ul>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+            Configuración
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Gestiona todos los aspectos del sistema desde un solo lugar
+          </p>
         </div>
+
+        {/* Modules Grid */}
+        <SimpleGrid
+          cols={{ base: 1, sm: 2, lg: 3 }}
+          spacing="lg"
+        >
+          {modules.map((module) => {
+            const IconComponent = module.icon;
+            return (
+              <Card
+                key={module.id}
+                shadow="md"
+                padding="xl"
+                radius="lg"
+                className="hover:shadow-xl transition-all duration-200 cursor-pointer border-0"
+                onClick={() => navigate(module.path)}
+              >
+                <div className="flex flex-col h-full">
+                  {/* Icon with gradient */}
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${module.gradient} flex items-center justify-center mb-4 shadow-lg`}>
+                    <IconComponent size={32} stroke={2} className="text-white" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                      {module.name}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      {module.description}
+                    </p>
+                  </div>
+
+                  {/* Arrow */}
+                  <div className="mt-4 flex items-center text-blue-600 dark:text-blue-400 font-medium">
+                    <span className="text-sm">Configurar</span>
+                    <IconChevronRight size={16} className="ml-2" />
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
+        </SimpleGrid>
       </div>
     </div>
   );
 }
+

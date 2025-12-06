@@ -7,6 +7,9 @@ import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
 import HardBreak from '@tiptap/extension-hard-break';
+import Breadcrumbs from "../../components/Breadcrumbs";
+import Button from "../../components/Button";
+import { Save, X, Plus } from 'lucide-react';
 import "./BlockForm.css";
 
 export default function BlockForm() {
@@ -144,7 +147,7 @@ export default function BlockForm() {
       setLoading(false);
     } catch (err) {
       alert("Error: " + err.message);
-      navigate("/config/bloques");
+      navigate("/configuracion/bloques");
     }
   };
 
@@ -337,7 +340,7 @@ export default function BlockForm() {
       if (!res.ok) throw new Error("Error al guardar bloque");
       
       alert(esEdicion ? "Bloque actualizado correctamente" : "Bloque creado correctamente");
-      navigate("/config/bloques");
+      navigate("/configuracion/bloques");
     } catch (err) {
       alert("Error: " + err.message);
     } finally {
@@ -350,16 +353,23 @@ export default function BlockForm() {
   }
 
   return (
-    <div className="block-form-container">
-      <header className="block-form-header">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Breadcrumbs */}
+        <Breadcrumbs 
+          items={[
+            { label: "Configuración", path: "/configuracion" },
+            { label: "Bloques", path: "/configuracion/bloques" },
+            { label: esEdicion ? "Editar Bloque" : "Nuevo Bloque" }
+          ]}
+        />
+
+        {/* Header */}
         <div>
-          <button className="btn-back" onClick={() => navigate("/config/bloques")}>
-            ← Volver
-          </button>
-          <h1>{esEdicion ? '✏️ Editar Bloque' : '➕ Nuevo Bloque'}</h1>
-          <p>Completa la información del bloque y sus campos dinámicos</p>
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-6">
+            {esEdicion ? 'Editar Bloque' : 'Nuevo Bloque'}
+          </h1>
         </div>
-      </header>
 
       <form onSubmit={guardarBloque} className="block-form">
         <div className="form-section">
@@ -502,9 +512,14 @@ export default function BlockForm() {
                   </label>
                 </div>
 
-                <button type="button" className="btn-add-field" onClick={agregarCampo}>
-                  ✓ Agregar Campo
-                </button>
+                <Button 
+                  variant="primary" 
+                  fullWidth 
+                  onClick={agregarCampo}
+                  icon={<Plus />}
+                >
+                  Agregar Campo
+                </Button>
               </div>
             )}
 
@@ -636,20 +651,22 @@ export default function BlockForm() {
         </div>
 
         <div className="form-actions">
-          <button
-            type="button"
-            className="btn-cancel"
-            onClick={() => navigate("/config/bloques")}
+          <Button
+            variant="secondary"
+            onClick={() => navigate("/configuracion/bloques")}
+            icon={<X />}
           >
             Cancelar
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
-            className="btn-save"
+            variant="primary"
+            loading={guardando}
             disabled={guardando}
+            icon={<Save />}
           >
-            {guardando ? 'Guardando...' : (esEdicion ? 'Actualizar Bloque' : 'Crear Bloque')}
-          </button>
+            {esEdicion ? 'Actualizar Bloque' : 'Crear Bloque'}
+          </Button>
         </div>
       </form>
 
@@ -682,6 +699,7 @@ export default function BlockForm() {
           </div>
         </>
       )}
+      </div>
     </div>
   );
 }
