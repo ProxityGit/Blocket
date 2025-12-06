@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "start": "node server.js",
     "start:prod": "NODE_ENV=production node server.js",
-    "db:init": "node scripts/init-db.js"
+    "db:init": "node scripts/init-db.js",
+    "db:test": "node test-db-connection.js"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
