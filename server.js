@@ -371,27 +371,26 @@ app.get('/api/blocks/:id', async (req, res) => {
 });
 
 // Crear nuevo bloque
+// Crear nuevo bloque
 app.post('/api/blocks', async (req, res) => {
   const client = await pool.connect();
   try {
-    const { title, key, template_html, is_active, is_published, process_id, category_id, campos } = req.body;
+    const { title, key, template_html, is_active, is_published, process_id, campos } = req.body;
 
     await client.query('BEGIN');
 
-    // Insertar bloque
+    // Insertar bloque (Sin category_id)
     const blockQuery = `
-      INSERT INTO blocket (tenant_id, process_id, category_id, key, title, template_html, version, is_active, is_published, sort_order)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      INSERT INTO blocket (tenant_id, process_id, key, title, template_html, is_active, is_published, sort_order)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING id
     `;
     const blockResult = await client.query(blockQuery, [
       1, // tenant_id por defecto
       process_id || 1,
-      category_id || 1,
       key,
       title,
       template_html,
-      1, // version (integer)
       is_active !== undefined ? is_active : true,
       is_published !== undefined ? is_published : false,
       0 // sort_order
@@ -436,16 +435,16 @@ app.put('/api/blocks/:id', async (req, res) => {
   const client = await pool.connect();
   try {
     const blockId = Number(req.params.id);
-    const { title, key, template_html, is_active, is_published, process_id, category_id, campos } = req.body;
+    const { title, key, template_html, is_active, is_published, process_id, campos } = req.body;
 
     await client.query('BEGIN');
 
-    // Actualizar bloque
+    // Actualizar bloque (Sin category_id)
     const blockQuery = `
       UPDATE blocket
       SET title = $1, key = $2, template_html = $3, is_active = $4, is_published = $5,
-          process_id = $6, category_id = $7, updated_at = NOW()
-      WHERE id = $8
+          process_id = $6, updated_at = NOW()
+      WHERE id = $7
     `;
     await client.query(blockQuery, [
       title,
@@ -454,7 +453,6 @@ app.put('/api/blocks/:id', async (req, res) => {
       is_active,
       is_published,
       process_id || 1,
-      category_id || 1,
       blockId
     ]);
 
