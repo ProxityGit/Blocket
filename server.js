@@ -758,6 +758,17 @@ app.post('/api/header-config', async (req, res) => {
   }
 });
 
+// Endpoint temporal para listar tablas públicas
+app.get('/api/db-tables', async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT tablename FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename`);
+    res.json({ tables: result.rows.map(r => r.tablename) });
+  } catch (err) {
+    console.error('[DB-TABLES] Error:', err);
+    res.status(500).json({ error: 'Error al consultar tablas', details: err.message });
+  }
+});
+
 // Puerto donde se ejecuta el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
