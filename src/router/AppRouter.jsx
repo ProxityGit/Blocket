@@ -1,9 +1,8 @@
-//app-router: AppRouter.jsx
-//descripción: Configuración de rutas principales de la aplicación.
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import HomeModulesNew from "../pages/HomeModules/HomeModulesNew.jsx";
 import RequestSelector from "../pages/RequestSelector/RequestSelector.jsx";
+import AssignmentRequests from "../pages/AssignmentRequests/AssignmentRequests.jsx";
+import RequestAssignment from "../pages/AssignmentRequests/RequestAssignment.jsx";
 import DocumentBuilder from "../pages/DocumentBuilder/DocumentBuilder.jsx";
 import CrearSolicitud from "../pages/HomeModules/CrearSolicitud.jsx";
 import ConfigLayout from "../layouts/ConfigLayout.jsx";
@@ -20,10 +19,14 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<HomeModulesNew />} />
         <Route path="/crear-solicitud" element={<CrearSolicitud />} />
-        <Route path="/registro" element={<div>Registro de Solicitud (pendiente)</div>} />
-        <Route path="/asignacion" element={<div>Asignación de bloques (pendiente)</div>} />
-        <Route path="/constructor/:idSolicitud" element={<DocumentBuilder />} />
+
+        {/* Rutas principales de gestión */}
         <Route path="/consulta" element={<RequestSelector />} />
+        <Route path="/asignacion" element={<AssignmentRequests />} />
+        <Route path="/asignacion/gestion/:id" element={<RequestAssignment />} />
+
+        <Route path="/registro" element={<div>Registro de Solicitud (pendiente)</div>} />
+        <Route path="/constructor/:idSolicitud" element={<DocumentBuilder />} />
 
         {/* Configuración con Sidebar */}
         <Route path="/configuracion" element={<ConfigLayout />}>

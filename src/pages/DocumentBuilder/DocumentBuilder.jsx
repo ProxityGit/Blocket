@@ -10,12 +10,13 @@ import {
   Badge,
   Alert,
 } from "@mantine/core";
-import { 
-  FileText, 
-  FileDown, 
+import {
+  FileText,
+  FileDown,
   AlertCircle,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Eye
 } from "lucide-react";
 import "./DocumentBuilder.css";
 import { OPCIONES_CONECTOR } from "../../data/mockConnectors";
@@ -28,13 +29,15 @@ import DynamicFields from "../../components/DynamicFields";
 import LetterHeader from "../../components/LetterHeader";
 import { apiUrl } from "../../config/api";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import RequestDetailsDrawer from "../../components/RequestDetailsDrawer";
 
 const LOCAL_STORAGE_KEY = 'blocket_header_config';
 
 export default function DocumentBuilder() {
   const navigate = useNavigate();
   const { idSolicitud } = useParams();
-  
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [solicitud, setSolicitud] = useState(null);
   const [loadingSolicitud, setLoadingSolicitud] = useState(true);
   const [errorSolicitud, setErrorSolicitud] = useState(null);
@@ -47,7 +50,7 @@ export default function DocumentBuilder() {
   const [alerta, setAlerta] = useState("");
   const [exportando, setExportando] = useState(false);
   const docRef = useRef(null);
-  
+
   // Estados para paneles colapsables
   const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
   const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false);
@@ -72,12 +75,11 @@ export default function DocumentBuilder() {
     const loadHeaderConfig = async () => {
       try {
         console.log('[DocumentBuilder] Cargando configuración del encabezado...');
-        
+
         // Cargar desde localStorage primero (rápido)
         const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
         if (localData) {
           const parsedData = JSON.parse(localData);
-          console.log('[DocumentBuilder] Config desde localStorage:', parsedData);
           setHeaderConfig(parsedData);
         }
 
@@ -85,11 +87,8 @@ export default function DocumentBuilder() {
         const response = await fetch(apiUrl('/api/header-config?tenant_id=1'));
         if (response.ok) {
           const data = await response.json();
-          console.log('[DocumentBuilder] Config desde API:', data);
           setHeaderConfig(data);
           localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-        } else {
-          console.warn('[DocumentBuilder] API no disponible, status:', response.status);
         }
       } catch (error) {
         console.error('[DocumentBuilder] Error al cargar configuración:', error);
@@ -166,32 +165,21 @@ export default function DocumentBuilder() {
 
   const placeholdersFaltantes = () => {
     const keys = new Set();
-    
+
     // Extraer todos los placeholders de los bloques en el documento
     for (const b of documento) {
       extraerPlaceholders(b.texto).forEach((k) => keys.add(k));
     }
-    
+
     // Verificar cuáles faltan
     const faltan = [];
     keys.forEach((k) => {
       const v = camposValores[k];
-      
-      // Contar como faltante si:
-      // 1. El campo está explícitamente en camposValores pero está vacío
-      // 2. O el placeholder existe en los bloques del documento pero no tiene valor
-      if ((k in camposValores && (v === undefined || String(v).trim() === "")) || 
-          (!k in camposValores && keys.has(k))) {
-        console.log(`[DEBUG] Campo faltante: "${k}", valor actual:`, v);
+      if ((k in camposValores && (v === undefined || String(v).trim() === "")) ||
+        (!k in camposValores && keys.has(k))) {
         faltan.push(k);
       }
     });
-    
-    console.log('[DEBUG] Total placeholders encontrados:', keys.size);
-    console.log('[DEBUG] Placeholders con campos dinámicos:', Object.keys(camposValores).length);
-    console.log('[DEBUG] Placeholders faltantes:', faltan.length);
-    console.log('[DEBUG] Campos valores:', camposValores);
-    
     return faltan;
   };
 
@@ -245,23 +233,19 @@ export default function DocumentBuilder() {
       setAlerta(`Completa ${faltan.length} campo(s): ${faltan.join(", ")}`);
       return;
     }
-    
+
     setAlerta("");
     setExportando(true);
-    
+
     try {
-      // Generar nombre descriptivo para el PDF
-      const nombreDocumento = solicitud 
+      const nombreDocumento = solicitud
         ? `Documento_${solicitud.customer_name?.replace(/\s+/g, '_')}_${solicitud.id}`
         : 'Documento';
-      
-      console.log('[DocumentBuilder] Exportando PDF:', nombreDocumento);
-      
+
       const resultado = await exportPDF(docRef, nombreDocumento);
-      
+
       if (resultado?.success) {
         setAlerta(`✅ PDF generado exitosamente: ${resultado.fileName} (${resultado.pages} página${resultado.pages > 1 ? 's' : ''})`);
-        // Limpiar mensaje después de 5 segundos
         setTimeout(() => setAlerta(""), 5000);
       }
     } catch (error) {
@@ -274,71 +258,71 @@ export default function DocumentBuilder() {
 
   const exportDisabled = placeholdersFaltantes().length > 0 || documento.length === 0 || exportando;
 
-  console.log("[DEBUG] Render DocumentBuilder");
-  console.log("[DEBUG] documento.length:", documento.length);
-  console.log("[DEBUG] exportDisabled:", exportDisabled);
-  console.log("[DEBUG] exportando:", exportando);
-  console.log("[DEBUG] HeaderConfig:", headerConfig);
-  console.log("[DEBUG] Solicitud:", solicitud);
-  
-  // Construir el header dinámico con datos de la solicitud Y configuración
   const headerData = solicitud
     ? {
-        logo: headerConfig.logo_url || TENANT_CONFIG.logo,
-        nombreEmpresa: headerConfig.company_name || TENANT_CONFIG.nombreEmpresa,
-        direccion: headerConfig.address || TENANT_CONFIG.direccion,
-        ciudad: headerConfig.city || TENANT_CONFIG.ciudad,
-        fecha: solicitud.created_at
-          ? new Date(solicitud.created_at)
-          : new Date(),
-        destinatario: solicitud.customer_name || "—",
-        identificacion: solicitud.customer_identifier || "—",
-        cargo: solicitud.cargo || "Gerente General", // Valor de prueba
-        radicado: solicitud.id || "—",
-        asunto: solicitud.subject || "—",
-        saludo: headerConfig.greeting || "Cordial saludo",
-      }
+      logo: headerConfig.logo_url || TENANT_CONFIG.logo,
+      nombreEmpresa: headerConfig.company_name || TENANT_CONFIG.nombreEmpresa,
+      direccion: headerConfig.address || TENANT_CONFIG.direccion,
+      ciudad: headerConfig.city || TENANT_CONFIG.ciudad,
+      fecha: solicitud.created_at
+        ? new Date(solicitud.created_at)
+        : new Date(),
+      destinatario: solicitud.customer_name || "—",
+      identificacion: solicitud.customer_identifier || "—",
+      cargo: solicitud.cargo || "Gerente General",
+      radicado: solicitud.id || "—",
+      asunto: solicitud.subject || "—",
+      saludo: headerConfig.greeting || "Cordial saludo",
+    }
     : {
-        logo: headerConfig.logo_url || TENANT_CONFIG.logo,
-        nombreEmpresa: headerConfig.company_name || TENANT_CONFIG.nombreEmpresa,
-        direccion: headerConfig.address || TENANT_CONFIG.direccion,
-        ciudad: headerConfig.city || TENANT_CONFIG.ciudad,
-        fecha: new Date(),
-        destinatario: "—",
-        identificacion: "—",
-        cargo: "Gerente General", // Valor de prueba
-        radicado: "—",
-        asunto: "—",
-        saludo: headerConfig.greeting || "Cordial saludo",
-      };
+      logo: headerConfig.logo_url || TENANT_CONFIG.logo,
+      nombreEmpresa: headerConfig.company_name || TENANT_CONFIG.nombreEmpresa,
+      direccion: headerConfig.address || TENANT_CONFIG.direccion,
+      ciudad: headerConfig.city || TENANT_CONFIG.ciudad,
+      fecha: new Date(),
+      destinatario: "—",
+      identificacion: "—",
+      cargo: "Gerente General",
+      radicado: "—",
+      asunto: "—",
+      saludo: headerConfig.greeting || "Cordial saludo",
+    };
 
   return (
     <div className="constructor-container">
-      {/* Breadcrumbs y Botones en la misma línea */}
       <div style={{ padding: '32px 32px 24px 32px' }}>
         <Group justify="space-between" align="center">
-          <Breadcrumbs 
+          <Breadcrumbs
             items={[
               { label: "Listado de Solicitudes", path: "/consulta" },
               { label: "Constructor de Documentos" }
             ]}
           />
-          <Button 
-            leftSection={<FileDown size={16} />}
-            onClick={onExportClick} 
-            disabled={exportDisabled}
-            loading={exportando}
-            gradient={{ from: 'blue', to: 'grape', deg: 90 }}
-            variant="gradient"
-          >
-            {exportando ? 'Generando PDF...' : 'Exportar PDF'}
-          </Button>
+          <Group gap="xs">
+            <Button
+              variant="light"
+              color="blue"
+              leftSection={<Eye size={16} />}
+              onClick={() => setDrawerOpen(true)}
+            >
+              Ver Solicitud
+            </Button>
+            <Button
+              leftSection={<FileDown size={16} />}
+              onClick={onExportClick}
+              disabled={exportDisabled}
+              loading={exportando}
+              gradient={{ from: 'blue', to: 'grape', deg: 90 }}
+              variant="gradient"
+            >
+              {exportando ? 'Generando PDF...' : 'Exportar PDF'}
+            </Button>
+          </Group>
         </Group>
 
-        {/* Alert para mensajes */}
         {alerta && (
-          <Alert 
-            icon={<AlertCircle size={16} />} 
+          <Alert
+            icon={<AlertCircle size={16} />}
             color={alerta.includes('✅') ? 'green' : alerta.includes('❌') ? 'red' : 'yellow'}
             mt="md"
           >
@@ -348,16 +332,15 @@ export default function DocumentBuilder() {
       </div>
 
       <div className={`constructor-layout ${leftPanelCollapsed ? 'left-collapsed' : ''} ${rightPanelCollapsed ? 'right-collapsed' : ''}`}>
-        {/* Panel Izquierdo Colapsable */}
         <aside className={`panel blocklist-panel ${leftPanelCollapsed ? 'collapsed' : ''}`}>
-          <button 
+          <button
             className="collapse-btn collapse-btn-left"
             onClick={() => setLeftPanelCollapsed(!leftPanelCollapsed)}
             title={leftPanelCollapsed ? "Expandir bloques" : "Colapsar bloques"}
           >
             {leftPanelCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
           </button>
-          
+
           {!leftPanelCollapsed && (
             <>
               {loadingBloques ? (
@@ -398,16 +381,15 @@ export default function DocumentBuilder() {
           />
         </main>
 
-        {/* Panel Derecho Colapsable */}
         <section className={`panel dynamic-panel ${rightPanelCollapsed ? 'collapsed' : ''}`}>
-          <button 
+          <button
             className="collapse-btn collapse-btn-right"
             onClick={() => setRightPanelCollapsed(!rightPanelCollapsed)}
             title={rightPanelCollapsed ? "Expandir campos" : "Colapsar campos"}
           >
             {rightPanelCollapsed ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
           </button>
-          
+
           {!rightPanelCollapsed && (
             <DynamicFields
               documento={documento}
@@ -417,6 +399,12 @@ export default function DocumentBuilder() {
           )}
         </section>
       </div>
+
+      <RequestDetailsDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        requestId={idSolicitud}
+      />
     </div>
   );
 }

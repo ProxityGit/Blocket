@@ -203,7 +203,12 @@ app.post('/api/requests', upload.single('adjunto'), async (req, res) => {
 app.get('/api/requests', async (req, res) => {
   try {
     console.log('[GET /api/requests] Consultando solicitudes...');
-    const result = await pool.query('SELECT * FROM customer_request ORDER BY id DESC');
+    const result = await pool.query(`
+      SELECT r.*, s.name as status_name 
+      FROM customer_request r 
+      LEFT JOIN status s ON r.status_id = s.id 
+      ORDER BY r.id DESC
+    `);
     console.log(`[GET /api/requests] Encontradas ${result.rows.length} solicitudes`);
     res.json(result.rows);
   } catch (err) {
