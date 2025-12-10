@@ -1,0 +1,148 @@
+{
+  "hash": "d8d3eff7",
+  "configHash": "56b84d5d",
+  "lockfileHash": "d265762e",
+  "browserHash": "6d0b11f5",
+  "optimized": {
+    "@hello-pangea/dnd": {
+      "src": "../../node_modules/@hello-pangea/dnd/dist/dnd.esm.js",
+      "file": "@hello-pangea_dnd.js",
+      "fileHash": "69165af2",
+      "needsInterop": false
+    },
+    "@mantine/core": {
+      "src": "../../node_modules/@mantine/core/esm/index.mjs",
+      "file": "@mantine_core.js",
+      "fileHash": "2a2c9eba",
+      "needsInterop": false
+    },
+    "@mantine/hooks": {
+      "src": "../../node_modules/@mantine/hooks/esm/index.mjs",
+      "file": "@mantine_hooks.js",
+      "fileHash": "88a0327a",
+      "needsInterop": false
+    },
+    "@tabler/icons-react": {
+      "src": "../../node_modules/@tabler/icons-react/dist/esm/tabler-icons-react.mjs",
+      "file": "@tabler_icons-react.js",
+      "fileHash": "40290539",
+      "needsInterop": false
+    },
+    "@tiptap/extension-hard-break": {
+      "src": "../../node_modules/@tiptap/extension-hard-break/dist/index.js",
+      "file": "@tiptap_extension-hard-break.js",
+      "fileHash": "5410b9d9",
+      "needsInterop": false
+    },
+    "@tiptap/extension-table": {
+      "src": "../../node_modules/@tiptap/extension-table/dist/index.js",
+      "file": "@tiptap_extension-table.js",
+      "fileHash": "95ff83ed",
+      "needsInterop": false
+    },
+    "@tiptap/extension-table-cell": {
+      "src": "../../node_modules/@tiptap/extension-table-cell/dist/index.js",
+      "file": "@tiptap_extension-table-cell.js",
+      "fileHash": "369c9d2c",
+      "needsInterop": false
+    },
+    "@tiptap/extension-table-header": {
+      "src": "../../node_modules/@tiptap/extension-table-header/dist/index.js",
+      "file": "@tiptap_extension-table-header.js",
+      "fileHash": "49c1df8f",
+      "needsInterop": false
+    },
+    "@tiptap/extension-table-row": {
+      "src": "../../node_modules/@tiptap/extension-table-row/dist/index.js",
+      "file": "@tiptap_extension-table-row.js",
+      "fileHash": "7c4d035b",
+      "needsInterop": false
+    },
+    "@tiptap/react": {
+      "src": "../../node_modules/@tiptap/react/dist/index.js",
+      "file": "@tiptap_react.js",
+      "fileHash": "0bd695f3",
+      "needsInterop": false
+    },
+    "@tiptap/starter-kit": {
+      "src": "../../node_modules/@tiptap/starter-kit/dist/index.js",
+      "file": "@tiptap_starter-kit.js",
+      "fileHash": "955ce2ac",
+      "needsInterop": false
+    },
+    "html2canvas": {
+      "src": "../../node_modules/html2canvas/dist/html2canvas.esm.js",
+      "file": "html2canvas.js",
+      "fileHash": "cd1fe785",
+      "needsInterop": false
+    },
+    "jspdf": {
+      "src": "../../node_modules/jspdf/dist/jspdf.es.min.js",
+      "file": "jspdf.js",
+      "fileHash": "bca3b2c9",
+      "needsInterop": false
+    },
+    "lucide-react": {
+      "src": "../../node_modules/lucide-react/dist/esm/lucide-react.js",
+      "file": "lucide-react.js",
+      "fileHash": "735deed0",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "e6b9a40d",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "92fe1924",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "44951892",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "purify.es-773HQJ2N": {
+      "file": "purify__es-773HQJ2N.js"
+    },
+    "index.es-ISIPND53": {
+      "file": "index__es-ISIPND53.js"
+    },
+    "chunk-SITVF2AJ": {
+      "file": "chunk-SITVF2AJ.js"
+    },
+    "chunk-EO7JTZSA": {
+      "file": "chunk-EO7JTZSA.js"
+    },
+    "chunk-JKIQGJQN": {
+      "file": "chunk-JKIQGJQN.js"
+    },
+    "chunk-HQ6ZTAWL": {
+      "file": "chunk-HQ6ZTAWL.js"
+    },
+    "chunk-FYGYNQUM": {
+      "file": "chunk-FYGYNQUM.js"
+    },
+    "chunk-PTP552OE": {
+      "file": "chunk-PTP552OE.js"
+    },
+    "chunk-32EALFBN": {
+      "file": "chunk-32EALFBN.js"
+    },
+    "chunk-VF6LGHKZ": {
+      "file": "chunk-VF6LGHKZ.js"
+    },
+    "chunk-UKPQ2PAV": {
+      "file": "chunk-UKPQ2PAV.js"
+    },
+    "chunk-G3PMV62Z": {
+      "file": "chunk-G3PMV62Z.js"
+    }
+  }
+}
