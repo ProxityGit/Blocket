@@ -1,0 +1,272 @@
+/* ==========================================
+   CONSTRUCTOR DE DOCUMENTOS - ESTILO ESTANDARIZADO
+   Compatible con Mantine y diseño del sistema
+   ========================================== */
+
+.constructor-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(to bottom right, rgb(248 250 252), rgb(226 232 240));
+  color: #2d3748;
+  overflow: hidden
+}
+
+/* ===== Layout de 3 columnas con colapso ===== */
+.constructor-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 340px;
+  gap: 20px;
+  height: calc(100vh - 80px); /* Aumentar altura disponible */
+  padding: 0 32px 10px 32px; /* Reducir padding inferior */
+  align-items: start;
+  transition: grid-template-columns 0.3s ease;
+}
+
+/* Estados colapsados */
+.constructor-layout.left-collapsed {
+  grid-template-columns: 60px 1fr 340px;
+}
+
+.constructor-layout.right-collapsed {
+  grid-template-columns: 280px 1fr 60px;
+}
+
+.constructor-layout.left-collapsed.right-collapsed {
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.panel {
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible; /* Cambiar a visible para que el botón no se corte */
+  position: relative;
+  min-height: 0; /* Importante para mantener la altura del grid */
+}
+
+/* Panel colapsado - muestra solo una barra vertical */
+.panel.collapsed {
+  width: 60px !important;
+  min-width: 60px !important;
+  padding: 0;
+  overflow: visible; /* Mantener visible en estado colapsado */
+}
+
+.panel.collapsed > *:not(.collapse-btn) {
+  display: none;
+}
+
+/* Botón de colapso rediseñado */
+.collapse-btn {
+  position: absolute;
+  z-index: 200;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  color: #64748b;
+  flex-shrink: 0; /* Evitar que se comprima */
+}
+
+.collapse-btn:hover {
+  background: #f8fafc;
+  color: #475569;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.collapse-btn:active {
+  transform: scale(0.95);
+}
+
+/* Botón izquierdo - posición fija desde el top del panel */
+.blocklist-panel .collapse-btn {
+  top: 20px;
+  right: 12px;
+}
+
+.blocklist-panel.collapsed .collapse-btn {
+  top: 80px; /* Posición fija desde arriba, no centrado */
+  right: 12px;
+  left: auto;
+  width: 36px;
+  height: 80px;
+  border-radius: 0 12px 12px 0;
+  transform: none; /* Quitar transform para evitar problemas de posición */
+  writing-mode: vertical-rl;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 8px 0;
+}
+
+.blocklist-panel.collapsed .collapse-btn:hover {
+  background: #f8fafc;
+  color: #475569;
+}
+
+/* Botón derecho - posición fija desde el top del panel */
+.dynamic-panel .collapse-btn {
+  top: 20px;
+  left: 12px;
+}
+
+.dynamic-panel.collapsed .collapse-btn {
+  top: 80px; /* Posición fija desde arriba, no centrado */
+  left: 12px;
+  right: auto;
+  width: 36px;
+  height: 80px;
+  border-radius: 12px 0 0 12px;
+  transform: none; /* Quitar transform para evitar problemas de posición */
+  writing-mode: vertical-rl;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 8px 0;
+}
+
+.dynamic-panel.collapsed .collapse-btn:hover {
+  background: #f8fafc;
+  color: #475569;
+}
+
+/* Efecto de barra lateral colapsada */
+.panel.collapsed {
+  background: linear-gradient(180deg, #667eea15 0%, #764ba215 100%);
+  border-color: #667eea30;
+  cursor: pointer;
+}
+
+.panel.collapsed:hover {
+  background: linear-gradient(180deg, #667eea25 0%, #764ba225 100%);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.panel:hover {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.08);
+}
+
+.blocklist-panel {
+  overflow: hidden;
+  padding: 0;
+  height: 100%;
+  max-height: calc(100vh - 100px);
+}
+
+.panel-documento {
+  background: #f8f9fa;
+  padding: 10px;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: auto; /* Permitir scroll horizontal si el documento es más ancho */
+  min-width: 0; /* Permitir que el panel se encoja si es necesario */
+}
+
+/* Contenedor de páginas A4 */
+.documento-pages {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+  min-height: min-content;
+}
+
+/* Cada página A4 */
+.documento-page {
+  background: #ffffff;
+  /* Dimensiones estándar A4: 210mm x 297mm a 96dpi */
+  width: 794px;
+  min-height: 1123px;
+  padding: 60px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  position: relative;
+}
+
+/* Número de página */
+.page-number {
+  position: absolute;
+  bottom: 20px;
+  right: 60px;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.documento-page * {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.dynamic-panel {
+  background: #ffffff;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #94a3b8, #64748b);
+  border-radius: 10px;
+  border: 2px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #64748b, #475569);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1400px) {
+  .constructor-layout {
+    grid-template-columns: 280px 1fr 320px;
+    gap: 16px;
+    padding: 0 16px 16px 16px;
+  }
+  
+  .panel-documento {
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .constructor-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    height: auto;
+  }
+  
+  .panel {
+    min-height: 400px;
+  }
+}

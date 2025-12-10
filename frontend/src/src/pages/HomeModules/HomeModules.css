@@ -1,0 +1,180 @@
+/* ==========================================
+   BLOKET — FLUENT LIGHT + DOCK MAC STYLE
+   ========================================== */
+
+.light-theme {
+  background: linear-gradient(180deg, #f8fafc, #eef2f6);
+  color: #1e293b;
+  font-family: "Segoe UI", "Inter", sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== HERO ===== */
+.hero-banner.light {
+  background: linear-gradient(90deg, #2563eb, #3b82f6, #8b5cf6);
+  color: #fff;
+  padding: 80px 40px 100px;
+  text-align: center;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+  position: relative;
+}
+
+.hero-logo {
+  font-size: 52px;
+  margin-bottom: 10px;
+}
+
+.hero-banner h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #fff, #e0e7ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 17px;
+  color: #e2e8f0;
+  margin: 15px auto 30px;
+  max-width: 600px;
+}
+
+.btn-primary {
+  background: #fff;
+  color: #2563eb;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
+  transition: all 0.25s ease-in-out;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: #f1f5f9;
+}
+
+/* ===== Procesos Clave ===== */
+.section-main.light {
+  padding: 60px 80px 30px;
+}
+
+.section-main.light h2 {
+  color: #2563eb;
+  font-size: 22px;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.tile-grid.light {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+.tile-card.light {
+  background: #ffffff;
+  border-radius: 18px;
+  border-top: 5px solid #2563eb;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 28px;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  border: 1px solid #e2e8f0;
+}
+
+.tile-card.light:hover {
+  transform: translateY(-4px);
+  background: #f8fafc;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+.tile-icon.light {
+  width: 68px;
+  height: 68px;
+  border-radius: 16px;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-info h3 {
+  color: #1e293b;
+  font-size: 18px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.tile-info p {
+  color: #475569;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* ===== DOCK ===== */
+.section-dock {
+  position: fixed;
+  bottom: 40px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}
+
+.dock-container {
+  display: flex;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 10px 25px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+  gap: 28px;
+  transition: all 0.3s ease-in-out;
+}
+
+.dock-item {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.dock-item:hover {
+  transform: translateY(-10px) scale(1.15);
+}
+
+.dock-icon {
+  font-size: 28px;
+  color: #2563eb;
+  user-select: none;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .section-main.light {
+    padding: 40px 30px;
+  }
+
+  .tile-grid.light {
+    grid-template-columns: 1fr;
+  }
+
+  .dock-container {
+    gap: 18px;
+    padding: 8px 18px;
+  }
+
+  .dock-icon {
+    font-size: 24px;
+  }
+}

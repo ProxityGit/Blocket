@@ -1,0 +1,74 @@
+.print-mode .letter-header,
+.print-mode .letter-company,
+.print-mode .letter-meta,
+.print-mode .letter-saludo {
+  padding-left: 0px !important;
+  padding-right: 30px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+/* ========== LETTER HEADER STYLES ========== */
+
+.letter-header {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  width: 100%;
+  margin-bottom: 30px;
+  text-align: left !important;
+}
+
+/* --- Membrete superior --- */
+.letter-company {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 8px;
+}
+
+.letter-logo {
+  width: 70px;
+  height: auto;
+}
+
+.letter-company-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f5499;
+  margin: 0;
+}
+
+.letter-company-info {
+  font-size: 14px;
+  color: #555;
+  margin: 1px 0;
+  line-height: 1.6;
+}
+
+/* --- Línea separadora azul --- */
+.letter-divider {
+  border: none;
+  border-top: 1px solid #0f5499;
+  margin: 12px 0 25px;
+  width: 100%;
+}
+
+/* --- Fecha y destinatario --- */
+.letter-meta {
+  font-size: 14px;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.letter-date {
+  text-align: left !important;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+/* --- Saludo --- */
+.letter-saludo {
+  margin-bottom: 25px;
+  font-size: 14px;
+  line-height: 1.6;
+}

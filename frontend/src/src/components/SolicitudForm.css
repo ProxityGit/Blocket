@@ -1,0 +1,227 @@
+﻿/* Estilo moderno tipo Copilot para formulario de solicitudes */
+
+.solicitud-form-container {
+  background: #f5f9fc;
+  min-height: 100vh;
+  padding: 40px 60px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  color: #2d3748;
+}
+
+.solicitud-form-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 28px 36px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
+  margin-bottom: 28px;
+}
+
+.solicitud-form-header h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.solicitud-form-header p {
+  font-size: 14px;
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+}
+
+.solicitud-form-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e7eb;
+  padding: 32px;
+  max-width: 900px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.solicitud-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.solicitud-form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.solicitud-form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.solicitud-form-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.solicitud-form-field label .required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.solicitud-form-field input,
+.solicitud-form-field select,
+.solicitud-form-field textarea {
+  border: 1px solid #e5e7eb;
+  outline: none;
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: #1f2937;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.solicitud-form-field input:focus,
+.solicitud-form-field select:focus,
+.solicitud-form-field textarea:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.solicitud-form-field input::placeholder,
+.solicitud-form-field textarea::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.solicitud-form-field select {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.solicitud-form-field textarea {
+  min-height: 120px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.solicitud-form-field input[type='file'] {
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #f9fafb;
+}
+
+.solicitud-form-field input[type='file']::file-selector-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: all 0.2s ease;
+}
+
+.solicitud-form-field input[type='file']::file-selector-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.file-info {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+}
+
+.file-info strong {
+  color: #0369a1;
+  font-weight: 600;
+}
+
+.solicitud-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.solicitud-form-actions button {
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+}
+
+.solicitud-form-actions button[type='button'] {
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+}
+
+.solicitud-form-actions button[type='button']:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.solicitud-form-actions button[type='submit'] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25);
+}
+
+.solicitud-form-actions button[type='submit']:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+.solicitud-form-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .solicitud-form-container {
+    padding: 24px 20px;
+  }
+  
+  .solicitud-form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .solicitud-form-card {
+    padding: 24px 20px;
+  }
+  
+  .solicitud-form-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .solicitud-form-actions button {
+    width: 100%;
+  }
+}

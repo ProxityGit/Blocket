@@ -1,0 +1,818 @@
+/* =================================================================
+   ESTILOS PARA EXPORTACIÓN PDF (print-mode)
+   Optimizado para alta calidad en impresión y envío digital
+   ================================================================= */
+
+.print-mode .documento-panel {
+  background: #ffffff !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 210mm !important;
+  min-height: 297mm !important;
+  max-width: 210mm !important;
+  margin: 0 auto !important;
+  padding: 20mm 25mm !important;
+  font-size: 12pt !important;
+  color: #000000 !important;
+  line-height: 1.5 !important;
+  font-family: 'Times New Roman', Times, serif !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+/* Ocultar elementos de interfaz en PDF */
+.print-mode .bloque-header-acordeon,
+.print-mode .bloque-toolbar,
+.print-mode .acordeon-toggle,
+.print-mode .remove-btn,
+.print-mode .btn-conector,
+.print-mode .status-tag {
+  display: none !important;
+}
+
+/* Limpiar estilos de bloques */
+.print-mode .bloque-editable {
+  box-shadow: none !important;
+  border: none !important;
+  margin-bottom: 0 !important;
+  background: transparent !important;
+  page-break-inside: avoid !important;
+}
+
+.print-mode .bloque-body-acordeon {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.print-mode .bloque-wrapper::before,
+.print-mode .bloque-wrapper::after {
+  display: none !important;
+}
+
+/* Optimizar texto para PDF */
+.print-mode .parrafo-texto {
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+  word-break: keep-all !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  font-smooth: always !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  font-family: 'Times New Roman', Times, serif !important;
+  font-size: 12pt !important;
+  color: #000000 !important;
+}
+
+.print-mode .parrafo-texto p {
+  margin: 0.5em 0 !important;
+  line-height: 1.5 !important;
+  font-family: 'Times New Roman', Times, serif !important;
+  font-size: 12pt !important;
+  color: #000000 !important;
+  orphans: 3 !important;
+  widows: 3 !important;
+  word-break: keep-all !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Tablas en PDF */
+.print-mode .parrafo-texto table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 1em 0 !important;
+  page-break-inside: avoid !important;
+}
+
+.print-mode .parrafo-texto table td,
+.print-mode .parrafo-texto table th {
+  border: 1px solid #000000 !important;
+  padding: 8px !important;
+  text-align: left !important;
+  font-size: 12pt !important;
+  font-family: 'Times New Roman', Times, serif !important;
+  color: #000000 !important;
+}
+
+.print-mode .parrafo-texto table th {
+  background-color: #f0f0f0 !important;
+  font-weight: 700 !important;
+  font-family: 'Times New Roman', Times, serif !important;
+  color: #000000 !important;
+}
+
+/* Imágenes en PDF */
+.print-mode .parrafo-texto img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 1em auto !important;
+  page-break-inside: avoid !important;
+}
+
+/* Encabezado del documento */
+.print-mode .letter-header {
+  margin-bottom: 2em !important;
+  font-family: 'Times New Roman', Times, serif !important;
+}
+
+.print-mode .letter-company-name {
+  font-size: 14pt !important;
+  font-weight: 700 !important;
+  color: #000000 !important;
+  font-family: 'Times New Roman', Times, serif !important;
+}
+
+.print-mode .letter-company-info,
+.print-mode .letter-meta p,
+.print-mode .letter-saludo p {
+  font-size: 12pt !important;
+  line-height: 1.5 !important;
+  color: #000000 !important;
+  font-family: 'Times New Roman', Times, serif !important;
+}
+
+.print-mode .letter-date {
+  font-style: italic !important;
+}
+
+/* Control de saltos de página */
+.print-mode .letter-header {
+  page-break-after: avoid !important;
+}
+
+.print-mode .bloque-editable {
+  page-break-inside: avoid !important;
+}
+
+/* Conectores inline estandarizados */
+.print-mode .conector-inline {
+  font-family: 'Times New Roman', Times, serif !important;
+  font-size: 12pt !important;
+  color: #000000 !important;
+  font-weight: normal !important;
+}
+
+/* Placeholders (no deberían aparecer en PDF final) */
+.print-mode .placeholder-pending {
+  background-color: #ffeb3b !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  font-family: 'Times New Roman', Times, serif !important;
+}
+.bloque-justificado {
+  text-align: justify;
+}
+
+/* Estilos para contenido HTML dentro de los bloques */
+.parrafo-texto table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+.parrafo-texto table td,
+.parrafo-texto table th {
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  text-align: left;
+}
+
+.parrafo-texto table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+.parrafo-texto p {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.parrafo-texto img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px 0;
+}
+
+.parrafo-texto br {
+  display: block;
+  content: "";
+  margin: 4px 0;
+}
+
+.status-tag {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 8px;
+  margin-left: 18px;
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1.5px solid #e0e7ef;
+  letter-spacing: 0.2px;
+  vertical-align: middle;
+  transition: background 0.18s, color 0.18s;
+}
+.status-tag.completo {
+  background: #d1fae5;
+  color: #059669;
+  border-color: #34d399;
+}
+.status-tag.pendiente {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #fbbf24;
+}
+/* --- Bloques acordeón modernos --- */
+.bloque-acordeon {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(30,41,59,0.07);
+  margin-bottom: 18px;
+  border: 1px solid #e5e7eb;
+  transition: box-shadow 0.18s, border 0.18s;
+  overflow: hidden;
+  position: relative;
+}
+.bloque-acordeon.open {
+  box-shadow: 0 8px 32px rgba(37,99,235,0.13);
+}
+.bloque-header-acordeon {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px 18px 18px;
+  background: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.08em;
+  color: #1e293b;
+  border-bottom: 1px solid #e0e7ef;
+  user-select: none;
+}
+.bloque-header-acordeon:hover {
+  background: #f5f7fa;
+}
+.drag-handle {
+  font-size: 1.3em;
+  color: #64748b;
+  cursor: grab;
+  margin-right: 8px;
+  transition: color 0.18s;
+}
+.bloque-acordeon.open .drag-handle {
+  color: #2563eb;
+}
+.acordeon-toggle {
+  background: #ffffff;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.acordeon-toggle:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #334155;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.bloque-body-acordeon {
+  padding: 18px 24px 22px 24px;
+  background: #f8fafc;
+  border-radius: 0 0 10px 10px;
+  animation: fadeIn 0.2s;
+}
+/* Colores modernos para los bordes según el orden se aplican por clase adicional */
+/* Colores para los primeros 6 bloques, puedes agregar más si lo necesitas */
+.bloque-acordeon.bloque-orden-1 { border-color: #2563eb !important; border-width: 1px !important; }
+.bloque-acordeon.bloque-orden-2 { border-color: #10b981 !important; border-width: 1px !important; }
+.bloque-acordeon.bloque-orden-3 { border-color: #f59e42 !important; border-width: 1px !important; }
+.bloque-acordeon.bloque-orden-4 { border-color: #e11d48 !important; border-width: 1px !important; }
+.bloque-acordeon.bloque-orden-5 { border-color: #6366f1 !important; border-width: 1px !important; }
+.bloque-acordeon.bloque-orden-6 { border-color: #14b8a6 !important; border-width: 1px !important; }
+.bloque-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.remove-btn {
+  background: #ffffff;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.remove-btn:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(239,68,68,0.15);
+}
+.bloque-contenido {
+  margin-top: 8px;
+}
+/* --- Conectores modernos --- */
+.conector-container {
+  position: relative;
+  display: inline-block;
+}
+.btn-conector {
+  background: #ffffff;
+  color: #3b82f6;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  white-space: nowrap;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+.btn-conector:hover {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(59,130,246,0.15);
+}
+.conector-dropdown {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 110%;
+  min-width: 180px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(30,41,59,0.12);
+  z-index: 10;
+  padding: 6px 0;
+  margin-top: 4px;
+}
+.conector-dropdown.show {
+  display: block;
+}
+.conector-option {
+  padding: 10px 18px;
+  font-size: 14px;
+  color: #1e293b;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.conector-option:hover {
+  background: #e0e7ef;
+  color: #2563eb;
+}
+.preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.preview-modal {
+  background: #f1f5f9;
+  border-radius: 18px;
+  width: 90%;
+  height: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+.preview-header {
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  color: white;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preview-header h2 {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 8px;
+  padding: 4px 10px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.preview-warning {
+  background: #fff3cd;
+  color: #92400e;
+  border-left: 5px solid #facc15;
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+/* 📄 Contenedor principal */
+.documento-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 10px 20px; /* Reducir padding vertical para aprovechar espacio */
+  overflow-x: visible;
+  min-width: 800px; /* Ancho mínimo para garantizar que el documento (794px) + paneles (250px*2) siempre sea visible */
+}
+
+/* Documento continuo sin paginación forzada */
+.documento-page-continuo {
+  background: #ffffff;
+  width: 794px; /* 210mm a 96dpi */
+  min-height: 1123px; /* Mínimo una página A4 */
+  margin: 0 auto;
+  padding: 96px 96px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  position: relative;
+}
+
+.documento-page {
+  background: #ffffff;
+  width: 794px; /* 210mm a 96dpi */
+  height: 1123px; /* 297mm a 96dpi - Altura fija A4 */
+  margin: 0 auto 50px auto; /* Separación entre páginas aumentada */
+  /* Márgenes estándar: 2.54cm = 96px aproximadamente */
+  padding: 96px 96px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  position: relative;
+  overflow-x: visible; /* Permitir ver paneles laterales */
+  overflow-y: hidden; /* Evitar desbordamiento vertical */
+  page-break-after: always;
+}
+
+/* Contenedor interno para el contenido con altura controlada */
+.documento-page-content {
+  height: 931px; /* Altura total (1123px) - padding superior e inferior (96px*2) */
+  overflow: hidden; /* Ocultar desbordamiento */
+  position: relative;
+}
+
+.page-number {
+  position: absolute;
+  bottom: 20px;
+  right: 60px;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.document-preview-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+/* 🧾 Simulación de hoja de papel */
+.document-page {
+  background: #ffffff;
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 3cm 2.5cm;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #1e293b;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* Encabezado del documento */
+.document-header {
+  text-align: left;
+  font-size: 15px;
+  color: #334155;
+  margin-bottom: 40px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  line-height: 1.7;
+  padding-left: 2px;
+}
+
+/* Pie de página */
+.document-footer {
+  margin-top: 60px;
+  text-align: center;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 12px;
+}
+
+/* Cada bloque de texto */
+.preview-block {
+  margin-bottom: 24px;
+}
+
+.placeholder-pending {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ===== NUEVO DISEÑO: Paneles laterales flotantes ===== */
+.bloque-wrapper {
+  position: relative;
+  margin-bottom: 60px; /* Aumentado para evitar superposición de paneles */
+  min-height: 80px; /* Altura mínima para garantizar espacio para paneles */
+}
+
+/* Línea conectora izquierda (al panel de nombre) */
+.bloque-wrapper::after {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 12px;
+  width: 30px;
+  height: 2px;
+  border-top: 2px dashed;
+  border-color: inherit;
+  z-index: 1;
+}
+
+/* Línea conectora derecha (al panel de controles) */
+.bloque-wrapper::before {
+  content: '';
+  position: absolute;
+  right: -25px;
+  top: 12px;
+  width: 25px;
+  height: 2px;
+  border-top: 2px dashed;
+  border-color: inherit;
+  z-index: 1;
+}
+
+/* Colores de línea conectora según orden */
+.bloque-wrapper.bloque-orden-1 { border-color: #2563eb; }
+.bloque-wrapper.bloque-orden-1::before { border-color: #2563eb; }
+.bloque-wrapper.bloque-orden-2 { border-color: #10b981; }
+.bloque-wrapper.bloque-orden-2::before { border-color: #10b981; }
+.bloque-wrapper.bloque-orden-3 { border-color: #f59e42; }
+.bloque-wrapper.bloque-orden-3::before { border-color: #f59e42; }
+.bloque-wrapper.bloque-orden-4 { border-color: #e11d48; }
+.bloque-wrapper.bloque-orden-4::before { border-color: #e11d48; }
+.bloque-wrapper.bloque-orden-5 { border-color: #6366f1; }
+.bloque-wrapper.bloque-orden-5::before { border-color: #6366f1; }
+.bloque-wrapper.bloque-orden-6 { border-color: #14b8a6; }
+.bloque-wrapper.bloque-orden-6::before { border-color: #14b8a6; }
+
+/* Contenido limpio (solo texto) - ocupa todo el ancho del documento */
+.bloque-contenido-limpio {
+  padding: 4px 12px;
+  border-left: 3px solid;
+  border-color: inherit;
+  transition: all 0.2s;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.bloque-wrapper:hover .bloque-contenido-limpio {
+  background: #f8fafc;
+  border-left-width: 4px;
+}
+
+/* Panel izquierdo con nombre del bloque */
+.bloque-panel-izquierdo {
+  position: absolute;
+  left: -220px;
+  top: 0;
+  width: 180px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  padding: 12px;
+  transition: all 0.2s;
+  z-index: 100; /* Mayor z-index para estar sobre el overflow */
+}
+
+.bloque-wrapper:hover .bloque-panel-izquierdo {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  border-color: currentColor;
+}
+
+.bloque-nombre-completo {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  line-height: 1.3;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Panel derecho compacto - solo controles */
+.bloque-panel-lateral {
+  position: absolute;
+  right: -85px;
+  top: 0;
+  width: 50px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  transition: all 0.2s;
+  z-index: 100; /* Mayor z-index para estar sobre el overflow */
+}
+
+.bloque-wrapper:hover .bloque-panel-lateral {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  border-color: currentColor;
+}
+
+.panel-lateral-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.bloque-wrapper .drag-handle {
+  color: #94a3b8;
+  cursor: grab;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+
+.bloque-wrapper .drag-handle:hover {
+  color: #475569;
+}
+
+.bloque-titulo-mini {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #64748b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  line-height: 1.2;
+}
+
+.panel-lateral-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+/* Badge de estado compacto */
+.status-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.status-badge.completo {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.status-badge.pendiente {
+  background: #fb923c;
+  color: #ffffff;
+}
+
+/* Botones de iconos compactos */
+.btn-conector-icon,
+.btn-remove-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid;
+}
+
+.btn-conector-icon {
+  background: #ffffff;
+  color: #3b82f6;
+  border-color: #bfdbfe;
+}
+
+.btn-conector-icon:hover {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+.btn-remove-icon {
+  background: #ffffff;
+  color: #ef4444;
+  border-color: #fecaca;
+}
+
+.btn-remove-icon:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+  transform: translateY(-2px);
+}
+
+/* Dropdown de conectores ajustado */
+.bloque-wrapper .conector-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.bloque-wrapper .conector-dropdown {
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 160px;
+}
+
+/* Ocultar estilos antiguos en modo impresión */
+.print-mode .bloque-wrapper::before,
+.print-mode .bloque-wrapper::after {
+  display: none;
+}
+
+.print-mode .bloque-panel-lateral,
+.print-mode .bloque-panel-izquierdo {
+  display: none !important;
+}
+
+.print-mode .bloque-contenido-limpio {
+  border-left: none;
+  padding: 0;
+}

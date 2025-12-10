@@ -1,0 +1,34 @@
+/* ==========================================
+   CREAR SOLICITUD - ESTILO ESTANDARIZADO
+   Compatible con Mantine y diseño del sistema
+   ========================================== */
+
+.crear-solicitud-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f9fc 0%, #e8f0f8 100%);
+}
+
+/* Estilos complementarios para Mantine components */
+.mantine-Card-root {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mantine-Card-root:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Animaciones suaves */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.crear-solicitud-container > div {
+  animation: fadeIn 0.5s ease-out;
+}

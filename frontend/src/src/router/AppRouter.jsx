@@ -1,0 +1,53 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import HomeModulesNew from "../pages/HomeModules/HomeModulesNew.jsx";
+import RequestSelector from "../pages/RequestSelector/RequestSelector.jsx";
+import AssignmentRequests from "../pages/AssignmentRequests/AssignmentRequests.jsx";
+import RequestAssignment from "../pages/AssignmentRequests/RequestAssignment.jsx";
+import DocumentBuilder from "../pages/DocumentBuilder/DocumentBuilder.jsx";
+import CrearSolicitud from "../pages/HomeModules/CrearSolicitud.jsx";
+import ConfigLayout from "../layouts/ConfigLayout.jsx";
+import Configuration from "../pages/Configuration/Configuration.jsx";
+import BlockConfig from "../pages/BlockConfig/BlockConfig.jsx";
+import BlockForm from "../pages/BlockConfig/BlockForm.jsx";
+import ProcessConfig from "../pages/ProcessConfig/ProcessConfig.jsx";
+import ProcessForm from "../pages/ProcessConfig/ProcessForm.jsx";
+import HeaderConfig from "../pages/HeaderConfig/HeaderConfig.jsx";
+
+export default function AppRouter() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomeModulesNew />} />
+        <Route path="/crear-solicitud" element={<CrearSolicitud />} />
+
+        {/* Rutas principales de gestión */}
+        <Route path="/consulta" element={<RequestSelector />} />
+        <Route path="/asignacion" element={<AssignmentRequests />} />
+        <Route path="/asignacion/gestion/:id" element={<RequestAssignment />} />
+
+        <Route path="/registro" element={<div>Registro de Solicitud (pendiente)</div>} />
+        <Route path="/constructor/:idSolicitud" element={<DocumentBuilder />} />
+
+        {/* Configuración con Sidebar */}
+        <Route path="/configuracion" element={<ConfigLayout />}>
+          <Route index element={<Configuration />} />
+          <Route path="usuarios" element={<div style={{ padding: '20px' }}>Usuarios (pendiente)</div>} />
+          <Route path="procesos" element={<ProcessConfig />} />
+          <Route path="procesos/nuevo" element={<ProcessForm />} />
+          <Route path="procesos/:id" element={<ProcessForm />} />
+          <Route path="categorias" element={<div style={{ padding: '20px' }}>Categorías (pendiente)</div>} />
+          <Route path="bandejas" element={<div style={{ padding: '20px' }}>Bandejas (pendiente)</div>} />
+          <Route path="tipos-solicitud" element={<div style={{ padding: '20px' }}>Tipos de Solicitud (pendiente)</div>} />
+          <Route path="bloques" element={<BlockConfig />} />
+          <Route path="bloques/nuevo" element={<BlockForm />} />
+          <Route path="bloques/:id" element={<BlockForm />} />
+          <Route path="encabezado" element={<HeaderConfig />} />
+        </Route>
+
+        <Route path="/parametrizacion" element={<div>Parametrización (pendiente)</div>} />
+        <Route path="/metricas" element={<div>Métricas (pendiente)</div>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
+  );
+}
